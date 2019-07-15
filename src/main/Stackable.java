@@ -1,5 +1,5 @@
 package main;
 
-public interface Stackable {
+public interface Stackable{
 	public void execute();
 }

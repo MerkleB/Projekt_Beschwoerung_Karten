@@ -11,6 +11,12 @@ public class Spell extends MagicCollector {
 	private String name;
 	private int neededMagicEnergy;
 	
+	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth) {
+		super(name, energy, collectorHealth);
+		this.trivia = trivia;
+		this.neededMagicEnergy = neededMagicEnergy;
+	}
+	
 	@Override
 	public CardType getType() {
 		return CardType.SPELL;

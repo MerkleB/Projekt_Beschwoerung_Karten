@@ -6,7 +6,6 @@ import main.exception.NoCollectorException;
 public abstract class MagicCollector implements Card{
 
 	protected String name;
-	protected String trivia;
 	private int maxEnergy;
 	private int freeEnergy;
 	private int usedEnergy;
@@ -15,8 +14,23 @@ public abstract class MagicCollector implements Card{
 	private int currentHealth;
 	private boolean isCollector;
 	
+	protected MagicCollector(String name, int energy, int collectorHealth) {
+		this.name = name;
+		this.maxEnergy = energy;
+		this.freeEnergy = energy;
+		this.depletedEnergy = 0;
+		this.usedEnergy = 0;
+		this.maxHealth = collectorHealth;
+		this.currentHealth = collectorHealth;
+		this.isCollector = false;
+	}
+	
 	public boolean isCollector() {
 		return isCollector;
+	}
+	
+	public void setIsCollector(boolean collector) {
+		isCollector = collector;
 	}
 	
 	protected void checkCollector() throws NoCollectorException{

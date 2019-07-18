@@ -5,7 +5,8 @@ import java.awt.Graphics2D;
 import main.exception.NoCardException;
 
 public class Summon extends MagicCollector{	
-	
+
+	private String trivia;
 	private Effect[] effects;
 	private int magicPreservationValue;
 	private int summoningPoints;
@@ -17,6 +18,22 @@ public class Summon extends MagicCollector{
 	private String rank;
 	private String element;
 	private int magicWastageOnDefeat;
+	
+	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth) {
+		super(name, energy, collectorHealth);
+		this.trivia = trivia;
+		this.effects = effects;
+		this.magicPreservationValue = preservationValue;
+		this.summoningPoints = summoningPoints;
+		this.attack = attack;
+		this.heal = heal;
+		this.maxVitality = vitality;
+		this.vitality = vitality;
+		this.summonClass = summonClass;
+		this.rank = rank;
+		this.element = element;
+		this.magicWastageOnDefeat = magicWastedOnDefeat;
+	}
 	
 	@Override
 	public CardType getType() {

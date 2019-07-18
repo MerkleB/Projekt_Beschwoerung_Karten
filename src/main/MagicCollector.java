@@ -1,7 +1,12 @@
 package main;
 
-public abstract class MagicCollector {
+import main.exception.NoCardException;
+import main.exception.NoCollectorException;
 
+public abstract class MagicCollector implements Card{
+
+	protected String name;
+	protected String trivia;
 	private int maxEnergy;
 	private int freeEnergy;
 	private int usedEnergy;
@@ -14,6 +19,20 @@ public abstract class MagicCollector {
 		return isCollector;
 	}
 	
+	protected void checkCollector() throws NoCollectorException{
+		if(!isCollector()) {
+			NoCollectorException exc = new NoCollectorException(getName()+" is currentlyUsed as MagicCollector.");
+			throw exc;
+		}
+	}
+	
+	protected void checkCard() throws NoCardException {
+		if(isCollector()) {
+			NoCardException exc = new NoCardException(getType().toString()+"-Card "+getName()+" is currently used as MagicCollector");
+			throw exc;
+		}
+	}
+	
 	public int getMaxEnergy() {
 		return maxEnergy;
 	}
@@ -22,17 +41,20 @@ public abstract class MagicCollector {
 		maxEnergy = magicEnergy;
 	}
 
-	public int getFreeEnergy() {
+	public int getFreeEnergy() throws NoCollectorException {
+		checkCollector();
 		return freeEnergy;
 	}
 	
-	public int restoreFreeEnergy() {
+	public int restoreFreeEnergy() throws NoCollectorException {
+		checkCollector();
 		freeEnergy = freeEnergy + usedEnergy;
 		usedEnergy = 0;
 		return freeEnergy;
 	}
 	
-	public int increaseFreeEnergy(int magicEnergy) {
+	public int increaseFreeEnergy(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingEnergy = 0;
 		if(freeEnergy + magicEnergy < maxEnergy) {
 			freeEnergy = freeEnergy + magicEnergy;
@@ -43,7 +65,8 @@ public abstract class MagicCollector {
 		return remainingEnergy;
 	}
 	
-	public int decreaseFreeEnergy(int magicEnergy) {
+	public int decreaseFreeEnergy(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingEnergy = 0;
 		if(freeEnergy - magicEnergy > 0) {
 			freeEnergy = freeEnergy - magicEnergy;
@@ -54,7 +77,8 @@ public abstract class MagicCollector {
 		return remainingEnergy;
 	}
 	
-	public int increaseFreeEnergyFromUsed(int magicEnergy) {
+	public int increaseFreeEnergyFromUsed(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingEnergy = 0;
 		if(usedEnergy > magicEnergy) {
 			usedEnergy = usedEnergy - magicEnergy;
@@ -67,7 +91,8 @@ public abstract class MagicCollector {
 		return remainingEnergy;
 	}
 	
-	public int increaseFreeEnergyFromDepleted(int magicEnergy) {
+	public int increaseFreeEnergyFromDepleted(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingEnergy = 0;
 		if(depletedEnergy > magicEnergy) {
 			depletedEnergy = depletedEnergy - magicEnergy;
@@ -80,11 +105,13 @@ public abstract class MagicCollector {
 		return remainingEnergy;
 	}
 	
-	public int getUsedEnergy() {
+	public int getUsedEnergy() throws NoCollectorException {
+		checkCollector();
 		return usedEnergy;
 	}
 	
-	public int useEnergy(int magicEnergy) {
+	public int useEnergy(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingUsedEnergy = 0;
 		if(freeEnergy > magicEnergy) {
 			freeEnergy = freeEnergy - magicEnergy;
@@ -96,11 +123,13 @@ public abstract class MagicCollector {
 		return remainingUsedEnergy;
 	}
 	
-	public int getDepletedEnergy() {
+	public int getDepletedEnergy() throws NoCollectorException {
+		checkCollector();
 		return depletedEnergy;
 	}
 	
-	public int depleteEnergyFromFree(int magicEnergy) {
+	public int depleteEnergyFromFree(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingDepletion = 0;
 		if(freeEnergy > magicEnergy) {
 			freeEnergy = freeEnergy - magicEnergy;
@@ -113,7 +142,8 @@ public abstract class MagicCollector {
 		return remainingDepletion;
 	}
 	
-	public int depleteEnergyFromUsed(int magicEnergy) {
+	public int depleteEnergyFromUsed(int magicEnergy) throws NoCollectorException {
+		checkCollector();
 		int remainingDepletion = 0;
 		if(usedEnergy > magicEnergy) {
 			usedEnergy = usedEnergy - magicEnergy;
@@ -126,8 +156,7 @@ public abstract class MagicCollector {
 		return remainingDepletion;
 	}
 	
-	public int getMMaxHealth() {
-		// TODO Auto-generated method stub
+	public int getMaxHealth() {
 		return maxHealth;
 	}
 
@@ -137,17 +166,20 @@ public abstract class MagicCollector {
 	}
 
 	
-	public int getCurrentHealth() {
+	public int getCurrentHealth() throws NoCollectorException {
+		checkCollector();
 		return currentHealth;
 	}
 
 	
-	public void setCurrentHealth(int health) {
+	public void setCurrentHealth(int health) throws NoCollectorException {
+		checkCollector();
 		currentHealth = health;
 	}
 
 	
-	public int decreaseCurrentHealth(int damage) {
+	public int decreaseCurrentHealth(int damage) throws NoCollectorException {
+		checkCollector();
 		if(damage < currentHealth) {
 			currentHealth = currentHealth - damage;
 		}else {
@@ -156,7 +188,8 @@ public abstract class MagicCollector {
 		return currentHealth;
 	}
 	
-	public int increaseCurrentHealth(int heal) {
+	public int increaseCurrentHealth(int heal) throws NoCollectorException {
+		checkCollector();
 		if(heal > maxHealth) {
 			currentHealth = maxHealth;
 		}else {
@@ -166,7 +199,8 @@ public abstract class MagicCollector {
 	}
 
 	
-	public boolean isCompletelyDepleted() {
+	public boolean isCompletelyDepleted() throws NoCollectorException {
+		checkCollector();
 		if(maxEnergy == depletedEnergy) {
 			return true;
 		}else return false;
@@ -174,8 +208,8 @@ public abstract class MagicCollector {
 	
 	protected void showCollector() {
 		System.out.println("<<<Collector>>>");
-		System.out.println("Free: "+getFreeEnergy()+" Used: "+getUsedEnergy()+" Depleted: "+getDepletedEnergy());
-		System.out.println("Health: "+getCurrentHealth());
+		System.out.println("Free: "+freeEnergy+" Used: "+usedEnergy+" Depleted: "+depletedEnergy);
+		System.out.println("Health: "+currentHealth);
 		System.out.println("<<<End-Collector>>>");
 	}
 

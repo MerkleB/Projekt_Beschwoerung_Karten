@@ -2,7 +2,9 @@ package main;
 
 import java.awt.Graphics2D;
 
-public class Spell extends MagicCollector implements Card {
+import main.exception.NoCardException;
+
+public class Spell extends MagicCollector {
 
 	private String trivia;
 	private Effect[] effects;
@@ -23,12 +25,14 @@ public class Spell extends MagicCollector implements Card {
 	}
 
 	@Override
-	public Effect[] getEffects() {
+	public Effect[] getEffects() throws NoCardException {
+		checkCard();
 		return effects;
 	}
 
 	@Override
-	public Effect getEffect(int index) {
+	public Effect getEffect(int index) throws NoCardException {
+		checkCard();
 		Effect effect = null;
 		if(index < effects.length && index > -1) {
 			effect = effects[index];

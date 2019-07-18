@@ -16,10 +16,38 @@ import main.Summon;
 
 public class SummonTest {
 
+	private Effect[] effectDummies;
+
+	@Before
+	public void setUp(){
+		Effect effectDummy = new Effect(){
+		
+			@Override
+			public void execute() {
+				
+			}
+		
+			@Override
+			public boolean isExecutable() {
+				return false;
+			}
+		
+			@Override
+			public String getDescription() {
+				return null;
+			}
+		};
+
+		effectDummies = new Effect[1];
+		effectDummies[0] = effectDummy;
+	}
+	
 	@Test
 	public void testGetTrivia() {
-		//Summon cut = new Summon("Test Summon", "Test", effects, preservationValue, summoningPoints, attack, heal, vitality, summonClass, rank, element, magicWastedOnDefeat, energy, collectorHealth)
-		fail("Not yet implemented");
+		Summon cut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4);
+		if(!cut.getTrivia().equals("Test")){
+			fail("Expected Trivia was not retrieved");
+		}
 	}
 
 	@Test

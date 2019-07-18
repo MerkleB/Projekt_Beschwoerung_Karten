@@ -16,6 +16,7 @@ public class Summon extends MagicCollector implements Card{
 	private String summonClass;
 	private String rank;
 	private String element;
+	private int magicWastageOnDefeat;
 	
 	@Override
 	public CardType getType() {
@@ -24,6 +25,9 @@ public class Summon extends MagicCollector implements Card{
 
 	@Override
 	public String getTrivia() {
+		if(trivia == null) {
+			trivia = "";
+		}
 		return trivia;
 	}
 
@@ -172,6 +176,14 @@ public class Summon extends MagicCollector implements Card{
 
 	public void setElement(String element) {
 		this.element = element;
+	}
+
+	public int getMagicWastageOnDefeat() {
+		return magicWastageOnDefeat;
+	}
+
+	public void setMagicWastageOnDefeat(int magicWastageOnDefeat) {
+		this.magicWastageOnDefeat = magicWastageOnDefeat;
 	}
 	
 }

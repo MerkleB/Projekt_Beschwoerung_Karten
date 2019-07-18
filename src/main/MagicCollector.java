@@ -26,6 +26,12 @@ public abstract class MagicCollector {
 		return freeEnergy;
 	}
 	
+	public int restoreFreeEnergy() {
+		freeEnergy = freeEnergy + usedEnergy;
+		usedEnergy = 0;
+		return freeEnergy;
+	}
+	
 	public int increaseFreeEnergy(int magicEnergy) {
 		int remainingEnergy = 0;
 		if(freeEnergy + magicEnergy < maxEnergy) {

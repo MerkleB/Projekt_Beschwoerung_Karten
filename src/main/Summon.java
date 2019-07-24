@@ -156,7 +156,7 @@ public class Summon extends MagicCollector{
 	
 	public int increaseVitality(int heal) throws NoCardException {
 		checkCard();
-		if(maxVitality > heal) {
+		if(maxVitality > vitality + heal) {
 			vitality = vitality + heal;
 		}else {
 			vitality = maxVitality;

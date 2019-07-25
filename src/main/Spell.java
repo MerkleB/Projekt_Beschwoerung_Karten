@@ -51,11 +51,13 @@ public class Spell extends MagicCollector {
 		return name;
 	}
 
-	public int getNeededMagicEnergy() {
+	public int getNeededMagicEnergy() throws NoCardException {
+		checkCard();
 		return neededMagicEnergy;
 	}
 
-	public void setNeededMagicEnergy(int neededMagicEnergy) {
+	public void setNeededMagicEnergy(int neededMagicEnergy) throws NoCardException{
+		checkCard();
 		this.neededMagicEnergy = neededMagicEnergy;
 	}
 
@@ -66,7 +68,11 @@ public class Spell extends MagicCollector {
 		}else {
 			System.out.println("<<<"+getType().toString()+"-Card>>>");
 			System.out.println("Name: "+getName());
-			System.out.println("MagicEnergy: "+getNeededMagicEnergy());
+			try {
+				System.out.println("MagicEnergy: "+getNeededMagicEnergy());
+			} catch (NoCardException e) {
+				System.out.println(e.getMessage());
+			}
 			for(int i=0; i<effects.length; i++) {
 				System.out.println("Effect"+i+": "+effects[i].getDescription());
 			}

@@ -132,6 +132,7 @@ public abstract class MagicCollector implements Card{
 			usedEnergy = usedEnergy + magicEnergy;
 		}else {
 			remainingUsedEnergy = magicEnergy - freeEnergy;
+			usedEnergy = usedEnergy + magicEnergy - remainingUsedEnergy;
 			freeEnergy = 0;
 		}
 		return remainingUsedEnergy;
@@ -204,7 +205,7 @@ public abstract class MagicCollector implements Card{
 	
 	public int increaseCurrentHealth(int heal) throws NoCollectorException {
 		checkCollector();
-		if(heal > maxHealth) {
+		if(heal+currentHealth > maxHealth) {
 			currentHealth = maxHealth;
 		}else {
 			currentHealth = currentHealth + heal;

@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.util.UUID;
 
 import main.exception.NoCardException;
 
@@ -18,6 +19,7 @@ public class Summon extends MagicCollector{
 	private String rank;
 	private String element;
 	private int magicWastageOnDefeat;
+	private UUID id;
 	
 	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth) {
 		super(name, energy, collectorHealth);
@@ -223,6 +225,11 @@ public class Summon extends MagicCollector{
 	public void setMagicWastageOnDefeat(int magicWastageOnDefeat) throws NoCardException{
 		checkCard();
 		this.magicWastageOnDefeat = magicWastageOnDefeat;
+	}
+
+	@Override
+	public UUID getID() {
+		return id;
 	}
 	
 }

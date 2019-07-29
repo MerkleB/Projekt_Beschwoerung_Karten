@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.util.UUID;
 
 import main.exception.NoCardException;
 
@@ -10,6 +11,7 @@ public class Spell extends MagicCollector {
 	private Effect[] effects;
 	private String name;
 	private int neededMagicEnergy;
+	private UUID id;
 	
 	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth) {
 		super(name, energy, collectorHealth);
@@ -85,6 +87,11 @@ public class Spell extends MagicCollector {
 	@Override
 	public void show(Graphics2D graphics) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public UUID getID() {
+		return id;
 	}
 
 }

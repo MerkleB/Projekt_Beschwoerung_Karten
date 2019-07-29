@@ -12,6 +12,7 @@ import com.sun.scenario.effect.FilterContext;
 import com.sun.scenario.effect.ImageData;
 import com.sun.scenario.effect.Effect.AccelType;
 
+import main.Card;
 import main.Effect;
 import main.MagicCollector;
 import main.Summon;
@@ -40,6 +41,36 @@ public class SummonTest {
 			@Override
 			public String getDescription() {
 				return "This is an effect.";
+			}
+
+			@Override
+			public void getName() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void activate() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public boolean activatable() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public Card getOwningCard() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void setOwningCard(Card owningCard) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 

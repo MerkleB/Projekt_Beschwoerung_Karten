@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import main.Card;
 import main.Effect;
 import main.Spell;
 import main.exception.NoCardException;
@@ -32,6 +33,36 @@ public class MagicCollectorTest {
 			@Override
 			public String getDescription() {
 				return "This is an effect.";
+			}
+
+			@Override
+			public void getName() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void activate() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public boolean activatable() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public Card getOwningCard() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void setOwningCard(Card owningCard) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 
@@ -91,7 +122,16 @@ public class MagicCollectorTest {
 	@Test
 	public void testDepleteEnergyFromUsed() {
 		try {
-			cut.depleteEnergyFromFree(2);
+			cut.useEnergy(3);
+			cut.depleteEnergyFromUsed(2);
+			if(!(cut.getUsedEnergy() == 1 && cut.getDepletedEnergy() == 2)) {
+				fail("Test failed - Expected: UsedEnergy=1, DepletedEnergy=2");
+			}
+			
+			int remainingEnergyToDeplete = cut.depleteEnergyFromUsed(2);
+			if(!(cut.getUsedEnergy() == 0 && cut.getDepletedEnergy() == 3 && remainingEnergyToDeplete == 1)) {
+				fail("Test failed - Expected: UsedEnergy=1, DepletedEnergy=2, remainingEnergyToDeplete=1");
+			}
 		} catch (NoCollectorException e) {
 			fail("Unexpected NoCollectorEception");
 		}
@@ -100,7 +140,15 @@ public class MagicCollectorTest {
 	@Test
 	public void testDecreaseCurrentHealth() {
 		try {
-			cut.depleteEnergyFromFree(2);
+			cut.decreaseCurrentHealth(3);
+			if(!(cut.getCurrentHealth() == 7)) {
+				fail("Test failed - Expected: CurrentHealth=7");
+			}
+			
+			cut.decreaseCurrentHealth(8);
+			if(!(cut.getCurrentHealth() == 0)) {
+				fail("Test failed - Expected: CurrentHealth=0");
+			}
 		} catch (NoCollectorException e) {
 			fail("Unexpected NoCollectorEception");
 		}
@@ -109,7 +157,16 @@ public class MagicCollectorTest {
 	@Test
 	public void testIncreaseCurrentHealth() {
 		try {
-			cut.depleteEnergyFromFree(2);
+			cut.increaseCurrentHealth(3);
+			if(!(cut.getCurrentHealth() == 10)) {
+				fail("Test failed - Expected: CurrentHealth=10");
+			}
+			
+			cut.decreaseCurrentHealth(3);
+			cut.increaseCurrentHealth(2);
+			if(!(cut.getCurrentHealth() == 9)) {
+				fail("Test failed - Expected: CurrentHealth=9");
+			}
 		} catch (NoCollectorException e) {
 			fail("Unexpected NoCollectorEception");
 		}
@@ -119,6 +176,15 @@ public class MagicCollectorTest {
 	public void testIsCompletelyDepleted() {
 		try {
 			cut.depleteEnergyFromFree(2);
+			if(cut.isCompletelyDepleted()) {
+				fail("MagicCollector shouldn't be completely depleted.");
+			}
+			
+			cut.depleteEnergyFromFree(6);
+			if(!cut.isCompletelyDepleted()) {
+				fail("MagicCollector should be completely depleted.");
+			}
+			
 		} catch (NoCollectorException e) {
 			fail("Unexpected NoCollectorEception");
 		}

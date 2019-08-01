@@ -1,0 +1,8 @@
+{
+	"ranks" : 
+	[
+		{"name" : "Cub", "summon_class" : "SUMMON", "level" : "0"},
+		{"name" : "Adult", "summon_class" : "SUMMON", "level" : "1"},
+		{"name" : "Legend", "summon_class" : "SUMMON", "level" : "2"}
+	]
+}

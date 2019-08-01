@@ -1,9 +1,13 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import main.exception.NoCardException;
+import main.util.RankLevelMapper;
+import main.util.mapsRankAndLevel;
 
 public class Summon extends MagicCollector{	
 
@@ -17,9 +21,11 @@ public class Summon extends MagicCollector{
 	private int maxVitality;
 	private String summonClass;
 	private String rank;
+	private TreeMap<String, Summon> nextRankCards;
 	private String element;
 	private int magicWastageOnDefeat;
 	private UUID id;
+	private mapsRankAndLevel rankLevelMapper;
 	
 	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth) {
 		super(name, energy, collectorHealth);
@@ -33,8 +39,10 @@ public class Summon extends MagicCollector{
 		this.vitality = vitality;
 		this.summonClass = summonClass;
 		this.rank = rank;
+		this.nextRankCards = new TreeMap<String, Summon>();
 		this.element = element;
 		this.magicWastageOnDefeat = magicWastedOnDefeat;
+		this.rankLevelMapper = RankLevelMapper.getInstance();
 	}
 	
 	@Override
@@ -225,6 +233,39 @@ public class Summon extends MagicCollector{
 	public void setMagicWastageOnDefeat(int magicWastageOnDefeat) throws NoCardException{
 		checkCard();
 		this.magicWastageOnDefeat = magicWastageOnDefeat;
+	}
+	
+	public void addNextRankCard(Summon summon) {
+		int currentSize = nextRankCards.size();
+		if( currentSize <= 2) {
+			String key = "Level-" + (currentSize);
+			nextRankCards.put(key, summon);
+		}
+	}
+	
+	public void removeLevel(int level) {
+		
+	}
+	
+	public Summon getNextRankCard() {
+		int currentLevel = rankLevelMapper.mapRankToLevel(rank);
+		int nextLevel = currentLevel;
+		if(nextLevel < 2) {
+			nextLevel = currentLevel + 1;
+		}
+		return nextRankCards.get("Level-"+nextLevel);
+	}
+	
+	public Summon getNextLowerRankCard() {
+		return null;
+	}
+	
+	public void setCardForLevel(int level) {
+		
+	}
+	
+	public Summon getCardForLevel(int level) {
+		return null;
 	}
 
 	@Override

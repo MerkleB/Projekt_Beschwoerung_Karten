@@ -1,0 +1,10 @@
+{
+	"sets" : 
+	[
+		{
+			"token" : "bsc",
+			"name"	: "basic_set"
+		}
+	]
+	
+}

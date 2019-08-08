@@ -12,6 +12,7 @@ public interface Card{
 	public Effect getEffect(int index) throws NoCardException;
 	public String getName();
 	public UUID getID();
+	public void setID(UUID uuid);
 	public void show();
 	public void show(Graphics2D graphics);
 }

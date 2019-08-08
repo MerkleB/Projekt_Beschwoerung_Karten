@@ -94,4 +94,9 @@ public class Spell extends MagicCollector {
 		return id;
 	}
 
+	@Override
+	public void setID(UUID uuid) {
+		id = uuid;
+	}
+
 }

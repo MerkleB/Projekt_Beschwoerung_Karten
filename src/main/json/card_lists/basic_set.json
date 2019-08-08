@@ -1,0 +1,33 @@
+{
+	"list_name" : "basic_set",
+	"cards" : 
+	[
+			{
+				"name" : "Aries",
+				"card_id" : "bsc-su-00-0",
+				"type" : "SUMMON",
+				"maxEnergy" : 5,
+				"maxHealth" : 8,
+				"trivia" : "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete",
+				"effects" : 
+				[
+					{"effectClass" : "effect_000"}
+				],
+				"magicPreservationValue" : 2,
+				"summoningPoints" : 1,
+				"attack" : 2,
+				"heal" : 3,
+				"maxVitality" : 8,
+				"summonClass" : "NaturalBeast",
+				"rank" : "Cub",
+				"summonHierarchy" : 
+				[
+					{ "Level" : 1, "card_id" : "bsc-su-00-1"},
+					{ "Level" : 2, "card_id" : "bsc-su-00-2"}
+				],
+				"element" : "Fire",
+				"magicWastageOnDefeat" : 1,
+				"neededMagicEnergy" : 0
+			}
+	]
+}

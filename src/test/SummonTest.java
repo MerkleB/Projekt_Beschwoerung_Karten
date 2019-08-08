@@ -16,7 +16,9 @@ import com.sun.scenario.effect.ImageData;
 import com.sun.scenario.effect.Effect.AccelType;
 
 import main.Card;
+import main.CardGame;
 import main.Effect;
+import main.Game;
 import main.MagicCollector;
 import main.Summon;
 import main.exception.NoCardException;
@@ -27,9 +29,6 @@ public class SummonTest {
 
 	private Effect[] effectDummies;
 	private Summon cut;
-	private Summon card1;
-	private Summon card2;
-	private mapsRankAndLevel mapperMok;
 
 	@Before
 	public void setUp(){
@@ -80,61 +79,12 @@ public class SummonTest {
 				
 			}
 		};
+		
+		
 
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
-		cut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4);
-		card1 = new Summon("Test Summon", "Test", effectDummies, 2, 1, 7, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4);
-		card2 = new Summon("Test Summon", "Test", effectDummies, 2, 1, 9, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4);
-		cut.addNextRankCard(card1);
-		cut.addNextRankCard(card2);
-		
-		mapperMok = new mapsRankAndLevel() {
-			
-			@Override
-			public int mapRankToLevel(String rank) {
-				switch(rank) {
-				case "Cub":
-					return 0;
-				case "Adult":
-					return 1;
-				case "Legend":
-					return 2;
-				}
-				return -1;
-			}
-			
-			@Override
-			public String mapLevelToRank(int level, String summonClass) {
-				String result = null;
-				switch(summonClass) {
-				case "NaturalBeast":
-					switch(level) {
-					case 0:
-						result = "Cub";
-						break;
-					case 1:
-						result =  "Adult";
-						break;
-					case 2:
-						result =  "Legend";
-						break;
-					}
-				}
-				return result;
-			}
-		};
-		
-		//Inject mapperMok
-		Field mapperField;
-		try {
-			mapperField = cut.getClass().getDeclaredField("rankLevelMapper");
-
-			mapperField.setAccessible(true);
-			mapperField.set(cut, mapperMok);
-		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-			fail("Error in setup: "+e.getMessage());
-		} 
+		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4);
 	}
 	
 	@Test
@@ -209,36 +159,6 @@ public class SummonTest {
 		} catch (NoCardException e) {
 			fail("NoCardException was thrown but not expected");
 		}
-	}
-	
-	@Test
-	public void testRemoveLevel() {
-		fail("Not implemented");
-	}
-	
-	@Test
-	public void testNextRankCard() {
-		fail("Not implemented");
-	}
-	
-	@Test
-	public void testNextLowerRankCard() {
-		fail("Not implemented");
-	}
-	
-	@Test
-	public void testAddNextRankCard() {
-		fail("Not implemented");
-	}	
-	
-	@Test
-	public void testSetCardForLevel() {
-		fail("Not implemented");
-	}
-	
-	@Test
-	public void testgetCardForLevel() {
-		fail("Not implemented");
 	}
 
 }

@@ -22,8 +22,8 @@
 				"rank" : "Cub",
 				"summonHierarchy" : 
 				[
-					{ "Level" : 1, "card_id" : "bsc-su-00-1"},
-					{ "Level" : 2, "card_id" : "bsc-su-00-2"}
+					{ "level" : 1, "card_id" : "bsc-su-00-1"},
+					{ "level" : 2, "card_id" : "bsc-su-00-2"}
 				],
 				"element" : "Fire",
 				"magicWastageOnDefeat" : 1,

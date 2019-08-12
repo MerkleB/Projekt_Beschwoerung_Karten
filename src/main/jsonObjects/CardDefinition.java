@@ -1,9 +1,5 @@
 package main.jsonObjects;
 
-import org.hamcrest.core.IsInstanceOf;
-
-import main.build_cards.SummonAscentHierarchy;
-
 public class CardDefinition {
 	public String name;
 	public String card_id;
@@ -65,7 +61,7 @@ public class CardDefinition {
 		}
 		
 		for(int i=0; i<summonHierarchy.length; i++) {
-			if(summonHierarchy[i].card_id.equals(otherDefinition.summonHierarchy[i].card_id) || summonHierarchy[i].level != otherDefinition.summonHierarchy[i].level) {
+			if(summonHierarchy[i].card_id.equals(otherDefinition.summonHierarchy[i].card_id) == false || summonHierarchy[i].level != otherDefinition.summonHierarchy[i].level) {
 				return false;
 			}
 		}

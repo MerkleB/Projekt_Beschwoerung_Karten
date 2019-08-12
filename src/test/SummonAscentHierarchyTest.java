@@ -12,6 +12,7 @@ import main.Game;
 import main.Summon;
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.util.mapsRankAndLevel;
+import test.mok.MokProvider;
 
 public class SummonAscentHierarchyTest {
 	
@@ -70,9 +71,9 @@ public class SummonAscentHierarchyTest {
 			fail("Error in setup: "+e.getMessage());
 		} 
 		
-		card1 = new Summon("Summon-0", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4);
-		card2 = new Summon("Summon-1", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4);
-		card3 = new Summon("Summon-2", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4);
+		card1 = new Summon("Summon-0", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer());
+		card2 = new Summon("Summon-1", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4, MokProvider.getPlayer());
+		card3 = new Summon("Summon-2", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4, MokProvider.getPlayer());
 		
 	}
 

@@ -31,8 +31,8 @@ public class CardDefinitionLibraryTest {
 		sahd1.level = 1;
 		sahd1.card_id = "bsc-su-00-1";
 		SummonAscentHierarchyDefinition sahd2 = new SummonAscentHierarchyDefinition();
-		sahd1.level = 2;
-		sahd1.card_id = "bsc-su-00-2";
+		sahd2.level = 2;
+		sahd2.card_id = "bsc-su-00-2";
 		SummonAscentHierarchyDefinition[] sahd = {sahd1, sahd2};
 		
 		cardDefinition = new CardDefinition(); 

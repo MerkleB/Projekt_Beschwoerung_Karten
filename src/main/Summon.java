@@ -27,8 +27,8 @@ public class Summon extends MagicCollector{
 	private int magicWastageOnDefeat;
 	private UUID id;
 	
-	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth) {
-		super(name, energy, collectorHealth);
+	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner) {
+		super(name, energy, collectorHealth, owner);
 		this.trivia = trivia;
 		this.effects = effects;
 		this.magicPreservationValue = preservationValue;
@@ -253,6 +253,11 @@ public class Summon extends MagicCollector{
 	@Override
 	public void setID(UUID uuid) {
 		id = uuid;
+	}
+
+	@Override
+	public void activateEffect(int effectNumber) {
+		this.effects[effectNumber].activate();		
 	}
 	
 }

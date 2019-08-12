@@ -1,11 +1,14 @@
 package main;
+import java.util.TreeMap;
 
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
 
 public abstract class MagicCollector implements Card{
 
+	protected Player owner;
 	protected String name;
+	protected TreeMap<String, GameAction> actions;
 	private int maxEnergy;
 	private int freeEnergy;
 	private int usedEnergy;
@@ -14,10 +17,11 @@ public abstract class MagicCollector implements Card{
 	private int currentHealth;
 	private boolean isCollector;
 	
-	protected MagicCollector(String name, int energy, int collectorHealth) {
+	protected MagicCollector(String name, int energy, int collectorHealth, Player owner) {
 		this.name = name;
 		this.maxEnergy = energy;
 		this.freeEnergy = energy;
+		this.owner = owner;
 		this.depletedEnergy = 0;
 		this.usedEnergy = 0;
 		this.maxHealth = collectorHealth;
@@ -27,6 +31,35 @@ public abstract class MagicCollector implements Card{
 	
 	public boolean isCollector() {
 		return isCollector;
+	}
+	
+	@Override
+	public Player getOwningPlayer() {
+		return owner;
+	}
+	
+	@Override
+	public void setActiv(String[] actions) {
+		for(int i=0; i<= actions.length; i++) {
+			this.actions.get(actions[i]).setActiv();
+		}
+	}
+	
+	@Override
+	public void setInactive() {
+		actions.forEach((k,a) -> {
+			a.setInactiv();
+		});
+	}
+	
+	@Override
+	public void activateGameAction(String action) {
+		this.actions.get(action).activate();
+	}
+	
+	@Override
+	public void activateGameAction(String action, Stackable activator) {
+		this.actions.get(action).activateBy(activator);
 	}
 	
 	public void setIsCollector(boolean collector) {

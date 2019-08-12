@@ -24,6 +24,7 @@ import main.Summon;
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
 import main.util.mapsRankAndLevel;
+import test.mok.MokProvider;
 
 public class SummonTest {
 
@@ -32,59 +33,11 @@ public class SummonTest {
 
 	@Before
 	public void setUp(){
-		Effect effectDummy = new Effect(){
-		
-			@Override
-			public void execute() {
-				
-			}
-		
-			@Override
-			public boolean isExecutable() {
-				return false;
-			}
-		
-			@Override
-			public String getDescription() {
-				return "This is an effect.";
-			}
-
-			@Override
-			public void getName() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void activate() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean activatable() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Card getOwningCard() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public void setOwningCard(Card owningCard) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
-		
-		
+		Effect effectDummy = MokProvider.getEffect();	
 
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
-		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4);
+		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer());
 	}
 	
 	@Test
@@ -109,7 +62,7 @@ public class SummonTest {
 
 	@Test
 	public void testDecreaseVitality() {
-		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4);
+		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer());
 		try {
 			lcut.decreaseVitality(2);
 			if(lcut.getVitality() != 2) {
@@ -122,7 +75,7 @@ public class SummonTest {
 
 	@Test
 	public void testIncreaseVitality() {
-		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4);
+		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer());
 		try {
 			lcut.decreaseVitality(2);
 			lcut.increaseVitality(1);

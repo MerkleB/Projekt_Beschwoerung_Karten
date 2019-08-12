@@ -10,6 +10,7 @@ import main.Effect;
 import main.Spell;
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
+import test.mok.MokProvider;
 
 public class SpellTest {
 	
@@ -18,57 +19,11 @@ public class SpellTest {
 	
 	@Before
 	public void setUp(){
-		Effect effectDummy = new Effect(){
-		
-			@Override
-			public void execute() {
-				
-			}
-		
-			@Override
-			public boolean isExecutable() {
-				return false;
-			}
-		
-			@Override
-			public String getDescription() {
-				return "This is an effect.";
-			}
-
-			@Override
-			public void getName() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void activate() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean activatable() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Card getOwningCard() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public void setOwningCard(Card owningCard) {
-				// TODO Auto-generated method stub
-				
-			}
-		};
+		Effect effectDummy = MokProvider.getEffect();
 
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
-		cut = new Spell("TestSpell", "This spell is for testing", effectDummies, 5, 3, 10);
+		cut = new Spell("TestSpell", "This spell is for testing", effectDummies, 5, 3, 10, MokProvider.getPlayer());
 	}
 
 	@Test

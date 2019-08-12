@@ -6,6 +6,7 @@ import java.util.UUID;
 import main.exception.NoCardException;
 
 public interface Card{
+	public Player getOwningPlayer();
 	public CardType getType();
 	public String getTrivia();
 	public Effect[] getEffects() throws NoCardException;
@@ -15,4 +16,9 @@ public interface Card{
 	public void setID(UUID uuid);
 	public void show();
 	public void show(Graphics2D graphics);
+	public void setActiv(String[] actions);
+	public void setInactive();
+	public void activateGameAction(String action);
+	public void activateGameAction(String action, Stackable activator);
+	public void activateEffect(int effectNumber);
 }

@@ -13,8 +13,8 @@ public class Spell extends MagicCollector {
 	private int neededMagicEnergy;
 	private UUID id;
 	
-	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth) {
-		super(name, energy, collectorHealth);
+	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner) {
+		super(name, energy, collectorHealth, owner);
 		this.trivia = trivia;
 		this.neededMagicEnergy = neededMagicEnergy;
 	}
@@ -97,6 +97,11 @@ public class Spell extends MagicCollector {
 	@Override
 	public void setID(UUID uuid) {
 		id = uuid;
+	}
+
+	@Override
+	public void activateEffect(int effectNumber) {
+		this.effects[effectNumber].activate();		
 	}
 
 }

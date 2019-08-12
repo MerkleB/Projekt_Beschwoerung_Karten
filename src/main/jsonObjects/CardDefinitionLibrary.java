@@ -6,9 +6,10 @@ import java.util.TreeMap;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
+import main.util.FileLoader;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 public class CardDefinitionLibrary implements HoldsCardDefinitions {
 	
@@ -77,9 +78,8 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 	
 	private InputStream getStream(String resourceName) {
 		String filename = resourcePath+resourceName;
-		ClassLoader classLoader = CardDefinitionLibrary.class.getClassLoader();
-		URL url = classLoader.getResource(filename);
-		return classLoader.getResourceAsStream(filename);
+		FileLoader loader = new FileLoader();
+		return loader.getFileAsStream(filename);
 	}
 
 	@Override

@@ -1,0 +1,23 @@
+{
+	"actions" : [
+		{
+			"actionName" : "Summon",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["HandZone"]
+		},
+		{
+			"actionName" : "Cast",
+			"cardTypes" : ["Spell"],
+			"phases" : ["Main","Combat"],
+			"zones" : ["HandZone"]
+		},
+		{
+			"actionName" : "CallBack",
+			"cardTypes" : ["MagicCollector"],
+			"phases" : ["Main"],
+			"zones" : ["MagicCollectorZone"]
+		}
+	]
+	 
+}

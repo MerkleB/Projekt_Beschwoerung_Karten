@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import main.CardGame;
 import main.Game;
+import main.GameAction;
 import main.Summon;
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.util.mapsRankAndLevel;
@@ -69,11 +70,14 @@ public class SummonAscentHierarchyTest {
 			mapperField.set(game, mapperMok);
 		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
 			fail("Error in setup: "+e.getMessage());
-		} 
+		}
 		
-		card1 = new Summon("Summon-0", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer());
-		card2 = new Summon("Summon-1", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4, MokProvider.getPlayer());
-		card3 = new Summon("Summon-2", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4, MokProvider.getPlayer());
+		GameAction[] mokActions = new GameAction[1];
+		mokActions[0] = MokProvider.getGameAction();
+		
+		card1 = new Summon("Summon-0", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		card2 = new Summon("Summon-1", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		card3 = new Summon("Summon-2", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 		
 	}
 

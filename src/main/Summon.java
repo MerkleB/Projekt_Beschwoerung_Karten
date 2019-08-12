@@ -28,7 +28,8 @@ public class Summon implements Card{
 	private Player owner;
 	private TreeMap<String, GameAction> actions;
 	
-	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, MagicCollector collector, GameAction[] actions) {
+	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
 		this.effects = effects;
 		this.magicPreservationValue = preservationValue;

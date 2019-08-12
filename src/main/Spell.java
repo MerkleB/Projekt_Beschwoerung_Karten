@@ -17,7 +17,7 @@ public class Spell implements Card {
 	private Player owner;
 	private TreeMap<String, GameAction> actions;
 	
-	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner, MagicCollector collector, GameAction[] actions) {
+	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner, GameAction[] actions) {
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
 		this.owner = owner;

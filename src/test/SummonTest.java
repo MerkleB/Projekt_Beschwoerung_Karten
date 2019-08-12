@@ -19,6 +19,7 @@ import main.Card;
 import main.CardGame;
 import main.Effect;
 import main.Game;
+import main.GameAction;
 import main.MagicCollector;
 import main.Summon;
 import main.exception.NoCardException;
@@ -30,6 +31,7 @@ public class SummonTest {
 
 	private Effect[] effectDummies;
 	private Summon cut;
+	private GameAction[] mokActions;
 
 	@Before
 	public void setUp(){
@@ -37,7 +39,9 @@ public class SummonTest {
 
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
-		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer());
+		mokActions = new GameAction[1];
+		mokActions[0] = MokProvider.getGameAction();
+		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 	}
 	
 	@Test
@@ -62,7 +66,7 @@ public class SummonTest {
 
 	@Test
 	public void testDecreaseVitality() {
-		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer());
+		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 		try {
 			lcut.decreaseVitality(2);
 			if(lcut.getVitality() != 2) {
@@ -75,7 +79,7 @@ public class SummonTest {
 
 	@Test
 	public void testIncreaseVitality() {
-		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer());
+		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 		try {
 			lcut.decreaseVitality(2);
 			lcut.increaseVitality(1);
@@ -88,29 +92,6 @@ public class SummonTest {
 			}
 		} catch (NoCardException e) {
 			fail("Unexpected NoCardException");
-		}
-	}
-
-	@Test
-	public void testCheckCollector() {
-		boolean exceptionWasNotThrown = true;
-		try {
-			cut.decreaseCurrentHealth(2);
-		} catch (NoCollectorException e) {
-			exceptionWasNotThrown = false;
-		}
-		
-		if(exceptionWasNotThrown) {
-			fail("NoCollectorException was expected but not thrown");
-		}
-	}
-
-	@Test
-	public void testCheckCard() {
-		try {
-			cut.setAttack(10);
-		} catch (NoCardException e) {
-			fail("NoCardException was thrown but not expected");
 		}
 	}
 

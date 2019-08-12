@@ -1,10 +1,15 @@
 package main;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
+import main.jsonObjects.ActionDefinitionLibrary;
+import main.jsonObjects.HoldsActionDefinitions;
 
-public class MagicCollector{
+public class MagicCollector implements Card{
 
 	private Card realCard;
 	protected String name;
@@ -15,8 +20,9 @@ public class MagicCollector{
 	private int maxHealth;
 	private int currentHealth;
 	private boolean isCollector;
+	private TreeMap<String, GameAction> actions;
 	
-	protected MagicCollector(Card card, int energy, int collectorHealth) {
+	public MagicCollector(Card card, int energy, int collectorHealth) {
 		this.maxEnergy = energy;
 		this.freeEnergy = energy;
 		this.realCard = card;
@@ -25,6 +31,11 @@ public class MagicCollector{
 		this.maxHealth = collectorHealth;
 		this.currentHealth = collectorHealth;
 		this.isCollector = false;
+	}
+	
+	private void setCollectorActions() {
+		HoldsActionDefinitions actionLibrary = ActionDefinitionLibrary.getInstance();
+		ArrayList<String> actionDefinition = actionLibrary.getCardActions("MagicCollector");
 	}
 	
 	public boolean isCollector() {
@@ -202,6 +213,91 @@ public class MagicCollector{
 		System.out.println("Free: "+freeEnergy+" Used: "+usedEnergy+" Depleted: "+depletedEnergy);
 		System.out.println("Health: "+currentHealth);
 		System.out.println("<<<End-Collector>>>");
+	}
+
+	@Override
+	public Player getOwningPlayer() {
+		return realCard.getOwningPlayer();
+	}
+
+	@Override
+	public MagicCollector getCollector() {
+		return this;
+	}
+
+	@Override
+	public CardType getType() {
+		return realCard.getType();
+	}
+
+	@Override
+	public String getTrivia() {
+		return realCard.getTrivia();
+	}
+
+	@Override
+	public Effect[] getEffects() throws NoCardException {
+		throw new NoCardException(realCard.getName()+" is currently used as collector!");
+	}
+
+	@Override
+	public Effect getEffect(int index) throws NoCardException {
+		throw new NoCardException(realCard.getName()+" is currently used as collector!");
+	}
+
+	@Override
+	public String getName() {
+		return realCard.getName();
+	}
+
+	@Override
+	public UUID getID() {
+		return realCard.getID();
+	}
+
+	@Override
+	public void setID(UUID uuid) throws NoCardException {
+		throw new NoCardException(realCard.getName()+" is currently used as collector!");	
+	}
+
+	@Override
+	public void show() {
+		showCollector();
+	}
+
+	@Override
+	public void show(Graphics2D graphics) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setActiv(String[] actions) {
+		
+	}
+
+	@Override
+	public void setInactive() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void activateGameAction(String action) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void activateGameAction(String action, Stackable activator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void activateEffect(int effectNumber) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

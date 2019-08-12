@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import main.Card;
 import main.Effect;
+import main.GameAction;
 import main.Spell;
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
@@ -15,6 +16,7 @@ import test.mok.MokProvider;
 public class SpellTest {
 	
 	Effect[] effectDummies;
+	GameAction[] mokActions;
 	Spell cut;
 	
 	@Before
@@ -23,7 +25,9 @@ public class SpellTest {
 
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
-		cut = new Spell("TestSpell", "This spell is for testing", effectDummies, 5, 3, 10, MokProvider.getPlayer());
+		mokActions = new GameAction[1];
+		mokActions[0] = MokProvider.getGameAction();
+		cut = new Spell("TestSpell", "This spell is for testing", effectDummies, 5, 3, 10, MokProvider.getPlayer(), mokActions);
 	}
 
 	@Test
@@ -40,21 +44,6 @@ public class SpellTest {
 			}
 		} catch (NoCardException e) {
 			fail("Unexpected NoCardException was thrown.");
-		}
-	}
-
-	@Test
-	public void testGetFreeEnergy() {
-		boolean errorWasNotThrown = true;
-		
-		try {
-			cut.getFreeEnergy();
-		} catch (NoCollectorException e) {
-			errorWasNotThrown = false;
-		}
-		
-		if(errorWasNotThrown) {
-			fail("NoCollectorException was expected.");
 		}
 	}
 

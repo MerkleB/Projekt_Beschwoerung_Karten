@@ -14,7 +14,7 @@ public interface Card{
 	public Effect getEffect(int index) throws NoCardException;
 	public String getName();
 	public UUID getID();
-	public void setID(UUID uuid);
+	public void setID(UUID uuid) throws NoCardException;
 	public void show();
 	public void show(Graphics2D graphics);
 	public void setActiv(String[] actions);

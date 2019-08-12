@@ -1,17 +1,15 @@
 package main;
 
 import java.awt.Graphics2D;
-import java.util.List;
 import java.util.TreeMap;
 import java.util.UUID;
 
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.exception.NoCardException;
-import main.util.RankLevelMapper;
-import main.util.mapsRankAndLevel;
 
-public class Summon extends MagicCollector{	
+public class Summon implements Card{	
 
+	private String name;
 	private String trivia;
 	private Effect[] effects;
 	private int magicPreservationValue;
@@ -26,9 +24,11 @@ public class Summon extends MagicCollector{
 	private String element;
 	private int magicWastageOnDefeat;
 	private UUID id;
+	private MagicCollector collector;
+	private Player owner;
+	private TreeMap<String, GameAction> actions;
 	
-	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner) {
-		super(name, energy, collectorHealth, owner);
+	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, MagicCollector collector, GameAction[] actions) {
 		this.trivia = trivia;
 		this.effects = effects;
 		this.magicPreservationValue = preservationValue;
@@ -41,6 +41,46 @@ public class Summon extends MagicCollector{
 		this.rank = rank;
 		this.element = element;
 		this.magicWastageOnDefeat = magicWastedOnDefeat;
+		this.owner = owner; 
+		this.actions = new TreeMap<String, GameAction>();
+		for(GameAction action : actions) {
+			this.actions.put(action.getName(), action);
+			action.setCard(this);
+		}
+	}
+	
+	@Override
+	public void setActiv(String[] actions) {
+		for(int i=0; i<= actions.length; i++) {
+			this.actions.get(actions[i]).setActiv();
+		}
+	}
+	
+	@Override
+	public void setInactive() {
+		actions.forEach((k,a) -> {
+			a.setInactiv();
+		});
+	}
+	
+	@Override
+	public void activateGameAction(String action) {
+		this.actions.get(action).activate();
+	}
+	
+	@Override
+	public void activateGameAction(String action, Stackable activator) {
+		this.actions.get(action).activateBy(activator);
+	}
+	
+	@Override
+	public Player getOwningPlayer() {
+		return owner;
+	}
+	
+	@Override
+	public MagicCollector getCollector() {
+		return collector;
 	}
 	
 	@Override
@@ -58,13 +98,11 @@ public class Summon extends MagicCollector{
 
 	@Override
 	public Effect[] getEffects() throws NoCardException {
-		checkCard();
 		return effects;
 	}
 
 	@Override
 	public Effect getEffect(int index) throws NoCardException {
-		checkCard();
 		Effect effect = null;
 		if(index < effects.length && index > -1) {
 			effect = effects[index];
@@ -74,22 +112,18 @@ public class Summon extends MagicCollector{
 
 	@Override
 	public void show() {
-		if(isCollector()) {
-			showCollector();
-		}else {
-			System.out.println("<<<"+getType().toString()+"-Card>>>");
-			System.out.println("Name: "+getName());
-			System.out.println("Class: "+getSummonClass()+" Rank: "+getRank());
-			System.out.println("Element: "+getElement());
-			System.out.println("SummingPoints: "+summoningPoints + " Preservation: "+magicPreservationValue);
-			System.out.println("Attack: "+attack+" Heal: "+heal+" Vitality: "+vitality);
-			for(int i=0; i<effects.length; i++) {
-				System.out.println("Effect"+i+": "+effects[i].getDescription());
-			}
-			System.out.println("<<<Trivia>>>");
-			System.out.println(getTrivia());
-			System.out.println("<<<End-Card>>>");
+		System.out.println("<<<"+getType().toString()+"-Card>>>");
+		System.out.println("Name: "+getName());
+		System.out.println("Class: "+getSummonClass()+" Rank: "+getRank());
+		System.out.println("Element: "+getElement());
+		System.out.println("SummingPoints: "+summoningPoints + " Preservation: "+magicPreservationValue);
+		System.out.println("Attack: "+attack+" Heal: "+heal+" Vitality: "+vitality);
+		for(int i=0; i<effects.length; i++) {
+			System.out.println("Effect"+i+": "+effects[i].getDescription());
 		}
+		System.out.println("<<<Trivia>>>");
+		System.out.println(getTrivia());
+		System.out.println("<<<End-Card>>>");
 	}
 	
 	@Override
@@ -103,57 +137,46 @@ public class Summon extends MagicCollector{
 	}
 
 	public int getMagicPreservationValue() throws NoCardException {
-		checkCard();
 		return magicPreservationValue;
 	}
 
 	public void setMagicPreservationValue(int magicPreservationValue) throws NoCardException {
-		checkCard();
 		this.magicPreservationValue = magicPreservationValue;
 	}
 
 	public int getSummoningPoints() throws NoCardException {
-		checkCard();
 		return summoningPoints;
 	}
 
 	public void setSummoningPoints(int summoningPoints) throws NoCardException {
-		checkCard();
 		this.summoningPoints = summoningPoints;
 	}
 
 	public int getAttack() throws NoCardException {
-		checkCard();
 		return attack;
 	}
 
 	public void setAttack(int attack) throws NoCardException {
-		checkCard();
 		this.attack = attack;
 	}
 
 	public int getHeal() throws NoCardException {
-		checkCard();
 		return heal;
 	}
 
 	public void setHeal(int heal) throws NoCardException {
-		checkCard();
 		this.heal = heal;
 	}
 
 	public int getVitality() throws NoCardException {
-		checkCard();
 		return vitality;
 	}
 
 	public void setVitality(int vitality) throws NoCardException {
-		checkCard();
 		this.vitality = vitality;
 	}
 	
 	public int decreaseVitality(int damage) throws NoCardException {
-		checkCard();
 		if(vitality > damage) {
 			vitality = vitality - damage;
 		}else {
@@ -163,7 +186,6 @@ public class Summon extends MagicCollector{
 	}
 	
 	public int increaseVitality(int heal) throws NoCardException {
-		checkCard();
 		if(maxVitality > vitality + heal) {
 			vitality = vitality + heal;
 		}else {
@@ -173,27 +195,22 @@ public class Summon extends MagicCollector{
 	}
 
 	public void setName(String name) throws NoCardException {
-		checkCard();
 		this.name = name;
 	}
 
 	public void setTrivia(String trivia) throws NoCardException {
-		checkCard();
 		this.trivia = trivia;
 	}
 
 	public void setEffects(Effect[] effects) throws NoCardException {
-		checkCard();
 		this.effects = effects;
 	}
 
 	public int getMaxVitality() throws NoCardException {
-		checkCard();
 		return maxVitality;
 	}
 
 	public void setMaxVitality(int maxVitality) throws NoCardException {
-		checkCard();
 		this.maxVitality = maxVitality;
 	}
 
@@ -202,7 +219,6 @@ public class Summon extends MagicCollector{
 	}
 
 	public void setSummonClass(String summonClass) throws NoCardException {
-		checkCard();
 		this.summonClass = summonClass;
 	}
 
@@ -211,7 +227,6 @@ public class Summon extends MagicCollector{
 	}
 
 	public void setRank(String rank) throws NoCardException{
-		checkCard();
 		this.rank = rank;
 	}
 	
@@ -224,7 +239,6 @@ public class Summon extends MagicCollector{
 	}
 
 	public void setElement(String element) throws NoCardException{
-		checkCard();
 		this.element = element;
 	}
 
@@ -233,7 +247,6 @@ public class Summon extends MagicCollector{
 	}
 
 	public void setMagicWastageOnDefeat(int magicWastageOnDefeat) throws NoCardException{
-		checkCard();
 		this.magicWastageOnDefeat = magicWastageOnDefeat;
 	}
 	

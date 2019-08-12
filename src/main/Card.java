@@ -7,6 +7,7 @@ import main.exception.NoCardException;
 
 public interface Card{
 	public Player getOwningPlayer();
+	public MagicCollector getCollector();
 	public CardType getType();
 	public String getTrivia();
 	public Effect[] getEffects() throws NoCardException;

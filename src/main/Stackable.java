@@ -3,7 +3,7 @@ package main;
 import java.util.Hashtable;
 
 public interface Stackable{
-	public void getName();
+	public String getName();
 	public void activate();
 	public boolean activatable();
 	public void execute();

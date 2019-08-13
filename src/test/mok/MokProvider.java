@@ -102,6 +102,11 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				return null;
 			}
+			
+			@Override
+			public boolean equals(Object obj) {
+				return true;
+			}
 		};
 	}
 	
@@ -142,6 +147,11 @@ public class MokProvider {
 			public GameZone getGameZone(String zoneName) {
 				// TODO Auto-generated method stub
 				return null;
+			}
+			
+			@Override
+			public boolean equals(Object obj) {
+				return true;
 			}
 		};
 	}
@@ -212,6 +222,11 @@ public class MokProvider {
 			public void activateBy(Stackable stackable) {
 				// TODO Auto-generated method stub
 				
+			}
+			
+			@Override
+			public boolean equals(Object obj) {
+				return true;
 			}
 		};
 	}
@@ -320,6 +335,7 @@ public class MokProvider {
 			private CardDefinition cardDefinition;
 			private CardDefinition cardDefinition2;
 			private CardDefinition cardDefinition3;
+			private CardDefinition cardDefinition4;
 			private TreeMap<String, CardDefinition> set;
 			private boolean initialized;
 			
@@ -378,7 +394,7 @@ public class MokProvider {
 					cardDefinition2.magicWastageOnDefeat = 2;
 					cardDefinition2.neededMagicEnergy = 0;
 					
-					cardDefinition = new CardDefinition(); 
+					cardDefinition3 = new CardDefinition(); 
 					cardDefinition3.name = "Aries";
 					cardDefinition3.card_id = "bsc-su-00-2";
 					cardDefinition3.type = "SUMMON";
@@ -397,10 +413,31 @@ public class MokProvider {
 					cardDefinition3.element = "Fire";
 					cardDefinition3.magicWastageOnDefeat = 3;
 					cardDefinition3.neededMagicEnergy = 0;
+					
+					cardDefinition4 = new CardDefinition(); 
+					cardDefinition4.name = "Diamond Storm";
+					cardDefinition4.card_id = "bsc-su-01";
+					cardDefinition4.type = "SPELL";
+					cardDefinition4.maxEnergy = 5;
+					cardDefinition4.maxHealth = 8;
+					cardDefinition4.trivia = "Ein Zauber, der einen Sturm von Eiskristallen loslässt.";
+					cardDefinition4.effects = eds;
+					cardDefinition4.magicPreservationValue = 0;
+					cardDefinition4.summoningPoints = 0;
+					cardDefinition4.attack = 0;
+					cardDefinition4.heal = 0;
+					cardDefinition4.maxVitality = 0;
+					cardDefinition4.summonClass = "";
+					cardDefinition4.rank = "";
+					cardDefinition4.summonHierarchy = null;
+					cardDefinition4.element = "";
+					cardDefinition4.magicWastageOnDefeat = 0;
+					cardDefinition4.neededMagicEnergy = 5;
 					set = new TreeMap<>();
 					set.put(cardDefinition.card_id, cardDefinition);
 					set.put(cardDefinition2.card_id, cardDefinition2);
 					set.put(cardDefinition3.card_id, cardDefinition3);
+					set.put(cardDefinition4.card_id, cardDefinition4);
 				}
 			}
 			

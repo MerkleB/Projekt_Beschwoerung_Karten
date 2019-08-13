@@ -1,18 +1,16 @@
 package main;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
-import main.jsonObjects.ActionDefinitionLibrary;
-import main.jsonObjects.HoldsActionDefinitions;
 
 public class MagicCollector implements Card{
 
 	private Card realCard;
-	protected String name;
 	private int maxEnergy;
 	private int freeEnergy;
 	private int usedEnergy;
@@ -33,9 +31,10 @@ public class MagicCollector implements Card{
 		this.isCollector = false;
 	}
 	
-	private void setCollectorActions() {
-		HoldsActionDefinitions actionLibrary = ActionDefinitionLibrary.getInstance();
-		ArrayList<String> actionDefinition = actionLibrary.getCardActions("MagicCollector");
+	public void setCollectorActions(ArrayList<GameAction> actions) {
+		for(GameAction action : actions) {
+			this.actions.put(action.getName(), action);
+		}
 	}
 	
 	public boolean isCollector() {
@@ -279,7 +278,6 @@ public class MagicCollector implements Card{
 	@Override
 	public void setInactive() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -295,10 +293,38 @@ public class MagicCollector implements Card{
 	}
 
 	@Override
-	public void activateEffect(int effectNumber) {
-		// TODO Auto-generated method stub
-		
+	public void activateEffect(int effectNumber) throws NoCardException {
+		throw new NoCardException(realCard.getName()+" is currently used as collector!");
 	}
+
+	@Override
+	public void setOwningPlayer(Player owner) throws NoCardException {
+		throw new NoCardException(realCard.getName()+" is currently used as collector!");
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if((obj instanceof MagicCollector) == false) {
+			return false;
+		}
+		MagicCollector anObject = (MagicCollector) obj;
+		if(maxEnergy != anObject.maxEnergy) return false;
+		if(freeEnergy != anObject.freeEnergy) return false;
+		if(usedEnergy != anObject.usedEnergy) return false;
+		if(depletedEnergy != anObject.depletedEnergy) return false;
+		if(maxHealth != anObject.maxHealth) return false;
+		if(currentHealth != anObject.currentHealth) return false;
+		
+		if(actions.size() != anObject.actions.size()) return false;
+		Set<String> keys = actions.keySet();
+		for(String key : keys) {
+			if(!actions.get(key).equals(anObject.actions.get(key))) return false;
+		}
+		
+		return true;
+	}
+	
+	
 
 
 }

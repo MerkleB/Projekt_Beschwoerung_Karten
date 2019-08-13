@@ -7,6 +7,7 @@ import main.exception.NoCardException;
 
 public interface Card{
 	public Player getOwningPlayer();
+	public void setOwningPlayer(Player owner) throws NoCardException;
 	public MagicCollector getCollector();
 	public CardType getType();
 	public String getTrivia();
@@ -21,5 +22,5 @@ public interface Card{
 	public void setInactive();
 	public void activateGameAction(String action);
 	public void activateGameAction(String action, Stackable activator);
-	public void activateEffect(int effectNumber);
+	public void activateEffect(int effectNumber) throws NoCardException;
 }

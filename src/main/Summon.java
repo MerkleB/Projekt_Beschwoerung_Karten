@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -42,12 +43,19 @@ public class Summon implements Card{
 		this.rank = rank;
 		this.element = element;
 		this.magicWastageOnDefeat = magicWastedOnDefeat;
-		this.owner = owner; 
+		if(owner != null) {
+			this.owner = owner;
+		}
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
 			this.actions.put(action.getName(), action);
 			action.setCard(this);
 		}
+	}
+
+	@Override
+	public void setOwningPlayer(Player owner) throws NoCardException {
+		this.owner = owner;
 	}
 	
 	@Override
@@ -272,6 +280,44 @@ public class Summon implements Card{
 	@Override
 	public void activateEffect(int effectNumber) {
 		this.effects[effectNumber].activate();		
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if((obj instanceof Summon) == false) {
+			return false;
+		}
+		Summon anObject = (Summon) obj;
+		
+		if(!name.equals(anObject.name)) return false;
+		if(!trivia.equals(anObject.trivia)) return false;
+		if(!summonClass.equals(anObject.summonClass)) return false;
+		if(!rank.equals(anObject.rank)) return false;
+		if(!element.equals(anObject.element)) return false;
+		if(!id.equals(anObject.id)) return false;
+		if(magicPreservationValue != anObject.magicPreservationValue) return false;
+		if(!collector.equals(anObject.collector)) return false;
+		if(summoningPoints != anObject.summoningPoints) return false;
+		if(attack != anObject.attack) return false;
+		if(heal != anObject.heal) return false;
+		if(maxVitality != anObject.maxVitality) return false;
+		if(vitality != anObject.vitality) return false;
+		if(magicWastageOnDefeat != anObject.magicWastageOnDefeat) return false;
+		
+		if(effects.length != anObject.effects.length) return false;
+		for(int i=0; i<effects.length; i++) {
+			if(!effects[i].equals(anObject.effects[i])) return false; 
+		}
+		
+		if(actions.size() != anObject.actions.size()) return false;
+		Set<String> keys = actions.keySet();
+		for(String key : keys) {
+			if(!actions.get(key).equals(anObject.actions.get(key))) return false;
+		}
+		
+		if(!owner.equals(anObject.owner)) return false;
+		
+		return true;
 	}
 	
 }

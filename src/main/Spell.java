@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
@@ -20,7 +21,9 @@ public class Spell implements Card {
 	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner, GameAction[] actions) {
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
-		this.owner = owner;
+		if(owner != null) {
+			this.owner = owner;
+		}
 		this.neededMagicEnergy = neededMagicEnergy;
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
@@ -139,5 +142,39 @@ public class Spell implements Card {
 	public MagicCollector getCollector() {
 		return collector;
 	}
+
+	@Override
+	public void setOwningPlayer(Player owner) throws NoCardException {
+		this.owner = owner;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if((obj instanceof Spell) == false) {
+			return false;
+		}
+		Spell anObject = (Spell) obj;
+		
+		if(!name.equals(anObject.name)) return false;
+		if(!trivia.equals(anObject.trivia)) return false;
+		if(!owner.equals(anObject.owner)) return false;
+		if(!id.equals(anObject.id)) return false;
+		if(!collector.equals(anObject.collector)) return false;
+		if(neededMagicEnergy != anObject.neededMagicEnergy) return false;
+		
+		if(effects.length != anObject.effects.length) return false;
+		for(int i=0; i<effects.length; i++) {
+			if(!effects[i].equals(anObject.effects[i])) return false; 
+		}
+		
+		if(actions.size() != anObject.actions.size()) return false;
+		Set<String> keys = actions.keySet();
+		for(String key : keys) {
+			if(!actions.get(key).equals(anObject.actions.get(key))) return false;
+		}
+		return true;
+	}
+	
+	
 
 }

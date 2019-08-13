@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import main.build_cards.CardTypes;
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.exception.NoCardException;
 
@@ -93,8 +94,8 @@ public class Summon implements Card{
 	}
 	
 	@Override
-	public CardType getType() {
-		return CardType.SUMMON;
+	public CardTypes getType() {
+		return CardTypes.Summon;
 	}
 
 	@Override

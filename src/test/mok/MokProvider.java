@@ -13,6 +13,7 @@ import main.Spell;
 import main.Stackable;
 import main.Summon;
 import main.build_cards.CreatesActions;
+import main.build_cards.CreatesEffects;
 import main.jsonObjects.CardDefinition;
 import main.jsonObjects.EffectDefinition;
 import main.jsonObjects.HoldsActionDefinitions;
@@ -357,7 +358,7 @@ public class MokProvider {
 					cardDefinition = new CardDefinition(); 
 					cardDefinition.name = "Aries";
 					cardDefinition.card_id = "bsc-su-00-0";
-					cardDefinition.type = "SUMMON";
+					cardDefinition.type = "Summon";
 					cardDefinition.maxEnergy = 5;
 					cardDefinition.maxHealth = 8;
 					cardDefinition.trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
@@ -377,7 +378,7 @@ public class MokProvider {
 					cardDefinition2 = new CardDefinition(); 
 					cardDefinition2.name = "Aries";
 					cardDefinition2.card_id = "bsc-su-00-1";
-					cardDefinition2.type = "SUMMON";
+					cardDefinition2.type = "Summon";
 					cardDefinition2.maxEnergy = 5;
 					cardDefinition2.maxHealth = 8;
 					cardDefinition2.trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
@@ -397,7 +398,7 @@ public class MokProvider {
 					cardDefinition3 = new CardDefinition(); 
 					cardDefinition3.name = "Aries";
 					cardDefinition3.card_id = "bsc-su-00-2";
-					cardDefinition3.type = "SUMMON";
+					cardDefinition3.type = "Summon";
 					cardDefinition3.maxEnergy = 5;
 					cardDefinition3.maxHealth = 8;
 					cardDefinition3.trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
@@ -417,7 +418,7 @@ public class MokProvider {
 					cardDefinition4 = new CardDefinition(); 
 					cardDefinition4.name = "Diamond Storm";
 					cardDefinition4.card_id = "bsc-su-01";
-					cardDefinition4.type = "SPELL";
+					cardDefinition4.type = "Spell";
 					cardDefinition4.maxEnergy = 5;
 					cardDefinition4.maxHealth = 8;
 					cardDefinition4.trivia = "Ein Zauber, der einen Sturm von Eiskristallen loslässt.";
@@ -507,6 +508,16 @@ public class MokProvider {
 					public void activateBy(Stackable stackable) {
 					}
 				};
+			}
+		};
+	}
+	
+	public static CreatesEffects getEffectFactory() {
+		return new CreatesEffects() {
+			
+			@Override
+			public Effect createEffect(String effectName) {
+				return getEffect();
 			}
 		};
 	}

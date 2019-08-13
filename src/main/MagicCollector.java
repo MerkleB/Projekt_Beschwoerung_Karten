@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import main.build_cards.CardTypes;
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
 
@@ -31,7 +32,7 @@ public class MagicCollector implements Card{
 		this.isCollector = false;
 	}
 	
-	public void setCollectorActions(ArrayList<GameAction> actions) {
+	public void setCollectorActions(GameAction[] actions) {
 		for(GameAction action : actions) {
 			this.actions.put(action.getName(), action);
 		}
@@ -225,7 +226,7 @@ public class MagicCollector implements Card{
 	}
 
 	@Override
-	public CardType getType() {
+	public CardTypes getType() {
 		return realCard.getType();
 	}
 

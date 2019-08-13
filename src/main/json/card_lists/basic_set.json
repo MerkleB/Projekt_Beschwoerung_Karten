@@ -5,7 +5,7 @@
 			{
 				"name" : "Aries",
 				"card_id" : "bsc-su-00-0",
-				"type" : "SUMMON",
+				"type" : "Summon",
 				"maxEnergy" : 5,
 				"maxHealth" : 8,
 				"trivia" : "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete",

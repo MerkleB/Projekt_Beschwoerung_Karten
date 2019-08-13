@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import main.build_cards.CardTypes;
 import main.exception.NoCardException;
 
 public class Spell implements Card {
@@ -57,8 +58,8 @@ public class Spell implements Card {
 	}
 	
 	@Override
-	public CardType getType() {
-		return CardType.SPELL;
+	public CardTypes getType() {
+		return CardTypes.Spell;
 	}
 
 	@Override

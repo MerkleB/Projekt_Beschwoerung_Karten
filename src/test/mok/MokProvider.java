@@ -482,10 +482,10 @@ public class MokProvider {
 	
 	public static mapsRankAndLevel getMapperMok() {
 		return new mapsRankAndLevel() {
-			public mapsRankAndLevel instance;
 			
 			@Override
 			public int mapRankToLevel(String rank) {
+				
 				switch(rank) {
 				case "Cub":
 					return 0;

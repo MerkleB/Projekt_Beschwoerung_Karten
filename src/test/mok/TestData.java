@@ -13,17 +13,18 @@ public class TestData {
 	public static Card getCard(String card_id) {
 		Hashtable<String, Card> testCards = new Hashtable<>();
 		
-		GameAction[] mokActions = new GameAction[MokProvider.getActionDefinitions().getCardActions("Summon").size()];
-		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions("Summon").size(); i++) {
-			mokActions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions("Summon").get(i));
-		}
+		
 		String name = "Aries";
 		String id = "bsc-su-00-0";
 		String type = "Summon";
 		int maxEnergy = 5;
 		int maxHealth = 8;
 		String trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
-		Effect[] effects = new Effect[1];;
+		Effect[] effects = new Effect[1];
+		GameAction[] mokActions = new GameAction[MokProvider.getActionDefinitions().getCardActions(type).size()];
+		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions(type).size(); i++) {
+			mokActions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions(type).get(i));
+		}
 		effects[0] = MokProvider.getEffect();
 		int magicPreservationValue = 2;
 		int summoningPoints = 1;
@@ -77,16 +78,16 @@ public class TestData {
 		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
 		addActionsToCollector(testCards.get(id).getCollector());
 		
-		mokActions = new GameAction[MokProvider.getActionDefinitions().getCardActions("Spell").size()];
-		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions("Spell").size(); i++) {
-			mokActions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions("Spell").get(i));
-		}
 		name = "Diamond Storm";
 		id = "bsc-su-01";
 		type = "Spell";
 		maxEnergy = 5;
 		maxHealth = 8;
 		trivia = "Ein Zauber, der einen Sturm von Eiskristallen loslässt.";
+		mokActions = new GameAction[MokProvider.getActionDefinitions().getCardActions(type).size()];
+		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions(type).size(); i++) {
+			mokActions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions(type).get(i));
+		}
 		magicPreservationValue = 0;
 		summoningPoints = 0;
 		attack = 0;

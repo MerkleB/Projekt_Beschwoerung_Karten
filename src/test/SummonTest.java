@@ -1,30 +1,12 @@
 package test;
 
 import static org.junit.Assert.*;
-
-import java.lang.reflect.Field;
-import java.util.Hashtable;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.Rectangle;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.scenario.effect.FilterContext;
-import com.sun.scenario.effect.ImageData;
-import com.sun.scenario.effect.Effect.AccelType;
-
-import main.Card;
-import main.CardGame;
 import main.Effect;
-import main.Game;
 import main.GameAction;
-import main.MagicCollector;
 import main.Summon;
 import main.exception.NoCardException;
-import main.exception.NoCollectorException;
-import main.util.mapsRankAndLevel;
 import test.mok.MokProvider;
 
 public class SummonTest {

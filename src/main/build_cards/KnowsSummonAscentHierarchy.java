@@ -1,7 +1,5 @@
 package main.build_cards;
 
-import java.util.Hashtable;
-
 import main.Summon;
 
 public interface KnowsSummonAscentHierarchy {

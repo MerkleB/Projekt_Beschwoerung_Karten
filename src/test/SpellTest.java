@@ -4,13 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import main.Card;
 import main.Effect;
 import main.GameAction;
 import main.Spell;
 import main.exception.NoCardException;
-import main.exception.NoCollectorException;
 import test.mok.MokProvider;
 
 public class SpellTest {

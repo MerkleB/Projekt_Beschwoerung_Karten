@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.Card;
-import main.CardGame;
-import main.Game;
 import main.Spell;
 import main.Summon;
 import main.build_cards.CardFactory;
@@ -51,10 +49,12 @@ public class CardFactoryTest {
 			if(!mapperAlreadyMokked) {
 				mapperAlreadyMokked = true;
 				mapsRankAndLevel mapper = RankLevelMapper.getInstance();
-				Field mapperField = mapper.getClass().getDeclaredField("instance");
-				//Inject mapperMok
-				mapperField.setAccessible(true);
-				mapperField.set(mapper, MokProvider.getMapperMok());
+				if(mapper instanceof RankLevelMapper) {
+					Field mapperField = mapper.getClass().getDeclaredField("instance");
+					//Inject mapperMok
+					mapperField.setAccessible(true);
+					mapperField.set(mapper, MokProvider.getMapperMok());
+				}
 			}
 		}catch(Exception e) {
 			fail("Moking failed.");

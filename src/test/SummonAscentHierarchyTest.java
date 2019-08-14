@@ -3,12 +3,8 @@ package test;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import main.CardGame;
-import main.Game;
 import main.GameAction;
 import main.Summon;
 import main.build_cards.KnowsSummonAscentHierarchy;
@@ -34,10 +30,12 @@ public class SummonAscentHierarchyTest {
 			Field mapperField;
 			try {
 				mapsRankAndLevel mapper = RankLevelMapper.getInstance();
-				mapperField = mapper.getClass().getDeclaredField("instance");
-				//Inject mapperMok
-				mapperField.setAccessible(true);
-				mapperField.set(mapper, mapperMok);
+				if(mapper instanceof RankLevelMapper) {
+					mapperField = mapper.getClass().getDeclaredField("instance");
+					//Inject mapperMok
+					mapperField.setAccessible(true);
+					mapperField.set(mapper, mapperMok);
+				}
 			} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
 				fail("Error in setup: "+e.getMessage());
 			}

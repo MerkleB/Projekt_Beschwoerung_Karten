@@ -1,7 +1,7 @@
 {
 	"actions" : [
 		{
-			"actionName" : "Summon",
+			"actionName" : "EvokeSummon",
 			"cardTypes" : ["Summon"],
 			"phases" : ["Main"],
 			"zones" : ["HandZone"]

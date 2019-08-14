@@ -109,6 +109,12 @@ public class MokProvider {
 			public boolean equals(Object obj) {
 				return true;
 			}
+
+			@Override
+			public boolean isWithdrawn() {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		};
 	}
 	
@@ -154,6 +160,30 @@ public class MokProvider {
 			@Override
 			public boolean equals(Object obj) {
 				return true;
+			}
+
+			@Override
+			public int getFreeEnergy() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int getUsedEnergy() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int getDepletedEnergy() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int getSummoningPoints() {
+				// TODO Auto-generated method stub
+				return 0;
 			}
 		};
 	}
@@ -229,6 +259,12 @@ public class MokProvider {
 			@Override
 			public boolean equals(Object obj) {
 				return true;
+			}
+
+			@Override
+			public boolean isWithdrawn() {
+				// TODO Auto-generated method stub
+				return false;
 			}
 		};
 	}

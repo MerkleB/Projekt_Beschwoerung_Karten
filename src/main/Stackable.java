@@ -8,6 +8,7 @@ public interface Stackable{
 	public boolean activatable();
 	public void execute();
 	public void withdraw();
+	public boolean isWithdrawn();
 	public void setActiv();
 	public void setInactiv();
 	public Card getCard();

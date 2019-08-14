@@ -7,13 +7,13 @@ import main.util.mapsRankAndLevel;
 
 public class CardGame implements Game {
 	
-	private static CardGame instance;
+	private static Game instance;
 	private mapsRankAndLevel rankAndLevelMapper; 
 	
 	public static Game getInstance() {
 		if(instance == null) {
 			instance = new CardGame();
-			instance.rankAndLevelMapper = RankLevelMapper.getInstance();
+			((CardGame)instance).rankAndLevelMapper = RankLevelMapper.getInstance();
 		}
 		return instance;
 	}
@@ -68,18 +68,6 @@ public class CardGame implements Game {
 	public Player[] getPlayers() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void addGameActionListener(GameActionListener listener) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addEffectListener(EffectListener listener) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

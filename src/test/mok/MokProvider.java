@@ -19,6 +19,7 @@ import main.jsonObjects.EffectDefinition;
 import main.jsonObjects.HoldsActionDefinitions;
 import main.jsonObjects.HoldsCardDefinitions;
 import main.jsonObjects.SummonAscentHierarchyDefinition;
+import main.util.mapsRankAndLevel;
 
 public class MokProvider {
 	public static Effect getEffect() {
@@ -157,12 +158,12 @@ public class MokProvider {
 		};
 	}
 
-	public static GameAction getGameAction(){
+	public static GameAction getGameAction(String actionName){
 		return new GameAction(){
 
 			@Override
 			public String getName() {
-				return "MokAction";
+				return actionName;
 			}
 
 			@Override
@@ -452,7 +453,7 @@ public class MokProvider {
 			public CardDefinition getCardDefinition(String card_id) {
 				init();
 				if(set.containsKey(card_id) == false) {
-					return cardDefinition;
+					return null;
 				}
 				return set.get(card_id);
 			}
@@ -464,50 +465,7 @@ public class MokProvider {
 			
 			@Override
 			public GameAction createAction(String actionName) {
-				return new GameAction() {
-					
-					@Override
-					public void withdraw() {}
-					
-					@Override
-					public void setInactiv() {}
-					
-					@Override
-					public void setCard(Card card) {}
-					
-					@Override
-					public void setActiv() {}
-					
-					@Override
-					public String getName() {
-						return actionName;
-					}
-					
-					@Override
-					public Hashtable<String, String> getMetaData() {
-						return null;
-					}
-					
-					@Override
-					public Card getCard() {
-						return null;
-					}
-					
-					@Override
-					public void execute() {}
-					
-					@Override
-					public void activate() {}
-					
-					@Override
-					public boolean activatable() {
-						return false;
-					}
-					
-					@Override
-					public void activateBy(Stackable stackable) {
-					}
-				};
+				return getGameAction(actionName);
 			}
 		};
 	}
@@ -520,5 +478,44 @@ public class MokProvider {
 				return getEffect();
 			}
 		};
+	}
+	
+	public static mapsRankAndLevel getMapperMok() {
+		return new mapsRankAndLevel() {
+			public mapsRankAndLevel instance;
+			
+			@Override
+			public int mapRankToLevel(String rank) {
+				switch(rank) {
+				case "Cub":
+					return 0;
+				case "Adult":
+					return 1;
+				case "Legend":
+					return 2;
+				}
+				return -1;
+			}
+			
+			@Override
+			public String mapLevelToRank(int level, String summonClass) {
+				String result = null;
+				switch(summonClass) {
+				case "NaturalBeast":
+					switch(level) {
+					case 0:
+						result = "Cub";
+						break;
+					case 1:
+						result =  "Adult";
+						break;
+					case 2:
+						result =  "Legend";
+						break;
+					}
+				}
+				return result;
+			}
+	};
 	}
 }

@@ -17,6 +17,7 @@ import main.jsonObjects.CardDefinition;
 import main.jsonObjects.CardDefinitionLibrary;
 import main.jsonObjects.HoldsActionDefinitions;
 import main.jsonObjects.HoldsCardDefinitions;
+import main.jsonObjects.SummonAscentHierarchyDefinition;
 
 public class CardFactory implements CreatesCards {
 	
@@ -46,9 +47,7 @@ public class CardFactory implements CreatesCards {
 	
 	@Override
 	public Card createCard(String card_id) throws NotAllowedCardException, InvalidCardException, CardCreationException {
-		if(allowedCards != null) {
-			if(allowedCards.containsKey(card_id)) throw new NotAllowedCardException(card_id+" is not in the list of allowed cards.");
-		}
+		checkCardIdIsAllowed(card_id);
 		
 		CardDefinition cardDefinition = cardLibrary.getCardDefinition(card_id);
 		if(cardDefinition == null) throw new InvalidCardException(card_id+" does not exist.");
@@ -56,7 +55,7 @@ public class CardFactory implements CreatesCards {
 		Card card = null;
 		switch(cardDefinition.type) {
 		case "Summon":
-			card = createSummon(cardDefinition);
+			card = createCompleteSummon(cardDefinition);
 			break;
 		case "Spell":
 			card = createSpell(cardDefinition);
@@ -68,12 +67,35 @@ public class CardFactory implements CreatesCards {
 		return card;
 	}
 	
+	private Summon createCompleteSummon(CardDefinition definition) {
+		Summon summon = createSummon(definition);
+		setCollectorActions(summon.getCollector());
+		summon.setSummonHierarchy(createSummonHierarchy(definition, summon));
+		return summon;
+	}
+	
 	private Summon createSummon(CardDefinition definition) {
 		Effect[] effects = getEffects(definition); 
 		GameAction[] actions = getActions(definition.type);
 		Summon summon = new Summon(definition.name, definition.trivia, effects, definition.magicPreservationValue, definition.summoningPoints, definition.attack, definition.heal, definition.maxVitality, definition.summonClass, definition.rank, definition.element, definition.magicWastageOnDefeat, definition.maxEnergy, definition.maxHealth, null, actions);
-		setCollectorActions(summon.getCollector());
 		return summon;
+	}
+	
+	private KnowsSummonAscentHierarchy createSummonHierarchy(CardDefinition definition, Summon summon) {
+		KnowsSummonAscentHierarchy hierarchy = SummonAscentHierarchy.getInstance();
+		hierarchy.addSummonToHierarchy(summon);
+		for(SummonAscentHierarchyDefinition entry : definition.summonHierarchy) {
+			try {
+				checkCardIdIsAllowed(entry.card_id);
+				CardDefinition successorCardDefinition = cardLibrary.getCardDefinition(entry.card_id);
+				Summon successorSummon = createSummon(successorCardDefinition);
+				setCollectorActions(successorSummon.getCollector());
+				hierarchy.addSummonToHierarchy(successorSummon);
+			} catch (NotAllowedCardException e) {
+				System.out.println("CreateSummonHierarchy - Card of Level-"+entry.level+":"+e.getMessage());
+			}
+		}
+		return hierarchy;
 	}
 	
 	private Spell createSpell(CardDefinition definition) {
@@ -104,6 +126,14 @@ public class CardFactory implements CreatesCards {
 			actions[i] = actionFactory.createAction(actionNames.get(i));
 		}
 		return actions;
+	}
+	
+	private void checkCardIdIsAllowed(String card_id) throws NotAllowedCardException {
+		if(allowedCards != null) {
+			if(!allowedCards.containsKey(card_id)) {
+				throw new NotAllowedCardException("Card with id "+card_id+" is not allowed.");
+			}
+		}
 	}
 
 }

@@ -20,11 +20,13 @@ public class Spell implements Card {
 	private TreeMap<String, GameAction> actions;
 	
 	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+		this.name = name;
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
 		if(owner != null) {
 			this.owner = owner;
 		}
+		this.effects = effects;
 		this.neededMagicEnergy = neededMagicEnergy;
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
@@ -158,8 +160,6 @@ public class Spell implements Card {
 		
 		if(!name.equals(anObject.name)) return false;
 		if(!trivia.equals(anObject.trivia)) return false;
-		if(!owner.equals(anObject.owner)) return false;
-		if(!id.equals(anObject.id)) return false;
 		if(!collector.equals(anObject.collector)) return false;
 		if(neededMagicEnergy != anObject.neededMagicEnergy) return false;
 		
@@ -172,6 +172,13 @@ public class Spell implements Card {
 		Set<String> keys = actions.keySet();
 		for(String key : keys) {
 			if(!actions.get(key).equals(anObject.actions.get(key))) return false;
+		}
+		
+		if(owner != null) {
+			if(!owner.equals(anObject.owner)) return false;
+		}
+		if(id != null) {
+			if(!id.equals(anObject.id)) return false;
 		}
 		return true;
 	}

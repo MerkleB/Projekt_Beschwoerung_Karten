@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.Card;
+import main.CardGame;
+import main.Game;
 import main.Spell;
 import main.Summon;
 import main.build_cards.CardFactory;
@@ -15,12 +17,15 @@ import main.build_cards.KnowsSummonAscentHierarchy;
 import main.exception.CardCreationException;
 import main.exception.InvalidCardException;
 import main.exception.NotAllowedCardException;
+import main.util.RankLevelMapper;
+import main.util.mapsRankAndLevel;
 import test.mok.MokProvider;
 import test.mok.TestData;
 
 public class CardFactoryTest {
 	
-	CreatesCards cut;
+	private CreatesCards cut;
+	private static boolean mapperAlreadyMokked;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -42,6 +47,15 @@ public class CardFactoryTest {
 			actionFactoryField.set(factory, MokProvider.getActionFactoryMok());
 			effectFactoryField.setAccessible(true);
 			effectFactoryField.set(factory, MokProvider.getEffectFactory());
+
+			if(!mapperAlreadyMokked) {
+				mapperAlreadyMokked = true;
+				mapsRankAndLevel mapper = RankLevelMapper.getInstance();
+				Field mapperField = mapper.getClass().getDeclaredField("instance");
+				//Inject mapperMok
+				mapperField.setAccessible(true);
+				mapperField.set(mapper, MokProvider.getMapperMok());
+			}
 		}catch(Exception e) {
 			fail("Moking failed.");
 		}
@@ -56,6 +70,7 @@ public class CardFactoryTest {
 				fail("Wrong type of card was retrieved");
 			}
 			Summon s = (Summon) summon;
+			if(summon == null) fail("Null was retrieved instead of summon");
 			if(!s.equals(TestData.getCard(card_id))) {
 				fail("Wrong card was created!");
 			}
@@ -96,7 +111,7 @@ public class CardFactoryTest {
 	
 	@Test
 	public void testCreateNonExistingCard() {
-		String card_id = "bsc-su-00-0";
+		String card_id = "bla-su-00-0";
 		boolean exceptionAppeared = false;
 		try {
 			cut.createCard(card_id);
@@ -118,6 +133,8 @@ public class CardFactoryTest {
 		String card_id = "bsc-su-00-0";
 		String[] allowedCards = {card_id,"bsc-su-00-1"};
 		cut = CardFactory.getInstance(allowedCards);
+		mapperAlreadyMokked = false;
+		mokFields((CardFactory)cut);
 		try {
 			Card summon = cut.createCard(card_id);
 			if((summon instanceof Summon) == false) {
@@ -149,6 +166,7 @@ public class CardFactoryTest {
 		String card_id = "bsc-su-00-0";
 		String[] allowedCards = {card_id};
 		cut = CardFactory.getInstance(allowedCards);
+		mapperAlreadyMokked = false;
 		mokFields((CardFactory)cut);
 		try {
 			Card summon = cut.createCard(card_id);
@@ -177,6 +195,7 @@ public class CardFactoryTest {
 		String card_id = "bsc-su-00-0";
 		String[] allowedCards = {};
 		cut = CardFactory.getInstance(allowedCards);
+		mapperAlreadyMokked = false;
 		mokFields((CardFactory)cut);
 		boolean exceptionWasThrown = false;
 		try {

@@ -33,6 +33,9 @@ public class MagicCollector implements Card{
 	}
 	
 	public void setCollectorActions(GameAction[] actions) {
+		if(this.actions == null) {
+			this.actions = new TreeMap<String, GameAction>();
+		}
 		for(GameAction action : actions) {
 			this.actions.put(action.getName(), action);
 		}
@@ -316,11 +319,14 @@ public class MagicCollector implements Card{
 		if(maxHealth != anObject.maxHealth) return false;
 		if(currentHealth != anObject.currentHealth) return false;
 		
-		if(actions.size() != anObject.actions.size()) return false;
-		Set<String> keys = actions.keySet();
-		for(String key : keys) {
-			if(!actions.get(key).equals(anObject.actions.get(key))) return false;
-		}
+		if(actions != null) {
+			if(actions.size() != anObject.actions.size()) return false;
+			Set<String> keys = actions.keySet();
+			for(String key : keys) {
+				if(!actions.get(key).equals(anObject.actions.get(key))) return false;
+			}
+		}else if(anObject.actions != null) return false;
+		
 		
 		return true;
 	}

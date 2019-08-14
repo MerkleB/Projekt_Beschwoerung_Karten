@@ -6,12 +6,12 @@ public class RankLevelMapper implements mapsRankAndLevel{
 	private static Hashtable<String, String> levelToRank;
 	private static Hashtable<String, String> rankToLevel; 
 	
-	private static RankLevelMapper instance;
+	private static mapsRankAndLevel instance;
 	
 	public static mapsRankAndLevel getInstance() {
 		if(instance == null) {
 		instance = new RankLevelMapper();
-		instance.initializeMaps();
+		((RankLevelMapper) instance).initializeMaps();
 		}
 		return instance;
 	}

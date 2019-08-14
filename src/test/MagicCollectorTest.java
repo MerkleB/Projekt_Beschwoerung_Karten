@@ -26,7 +26,7 @@ public class MagicCollectorTest {
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
 		GameAction[] mokActions = new GameAction[1];
-		mokActions[0] = MokProvider.getGameAction();
+		mokActions[0] = MokProvider.getGameAction("MokAction");
 		Spell testSpell = new Spell("TestSpell", "This spell is for testing", effectDummies, 5, 5, 10, MokProvider.getPlayer(), mokActions);
 		cut = new MagicCollector(testSpell, 5, 10);
 	}

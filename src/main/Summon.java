@@ -8,6 +8,7 @@ import java.util.UUID;
 import main.build_cards.CardTypes;
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.exception.NoCardException;
+import main.util.RankLevelMapper;
 
 public class Summon implements Card{	
 
@@ -31,6 +32,7 @@ public class Summon implements Card{
 	private TreeMap<String, GameAction> actions;
 	
 	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+		this.name = name;
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
 		this.effects = effects;
@@ -241,7 +243,7 @@ public class Summon implements Card{
 	}
 	
 	public int getLevel() {
-		return CardGame.getInstance().getRankMapper().mapRankToLevel(getRank());
+		return RankLevelMapper.getInstance().mapRankToLevel(getRank());
 	}
 
 	public String getElement() {
@@ -295,7 +297,9 @@ public class Summon implements Card{
 		if(!summonClass.equals(anObject.summonClass)) return false;
 		if(!rank.equals(anObject.rank)) return false;
 		if(!element.equals(anObject.element)) return false;
-		if(!id.equals(anObject.id)) return false;
+		if(id != null) {
+			if(!id.equals(anObject.id)) return false;
+		}
 		if(magicPreservationValue != anObject.magicPreservationValue) return false;
 		if(!collector.equals(anObject.collector)) return false;
 		if(summoningPoints != anObject.summoningPoints) return false;
@@ -316,7 +320,9 @@ public class Summon implements Card{
 			if(!actions.get(key).equals(anObject.actions.get(key))) return false;
 		}
 		
-		if(!owner.equals(anObject.owner)) return false;
+		if(owner != null) {
+			if(!owner.equals(anObject.owner)) return false;
+		}
 		
 		return true;
 	}

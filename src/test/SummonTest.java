@@ -40,7 +40,7 @@ public class SummonTest {
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
 		mokActions = new GameAction[1];
-		mokActions[0] = MokProvider.getGameAction();
+		mokActions[0] = MokProvider.getGameAction("MokAction");
 		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 	}
 	

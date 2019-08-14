@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import main.Card;
 import main.Effect;
 import main.GameAction;
+import main.MagicCollector;
 import main.Spell;
 import main.Summon;
 
@@ -12,11 +13,13 @@ public class TestData {
 	public static Card getCard(String card_id) {
 		Hashtable<String, Card> testCards = new Hashtable<>();
 		
-		GameAction[] mokActions = new GameAction[1];
-		mokActions[0] = MokProvider.getGameAction();
+		GameAction[] mokActions = new GameAction[MokProvider.getActionDefinitions().getCardActions("Summon").size()];
+		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions("Summon").size(); i++) {
+			mokActions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions("Summon").get(i));
+		}
 		String name = "Aries";
 		String id = "bsc-su-00-0";
-		String type = "SUMMON";
+		String type = "Summon";
 		int maxEnergy = 5;
 		int maxHealth = 8;
 		String trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
@@ -34,10 +37,11 @@ public class TestData {
 		int magicWastageOnDefeat = 1;
 		int neededMagicEnergy = 0;
 		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
+		addActionsToCollector(testCards.get(id).getCollector());
 		
 		name = "Aries";
 		id = "bsc-su-00-1";
-		type = "SUMMON";
+		type = "Summon";
 		maxEnergy = 5;
 		maxHealth = 8;
 		trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
@@ -52,10 +56,11 @@ public class TestData {
 		magicWastageOnDefeat = 2;
 		neededMagicEnergy = 0;
 		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
+		addActionsToCollector(testCards.get(id).getCollector());
 		
 		name = "Aries";
 		id = "bsc-su-00-2";
-		type = "SUMMON";
+		type = "Summon";
 		maxEnergy = 5;
 		maxHealth = 8;
 		trivia = "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete";
@@ -70,10 +75,15 @@ public class TestData {
 		magicWastageOnDefeat = 3;
 		neededMagicEnergy = 0;
 		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
+		addActionsToCollector(testCards.get(id).getCollector());
 		
+		mokActions = new GameAction[MokProvider.getActionDefinitions().getCardActions("Spell").size()];
+		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions("Spell").size(); i++) {
+			mokActions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions("Spell").get(i));
+		}
 		name = "Diamond Storm";
 		id = "bsc-su-01";
-		type = "SPELL";
+		type = "Spell";
 		maxEnergy = 5;
 		maxHealth = 8;
 		trivia = "Ein Zauber, der einen Sturm von Eiskristallen loslässt.";
@@ -87,8 +97,17 @@ public class TestData {
 		element = "";
 		magicWastageOnDefeat = 0;
 		neededMagicEnergy = 5;
-		testCards.put(id, new Spell(name, trivia, effects, neededMagicEnergy, maxEnergy, maxHealth, null, actions));
+		testCards.put(id, new Spell(name, trivia, effects, neededMagicEnergy, maxEnergy, maxHealth, null, mokActions));
+		addActionsToCollector(testCards.get(id).getCollector());
 		
 		return testCards.get(card_id);
+	}
+	
+	private static void addActionsToCollector(MagicCollector collector) {
+		GameAction[] actions = new GameAction[MokProvider.getActionDefinitions().getCardActions("MagicCollector").size()];
+		for(int i=0; i<MokProvider.getActionDefinitions().getCardActions("MagicCollector").size(); i++) {
+			actions[i] = MokProvider.getGameAction(MokProvider.getActionDefinitions().getCardActions("MagicCollector").get(i));
+		}
+		collector.setCollectorActions(actions);
 	}
 }

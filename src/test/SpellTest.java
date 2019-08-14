@@ -26,7 +26,7 @@ public class SpellTest {
 		effectDummies = new Effect[1];
 		effectDummies[0] = effectDummy;
 		mokActions = new GameAction[1];
-		mokActions[0] = MokProvider.getGameAction();
+		mokActions[0] = MokProvider.getGameAction("MokAction");
 		cut = new Spell("TestSpell", "This spell is for testing", effectDummies, 5, 3, 10, MokProvider.getPlayer(), mokActions);
 	}
 

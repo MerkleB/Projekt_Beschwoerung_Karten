@@ -14,6 +14,7 @@ import main.Stackable;
 import main.Summon;
 import main.build_cards.CreatesActions;
 import main.build_cards.CreatesEffects;
+import main.exception.NotActivableException;
 import main.jsonObjects.CardDefinition;
 import main.jsonObjects.EffectDefinition;
 import main.jsonObjects.HoldsActionDefinitions;
@@ -46,18 +47,6 @@ public class MokProvider {
 			}
 
 			@Override
-			public void activate() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean activatable() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
 			public Card getOwningCard() {
 				// TODO Auto-generated method stub
 				return null;
@@ -71,12 +60,6 @@ public class MokProvider {
 
 			@Override
 			public void withdraw() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void setActiv() {
 				// TODO Auto-generated method stub
 				
 			}
@@ -114,6 +97,24 @@ public class MokProvider {
 			public boolean isWithdrawn() {
 				// TODO Auto-generated method stub
 				return false;
+			}
+
+			@Override
+			public void activate(Player activator) throws NotActivableException {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public boolean activateable(Player activator) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void setActiv(Player activFor) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 	}
@@ -197,18 +198,6 @@ public class MokProvider {
 			}
 
 			@Override
-			public void activate() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public boolean activatable() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
 			public void execute() {
 				// TODO Auto-generated method stub
 				
@@ -216,12 +205,6 @@ public class MokProvider {
 
 			@Override
 			public void withdraw() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void setActiv() {
 				// TODO Auto-generated method stub
 				
 			}
@@ -249,12 +232,6 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				return null;
 			}
-
-			@Override
-			public void activateBy(Stackable stackable) {
-				// TODO Auto-generated method stub
-				
-			}
 			
 			@Override
 			public boolean equals(Object obj) {
@@ -265,6 +242,30 @@ public class MokProvider {
 			public boolean isWithdrawn() {
 				// TODO Auto-generated method stub
 				return false;
+			}
+
+			@Override
+			public void activate(Player activator) throws NotActivableException {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public boolean activateable(Player activator) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void setActiv(Player activFor) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void activateBy(Stackable stackable, Player activator) throws NotActivableException {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 	}

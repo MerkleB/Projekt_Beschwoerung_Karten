@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import java.util.UUID;
 import main.build_cards.CardTypes;
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.exception.NoCardException;
+import main.exception.NotActivableException;
 import main.util.RankLevelMapper;
 
 public class Summon implements Card{	
@@ -62,9 +64,9 @@ public class Summon implements Card{
 	}
 	
 	@Override
-	public void setActiv(String[] actions) {
+	public void setActiv(String[] actions, Player activFor) {
 		for(int i=0; i<= actions.length; i++) {
-			this.actions.get(actions[i]).setActiv();
+			this.actions.get(actions[i]).setActiv(activFor);
 		}
 	}
 	
@@ -76,13 +78,21 @@ public class Summon implements Card{
 	}
 	
 	@Override
-	public void activateGameAction(String action) {
-		this.actions.get(action).activate();
+	public void activateGameAction(String action, Player activatingPlayer) {
+		try {
+			this.actions.get(action).activate(activatingPlayer);
+		} catch (NotActivableException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	@Override
-	public void activateGameAction(String action, Stackable activator) {
-		this.actions.get(action).activateBy(activator);
+	public void activateGameAction(String action, Player activatingPlayer, Stackable activator) {
+		try {
+			this.actions.get(action).activateBy(activator, activatingPlayer);
+		} catch (NotActivableException e) {
+			e.getMessage();
+		}
 	}
 	
 	@Override
@@ -282,7 +292,11 @@ public class Summon implements Card{
 
 	@Override
 	public void activateEffect(int effectNumber) {
-		this.effects[effectNumber].activate();		
+		try {
+			this.effects[effectNumber].activate(owner);
+		} catch (NotActivableException e) {
+			System.out.println(e.getMessage());
+		}		
 	}
 
 	@Override
@@ -325,6 +339,15 @@ public class Summon implements Card{
 		}
 		
 		return true;
+	}
+
+	@Override
+	public ArrayList<GameAction> getActions() {
+		ArrayList<GameAction> actionList = new ArrayList<GameAction>();
+		this.actions.forEach((key,value)->{
+			actionList.add(value);
+		});
+		return actionList;
 	}
 	
 }

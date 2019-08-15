@@ -1,5 +1,6 @@
 package main;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -274,7 +275,7 @@ public class MagicCollector implements Card{
 	}
 
 	@Override
-	public void setActiv(String[] actions) {
+	public void setActiv(String[] actions, Player activFor) {
 		
 	}
 
@@ -284,13 +285,13 @@ public class MagicCollector implements Card{
 	}
 
 	@Override
-	public void activateGameAction(String action) {
+	public void activateGameAction(String action, Player activatingPlayer) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void activateGameAction(String action, Stackable activator) {
+	public void activateGameAction(String action, Player activatingPlayer, Stackable activator) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -328,6 +329,15 @@ public class MagicCollector implements Card{
 		
 		
 		return true;
+	}
+
+	@Override
+	public ArrayList<GameAction> getActions() {
+		ArrayList<GameAction> actionList = new ArrayList<GameAction>();
+		this.actions.forEach((key,value)->{
+			actionList.add(value);
+		});
+		return actionList;
 	}
 	
 	

@@ -12,6 +12,7 @@ import main.Summon;
 import main.Listeners.GameActionListener;
 import main.Listeners.GameListener;
 import main.exception.NoCardException;
+import main.exception.NotActivableException;
 
 public class EvokeSummon implements GameAction {
 
@@ -19,6 +20,7 @@ public class EvokeSummon implements GameAction {
 	private boolean activ = false;
 	private boolean withdrawn = false;
 	private Hashtable<String, String> metadata;
+	private Player actionIsActivFor;
 	
 	@Override
 	public String getName() {
@@ -26,22 +28,29 @@ public class EvokeSummon implements GameAction {
 	}
 
 	@Override
-	public void activate() {
-		if(activ) {
+	public void activate(Player activator) throws NotActivableException {
+		if(activator != actionIsActivFor) {
+			return;
+		}
+		if(activateable(activator)) {
 			initMetadata();
 			metadata.put("ID", owningCard.getID().toString());
 			GameStack.getInstance().addEntry(this);
 			GameListener.getInstance().actionActivated(this);
+		}else {
+			throw new NotActivableException("EvokeSummon is not activateable for card "+owningCard.getID());
 		}
 	}
 
 	@Override
-	public boolean activatable() {
+	public boolean activateable(Player activator) {
 		Player ownerOfCard = owningCard.getOwningPlayer();
 		try {
-			if(ownerOfCard.getSummoningPoints() >= owningCard.getSummoningPoints()) {
-				if(ownerOfCard.getFreeEnergy() >= owningCard.getMagicPreservationValue()) {
-					return true;
+			if(activ && actionIsActivFor == activator) {
+				if(ownerOfCard.getSummoningPoints() >= owningCard.getSummoningPoints()) {
+					if(ownerOfCard.getFreeEnergy() >= owningCard.getMagicPreservationValue()) {
+						return true;
+					}
 				}
 			}
 		} catch (NoCardException e) {
@@ -68,15 +77,15 @@ public class EvokeSummon implements GameAction {
 	}
 
 	@Override
-	public void setActiv() {
-		if(activatable()) {
-			activ = true;
-		}
+	public void setActiv(Player player) {
+		activ = true;
+		actionIsActivFor = player;
 	}
 
 	@Override
 	public void setInactiv() {
 		activ = false;
+		actionIsActivFor = null;
 	}
 
 	@Override
@@ -103,9 +112,8 @@ public class EvokeSummon implements GameAction {
 	}
 
 	@Override
-	public void activateBy(Stackable stackable) {
+	public void activateBy(Stackable stackable, Player activator) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

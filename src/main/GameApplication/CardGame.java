@@ -1,5 +1,8 @@
-package main;
+package main.GameApplication;
 
+import main.Card.Card;
+import main.Card.Spell;
+import main.Card.Summon;
 import main.Listeners.EffectListener;
 import main.Listeners.GameActionListener;
 import main.util.RankLevelMapper;

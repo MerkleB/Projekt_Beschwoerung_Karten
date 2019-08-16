@@ -1,7 +1,8 @@
 package main.build_cards;
 
 import java.util.TreeMap;
-import main.Summon;
+
+import main.Card.Summon;
 
 public class SummonAscentHierarchy implements KnowsSummonAscentHierarchy{
 	

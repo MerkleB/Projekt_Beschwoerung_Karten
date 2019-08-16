@@ -1,6 +1,6 @@
 package main.build_cards;
 
-import main.Effect;
+import main.Action.Effect;
 
 public class EffectFactory implements CreatesEffects {
 	

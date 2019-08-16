@@ -2,8 +2,8 @@ package main.Listeners;
 
 import java.util.ArrayList;
 
-import main.Effect;
-import main.GameAction;
+import main.Action.Effect;
+import main.Action.GameAction;
 
 public class GameListener implements ListensToEverything {
 

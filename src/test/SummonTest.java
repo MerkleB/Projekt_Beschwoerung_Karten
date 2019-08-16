@@ -3,9 +3,10 @@ package test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import main.Effect;
-import main.GameAction;
-import main.Summon;
+
+import main.Action.Effect;
+import main.Action.GameAction;
+import main.Card.Summon;
 import main.exception.NoCardException;
 import test.mok.MokProvider;
 

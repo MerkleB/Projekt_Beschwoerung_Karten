@@ -1,6 +1,8 @@
-package main;
+package main.GameApplication;
 
 import java.util.UUID;
+
+import main.Card.CollectsMagicEnergy;
 
 public interface Player extends HoldingCards, CollectsMagicEnergy{
 	/**

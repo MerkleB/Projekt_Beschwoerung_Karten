@@ -6,9 +6,9 @@ import java.lang.reflect.Field;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.Card;
-import main.Spell;
-import main.Summon;
+import main.Card.Card;
+import main.Card.Spell;
+import main.Card.Summon;
 import main.build_cards.CardFactory;
 import main.build_cards.CreatesCards;
 import main.build_cards.KnowsSummonAscentHierarchy;

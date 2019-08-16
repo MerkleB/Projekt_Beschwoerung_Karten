@@ -4,9 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import main.Effect;
-import main.GameAction;
-import main.Spell;
+
+import main.Action.Effect;
+import main.Action.GameAction;
+import main.Card.Spell;
 import main.exception.NoCardException;
 import test.mok.MokProvider;
 

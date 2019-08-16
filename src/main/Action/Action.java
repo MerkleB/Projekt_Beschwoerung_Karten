@@ -2,11 +2,9 @@ package main.Action;
 
 import java.util.Hashtable;
 
-import main.Card;
-import main.GameAction;
-import main.Player;
-import main.Stackable;
-import main.Summon;
+import main.Card.Card;
+import main.Card.Summon;
+import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
 public abstract class Action implements GameAction {

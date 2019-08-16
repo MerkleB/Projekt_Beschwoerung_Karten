@@ -1,6 +1,6 @@
 package main.build_cards;
 
-import main.Summon;
+import main.Card.Summon;
 
 public interface KnowsSummonAscentHierarchy {
 	public void addSummonToHierarchy(Summon summon);

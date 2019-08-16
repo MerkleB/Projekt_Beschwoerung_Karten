@@ -1,4 +1,6 @@
-package main;
+package main.Action;
+
+import main.Card.Card;
 
 public interface Effect extends Stackable {
 	public String getDescription();

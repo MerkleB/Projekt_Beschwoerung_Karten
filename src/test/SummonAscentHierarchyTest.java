@@ -5,8 +5,9 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Field;
 import org.junit.Before;
 import org.junit.Test;
-import main.GameAction;
-import main.Summon;
+
+import main.Action.GameAction;
+import main.Card.Summon;
 import main.build_cards.KnowsSummonAscentHierarchy;
 import main.util.RankLevelMapper;
 import main.util.mapsRankAndLevel;

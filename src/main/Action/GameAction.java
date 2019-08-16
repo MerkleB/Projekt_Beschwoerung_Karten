@@ -1,5 +1,6 @@
-package main;
+package main.Action;
 
+import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
 public interface GameAction extends Stackable {

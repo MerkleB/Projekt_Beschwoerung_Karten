@@ -1,8 +1,7 @@
 package main.Action;
 
-import main.GameStack;
-import main.Player;
-import main.Stackable;
+import main.GameApplication.GameStack;
+import main.GameApplication.Player;
 import main.Listeners.GameListener;
 import main.exception.NoCardException;
 import main.exception.NotActivableException;

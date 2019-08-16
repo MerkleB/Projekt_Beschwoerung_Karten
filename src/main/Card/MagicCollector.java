@@ -1,10 +1,14 @@
-package main;
+package main.Card;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import main.Action.Effect;
+import main.Action.GameAction;
+import main.Action.Stackable;
+import main.GameApplication.Player;
 import main.build_cards.CardTypes;
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;

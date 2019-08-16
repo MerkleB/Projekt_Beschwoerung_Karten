@@ -1,4 +1,8 @@
-package main;
+package main.GameApplication;
+
+import main.Card.Card;
+import main.Card.Spell;
+import main.Card.Summon;
 
 public interface HoldingCards {
 	public Card findCard(String id);

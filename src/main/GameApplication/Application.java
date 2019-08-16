@@ -1,4 +1,4 @@
-package main;
+package main.GameApplication;
 
 import main.Listeners.GameActionListener;
 import main.Listeners.GameListener;

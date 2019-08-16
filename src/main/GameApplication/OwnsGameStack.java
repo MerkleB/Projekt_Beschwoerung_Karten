@@ -1,6 +1,8 @@
-package main;
+package main.GameApplication;
 
 import java.util.ArrayList;
+
+import main.Action.Stackable;
 
 public interface OwnsGameStack extends Runnable {
 	public void addEntry(Stackable entry);

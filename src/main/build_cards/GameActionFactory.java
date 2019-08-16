@@ -1,6 +1,6 @@
 package main.build_cards;
 
-import main.GameAction;
+import main.Action.GameAction;
 
 public class GameActionFactory implements CreatesActions {
 	

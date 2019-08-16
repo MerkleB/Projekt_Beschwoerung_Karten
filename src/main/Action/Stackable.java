@@ -1,7 +1,9 @@
-package main;
+package main.Action;
 
 import java.util.Hashtable;
 
+import main.Card.Card;
+import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
 public interface Stackable{

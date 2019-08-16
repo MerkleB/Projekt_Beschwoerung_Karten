@@ -1,6 +1,6 @@
 package main.Listeners;
 
-import main.GameAction;
+import main.Action.GameAction;
 
 public interface GameActionListener {
 	public void actionActivated(GameAction action);

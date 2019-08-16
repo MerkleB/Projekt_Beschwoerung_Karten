@@ -1,4 +1,4 @@
-package main;
+package main.Card;
 
 public interface CollectsMagicEnergy {
 	public int getFreeEnergy();

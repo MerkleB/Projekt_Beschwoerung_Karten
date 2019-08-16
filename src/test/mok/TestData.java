@@ -2,12 +2,12 @@ package test.mok;
 
 import java.util.Hashtable;
 
-import main.Card;
-import main.Effect;
-import main.GameAction;
-import main.MagicCollector;
-import main.Spell;
-import main.Summon;
+import main.Action.Effect;
+import main.Action.GameAction;
+import main.Card.Card;
+import main.Card.MagicCollector;
+import main.Card.Spell;
+import main.Card.Summon;
 
 public class TestData {
 	public static Card getCard(String card_id) {

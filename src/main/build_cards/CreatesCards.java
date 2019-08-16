@@ -1,6 +1,6 @@
 package main.build_cards;
 
-import main.Card;
+import main.Card.Card;
 import main.exception.*;
 
 public interface CreatesCards {

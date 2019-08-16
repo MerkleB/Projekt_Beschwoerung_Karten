@@ -31,66 +31,50 @@ public class MagicCollectorTest {
 
 	@Test
 	public void testIncreaseFreeEnergyFromUsed() {
-		try {
-			cut.useEnergy(3);
-			if(!(cut.getUsedEnergy() == 3 && cut.getFreeEnergy() == 2)){
-				fail("Used Energy was not set properly");
-			}
-			
-			int remainingEnergieForUse = cut.useEnergy(3);
-			if(!(remainingEnergieForUse == 1 && cut.getUsedEnergy() == 5 && cut.getFreeEnergy() == 0)){
-				fail("When more energy should be used than available the remaining energy should've been retrieved");
-			}
-		} catch (NoCollectorException e) {
-			fail("Unexpected NoCollectorEception");
+		cut.useEnergy(3);
+		if(!(cut.getUsedEnergy() == 3 && cut.getFreeEnergy() == 2)){
+			fail("Used Energy was not set properly");
+		}
+		
+		int remainingEnergieForUse = cut.useEnergy(3);
+		if(!(remainingEnergieForUse == 1 && cut.getUsedEnergy() == 5 && cut.getFreeEnergy() == 0)){
+			fail("When more energy should be used than available the remaining energy should've been retrieved");
 		}
 	}
 
 	@Test
 	public void testIncreaseFreeEnergyFromDepleted() {
-		try {
-			cut.depleteEnergyFromFree(2);
-			cut.increaseFreeEnergyFromDepleted(1);
-			if(!(cut.getFreeEnergy() == 4 && cut.getDepletedEnergy() == 1)) {
-				fail("Test failed - Expected: FreeEnergy=4, DepletedEnergy=1");
-			}
-		} catch (NoCollectorException e) {
-			fail("Unexpected NoCollectorEception");
+		cut.depleteEnergyFromFree(2);
+		cut.increaseFreeEnergyFromDepleted(1);
+		if(!(cut.getFreeEnergy() == 4 && cut.getDepletedEnergy() == 1)) {
+			fail("Test failed - Expected: FreeEnergy=4, DepletedEnergy=1");
 		}
 	}
 
 	@Test
 	public void testDepleteEnergyFromFree() {
-		try {
-			cut.depleteEnergyFromFree(2);
-			if(!(cut.getFreeEnergy() == 3 && cut.getDepletedEnergy() == 2)) {
-				fail("Test failed - Expected: FreeEnergy=3, DepletedEnergy=2");
-			}
-			
-			int remainingEnergyToDeplete = cut.depleteEnergyFromFree(4);
-			if(!(remainingEnergyToDeplete == 1 && cut.getFreeEnergy() == 0 && cut.getDepletedEnergy() == 5)) {
-				fail("Test failed - Expected: FreeEnergy=0, DepletedEnergy=5, RemainingEnergyToDeplete=1");
-			}
-		} catch (NoCollectorException e) {
-			fail("Unexpected NoCollectorEception");
+		cut.depleteEnergyFromFree(2);
+		if(!(cut.getFreeEnergy() == 3 && cut.getDepletedEnergy() == 2)) {
+			fail("Test failed - Expected: FreeEnergy=3, DepletedEnergy=2");
+		}
+		
+		int remainingEnergyToDeplete = cut.depleteEnergyFromFree(4);
+		if(!(remainingEnergyToDeplete == 1 && cut.getFreeEnergy() == 0 && cut.getDepletedEnergy() == 5)) {
+			fail("Test failed - Expected: FreeEnergy=0, DepletedEnergy=5, RemainingEnergyToDeplete=1");
 		}
 	}
 
 	@Test
 	public void testDepleteEnergyFromUsed() {
-		try {
-			cut.useEnergy(3);
-			cut.depleteEnergyFromUsed(2);
-			if(!(cut.getUsedEnergy() == 1 && cut.getDepletedEnergy() == 2)) {
-				fail("Test failed - Expected: UsedEnergy=1, DepletedEnergy=2");
-			}
-			
-			int remainingEnergyToDeplete = cut.depleteEnergyFromUsed(2);
-			if(!(cut.getUsedEnergy() == 0 && cut.getDepletedEnergy() == 3 && remainingEnergyToDeplete == 1)) {
-				fail("Test failed - Expected: UsedEnergy=1, DepletedEnergy=2, remainingEnergyToDeplete=1");
-			}
-		} catch (NoCollectorException e) {
-			fail("Unexpected NoCollectorEception");
+		cut.useEnergy(3);
+		cut.depleteEnergyFromUsed(2);
+		if(!(cut.getUsedEnergy() == 1 && cut.getDepletedEnergy() == 2)) {
+			fail("Test failed - Expected: UsedEnergy=1, DepletedEnergy=2");
+		}
+		
+		int remainingEnergyToDeplete = cut.depleteEnergyFromUsed(2);
+		if(!(cut.getUsedEnergy() == 0 && cut.getDepletedEnergy() == 3 && remainingEnergyToDeplete == 1)) {
+			fail("Test failed - Expected: UsedEnergy=1, DepletedEnergy=2, remainingEnergyToDeplete=1");
 		}
 	}
 

@@ -43,6 +43,13 @@ public class Spell implements Card {
 			this.actions.get(actions[i]).setActiv(activFor);
 		}
 	}
+
+	@Override
+	public void setActivBy(String[] actions, Player activFor, Stackable activator) {
+		for(int i=0; i<actions.length; i++) {
+			this.actions.get(actions[i]).setActivBy(activator, activFor);
+		}
+	}
 	
 	@Override
 	public void setInactive() {
@@ -204,8 +211,6 @@ public class Spell implements Card {
 			if(!id.equals(anObject.id)) return false;
 		}
 		return true;
-	}
-	
-	
+	}	
 
 }

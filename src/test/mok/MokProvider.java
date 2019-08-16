@@ -3,6 +3,7 @@ package test.mok;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import main.Card;
 import main.Effect;
@@ -186,6 +187,72 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				return 0;
 			}
+
+			@Override
+			public int restoreFreeEnergy() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int increaseFreeEnergy(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int decreaseFreeEnergy(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int increaseFreeEnergyFromUsed(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int increaseFreeEnergyFromDepleted(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int useEnergy(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int depleteEnergyFromFree(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int depleteEnergyFromUsed(int magicEnergy) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public UUID getID() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public int decreaseSummonigPoints(int costs) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int addSummoningPoints(int points) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
 		};
 	}
 
@@ -266,6 +333,18 @@ public class MokProvider {
 			public void activateBy(Stackable stackable, Player activator) throws NotActivableException {
 				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			public void setActivBy(Stackable stackable, Player player) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public Stackable getActivatingStackable() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

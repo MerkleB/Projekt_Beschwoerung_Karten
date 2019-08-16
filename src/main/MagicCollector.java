@@ -9,7 +9,7 @@ import main.build_cards.CardTypes;
 import main.exception.NoCardException;
 import main.exception.NoCollectorException;
 
-public class MagicCollector implements Card{
+public class MagicCollector implements Card, CollectsMagicEnergy{
 
 	private Card realCard;
 	private int maxEnergy;
@@ -61,17 +61,19 @@ public class MagicCollector implements Card{
 		maxEnergy = magicEnergy;
 	}
 
-	public int getFreeEnergy() throws NoCollectorException {
+	public int getFreeEnergy() {
 		return freeEnergy;
 	}
 	
-	public int restoreFreeEnergy() throws NoCollectorException {
+	@Override
+	public int restoreFreeEnergy() {
 		freeEnergy = freeEnergy + usedEnergy;
 		usedEnergy = 0;
 		return freeEnergy;
 	}
 	
-	public int increaseFreeEnergy(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int increaseFreeEnergy(int magicEnergy) {
 		int remainingEnergy = 0;
 		if(freeEnergy + magicEnergy < maxEnergy) {
 			freeEnergy = freeEnergy + magicEnergy;
@@ -82,7 +84,8 @@ public class MagicCollector implements Card{
 		return remainingEnergy;
 	}
 	
-	public int decreaseFreeEnergy(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int decreaseFreeEnergy(int magicEnergy) {
 		int remainingEnergy = 0;
 		if(freeEnergy - magicEnergy > 0) {
 			freeEnergy = freeEnergy - magicEnergy;
@@ -93,7 +96,8 @@ public class MagicCollector implements Card{
 		return remainingEnergy;
 	}
 	
-	public int increaseFreeEnergyFromUsed(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int increaseFreeEnergyFromUsed(int magicEnergy) {
 		int remainingEnergy = 0;
 		if(usedEnergy > magicEnergy) {
 			usedEnergy = usedEnergy - magicEnergy;
@@ -106,7 +110,8 @@ public class MagicCollector implements Card{
 		return remainingEnergy;
 	}
 	
-	public int increaseFreeEnergyFromDepleted(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int increaseFreeEnergyFromDepleted(int magicEnergy) {
 		int remainingEnergy = 0;
 		if(depletedEnergy > magicEnergy) {
 			depletedEnergy = depletedEnergy - magicEnergy;
@@ -119,11 +124,13 @@ public class MagicCollector implements Card{
 		return remainingEnergy;
 	}
 	
-	public int getUsedEnergy() throws NoCollectorException {
+	@Override
+	public int getUsedEnergy() {
 		return usedEnergy;
 	}
 	
-	public int useEnergy(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int useEnergy(int magicEnergy) {
 		int remainingUsedEnergy = 0;
 		if(freeEnergy > magicEnergy) {
 			freeEnergy = freeEnergy - magicEnergy;
@@ -136,11 +143,13 @@ public class MagicCollector implements Card{
 		return remainingUsedEnergy;
 	}
 	
-	public int getDepletedEnergy() throws NoCollectorException {
+	@Override
+	public int getDepletedEnergy() {
 		return depletedEnergy;
 	}
 	
-	public int depleteEnergyFromFree(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int depleteEnergyFromFree(int magicEnergy) {
 		int remainingDepletion = 0;
 		if(freeEnergy > magicEnergy) {
 			freeEnergy = freeEnergy - magicEnergy;
@@ -153,7 +162,8 @@ public class MagicCollector implements Card{
 		return remainingDepletion;
 	}
 	
-	public int depleteEnergyFromUsed(int magicEnergy) throws NoCollectorException {
+	@Override
+	public int depleteEnergyFromUsed(int magicEnergy) {
 		int remainingDepletion = 0;
 		if(usedEnergy > magicEnergy) {
 			usedEnergy = usedEnergy - magicEnergy;
@@ -280,6 +290,12 @@ public class MagicCollector implements Card{
 	}
 
 	@Override
+	public void setActivBy(String[] actions, Player activFor, Stackable activator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void setInactive() {
 		// TODO Auto-generated method stub
 	}
@@ -339,8 +355,5 @@ public class MagicCollector implements Card{
 		});
 		return actionList;
 	}
-	
-	
-
 
 }

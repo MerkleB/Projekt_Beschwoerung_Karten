@@ -71,6 +71,13 @@ public class Summon implements Card{
 	}
 	
 	@Override
+	public void setActivBy(String[] actions, Player activFor, Stackable activator) {
+		for(int i=0; i<actions.length; i++) {
+			this.actions.get(actions[i]).setActivBy(activator, activFor);
+		}
+	}
+	
+	@Override
 	public void setInactive() {
 		actions.forEach((k,a) -> {
 			a.setInactiv();

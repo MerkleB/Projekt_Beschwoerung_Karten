@@ -9,9 +9,8 @@ import main.Action.Effect;
 import main.Action.GameAction;
 import main.Action.Stackable;
 import main.Card.Card;
-import main.Card.Spell;
-import main.Card.Summon;
 import main.GameApplication.GameZone;
+import main.GameApplication.IsPhaseInGame;
 import main.GameApplication.Player;
 import main.build_cards.CreatesActions;
 import main.build_cards.CreatesEffects;
@@ -122,36 +121,6 @@ public class MokProvider {
 	
 	public static Player getPlayer() {
 		return new Player() {
-			
-			@Override
-			public Summon findSummon(String id) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Spell findSpell(String id) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public Card findCard(String id) {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public void deavtivateAll() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void activate(String[] actions, Player player) {
-				// TODO Auto-generated method stub
-				
-			}
 
 			@Override
 			public GameZone getGameZone(String zoneName) {
@@ -238,8 +207,7 @@ public class MokProvider {
 
 			@Override
 			public UUID getID() {
-				// TODO Auto-generated method stub
-				return null;
+				return UUID.fromString("Ben-Shan Jeth");
 			}
 
 			@Override
@@ -258,7 +226,11 @@ public class MokProvider {
 
 	public static GameAction getGameAction(String actionName){
 		return new GameAction(){
-
+			
+			public boolean withdrawn = false;
+			public boolean activ = false;
+			public boolean isActivated = false;
+			
 			@Override
 			public String getName() {
 				return actionName;
@@ -266,20 +238,17 @@ public class MokProvider {
 
 			@Override
 			public void execute() {
-				// TODO Auto-generated method stub
-				
+				//do nothing
 			}
 
 			@Override
 			public void withdraw() {
-				// TODO Auto-generated method stub
-				
+				withdrawn = true;
 			}
 
 			@Override
 			public void setInactiv() {
-				// TODO Auto-generated method stub
-				
+				activ = false;
 			}
 
 			@Override
@@ -308,12 +277,12 @@ public class MokProvider {
 			@Override
 			public boolean isWithdrawn() {
 				// TODO Auto-generated method stub
-				return false;
+				return withdrawn;
 			}
 
 			@Override
 			public void activate(Player activator) throws NotActivableException {
-				// TODO Auto-generated method stub
+				isActivated = true;
 				
 			}
 
@@ -325,20 +294,17 @@ public class MokProvider {
 
 			@Override
 			public void setActiv(Player activFor) {
-				// TODO Auto-generated method stub
-				
+				activ = true;
 			}
 
 			@Override
 			public void activateBy(Stackable stackable, Player activator) throws NotActivableException {
-				// TODO Auto-generated method stub
-				
+				isActivated = true;
 			}
 
 			@Override
 			public void setActivBy(Stackable stackable, Player player) {
-				// TODO Auto-generated method stub
-				
+				activ = true;
 			}
 
 			@Override
@@ -633,5 +599,25 @@ public class MokProvider {
 				return result;
 			}
 	};
+	}
+	public static IsPhaseInGame getGamePhase() {
+		return new IsPhaseInGame() {
+			
+			@Override
+			public void restorePhaseStatus() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public String getName() {
+				return "MainPhase";
+			}
+			
+			@Override
+			public ArrayList<String> getActionsToActivate() {
+				return getActionDefinitions().getPhaseActions(getName());
+			}
+		};
 	}
 }

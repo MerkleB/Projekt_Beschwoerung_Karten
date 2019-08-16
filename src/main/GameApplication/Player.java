@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import main.Card.CollectsMagicEnergy;
 
-public interface Player extends HoldingCards, CollectsMagicEnergy{
+public interface Player extends CollectsMagicEnergy{
 	/**
 	 * Retrieves the GameZone with zoneName
 	 * @param zoneName

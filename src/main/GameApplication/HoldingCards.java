@@ -1,13 +1,14 @@
 package main.GameApplication;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 import main.Card.Card;
-import main.Card.Spell;
-import main.Card.Summon;
 
 public interface HoldingCards {
-	public Card findCard(String id);
-	public Summon findSummon(String id);
-	public Spell findSpell(String id);
-	public void activate(String[] actions, Player player);
-	public void deavtivateAll();
+	public Card findCard(UUID id);
+	public ArrayList<Card> getCards();
+	public void addCard(Card card);
+	public void removeCard(Card card);
+	public void removeCard(UUID id);
 }

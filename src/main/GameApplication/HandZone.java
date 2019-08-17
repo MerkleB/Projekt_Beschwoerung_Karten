@@ -5,57 +5,95 @@ import java.util.Hashtable;
 import java.util.UUID;
 
 import main.Card.Card;
+import main.exception.NoCardException;
+import main.jsonObjects.ActionDefinitionLibrary;
+import main.jsonObjects.HoldsActionDefinitions;
+import main.util.ActionMatchFinder;
 
 public class HandZone implements GameZone {
 	
 	private ArrayList<Card> cardList;
 	private Hashtable<UUID, Card> cardHash;
+	private Player owner;
 	
-	public HandZone() {
+	public HandZone(Player owner) {
 		cardList = new ArrayList<Card>();
 		cardHash = new Hashtable<UUID, Card>();
+		this.owner = owner;
 	}
 	
 	@Override
 	public ArrayList<Card> getCards() {
-		// TODO Auto-generated method stub
-		return null;
+		return cardList;
 	}
 
 	@Override
 	public Card findCard(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		return cardHash.get(id);
 	}
 
 	@Override
-	public void addCard(Card card) {
-		// TODO Auto-generated method stub
-		
+	public void addCard(Card card) {	
+		if(card == null) return;
+		if(!cardHash.containsKey(card.getID())) {
+			try {
+				card.setOwningPlayer(owner);
+				cardHash.put(card.getID(), card);
+				cardList.add(card);
+			} catch (NoCardException e) {
+				System.out.println("Abort adding of card. Reason: "+e.getMessage());
+			}			
+		}
 	}
 
 	@Override
 	public void removeCard(Card card) {
-		// TODO Auto-generated method stub
+		int indexForRemoval = -1;
+		for(int i=0; i<cardList.size(); i++) {
+			if(cardList.get(i) == card) {
+				indexForRemoval = i;
+				break;
+			}
+		}
+		if(indexForRemoval > -1) cardList.remove(indexForRemoval);
 		
+		cardHash.remove(card.getID());		
 	}
 
 	@Override
 	public void removeCard(UUID id) {
-		// TODO Auto-generated method stub
-		
+		Card cardToRemove = cardHash.get(id);
+		if(cardToRemove != null) {
+			removeCard(cardToRemove);
+		}
 	}
 
 	@Override
 	public void activate(Player player, IsPhaseInGame gamePhase) {
-		// TODO Auto-generated method stub
-
+		HoldsActionDefinitions library = ActionDefinitionLibrary.getInstance();
+		ArrayList<String> zoneActions = library.getZoneActions(getName());
+		ArrayList<String> phaseActions = gamePhase.getActionsToActivate();
+		ArrayList<String> actionsToActivate =  ActionMatchFinder.getInstance().getMatchedActions(phaseActions, zoneActions);
+		for(Card card : cardList) {
+			card.setActiv(actionsToActivate, player);
+		}
 	}
 
 	@Override
 	public void deavtivateAll() {
-		// TODO Auto-generated method stub
+		for(Card card : cardList) {
+			card.setInactive();
+		}
+	}
 
+	@Override
+	public Player getOwner() {
+		return owner;
+	}
+
+	@Override
+	public String getName() {
+		return "HandZone";
 	}
 
 }

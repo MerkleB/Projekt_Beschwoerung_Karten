@@ -207,7 +207,7 @@ public class MokProvider {
 
 			@Override
 			public UUID getID() {
-				return UUID.fromString("Ben-Shan Jeth");
+				return UUID.randomUUID();
 			}
 
 			@Override

@@ -68,16 +68,22 @@ public class Summon implements Card{
 	}
 	
 	@Override
-	public void setActiv(String[] actions, Player activFor) {
-		for(int i=0; i<= actions.length; i++) {
-			this.actions.get(actions[i]).setActiv(activFor);
+	public void setActiv(ArrayList<String> actions, Player activFor) {
+		for(int i=0; i < actions.size(); i++) {
+			String actionName = actions.get(i);
+			if(this.actions.containsKey(actionName)) {
+				this.actions.get(actionName).setActiv(activFor);
+			}
 		}
 	}
 	
 	@Override
-	public void setActivBy(String[] actions, Player activFor, Stackable activator) {
-		for(int i=0; i<actions.length; i++) {
-			this.actions.get(actions[i]).setActivBy(activator, activFor);
+	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator) {
+		for(int i=0; i < actions.size(); i++) {
+			String actionName = actions.get(i);
+			if(this.actions.containsKey(actionName)) {
+				this.actions.get(actions.get(i)).setActivBy(activator, activFor);
+			}
 		}
 	}
 	

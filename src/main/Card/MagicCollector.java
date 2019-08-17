@@ -289,12 +289,12 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	}
 
 	@Override
-	public void setActiv(String[] actions, Player activFor) {
+	public void setActiv(ArrayList<String> actions, Player activFor) {
 		
 	}
 
 	@Override
-	public void setActivBy(String[] actions, Player activFor, Stackable activator) {
+	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator) {
 		// TODO Auto-generated method stub
 		
 	}

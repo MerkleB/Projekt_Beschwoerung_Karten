@@ -10,7 +10,7 @@ public class EvokeSummon extends Action {
 	
 	@Override
 	public String getName() {
-		return getClass().getName();
+		return "EvokeSummon";
 	}
 
 	@Override

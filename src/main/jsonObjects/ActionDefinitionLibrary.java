@@ -12,7 +12,7 @@ import main.util.FileLoader;
 
 public class ActionDefinitionLibrary implements HoldsActionDefinitions {
 	
-	private static ActionDefinitionLibrary instance;
+	private static HoldsActionDefinitions instance;
 	private String resourcePath;
 	private TreeMap<String, ArrayList<String>> cardActions;
 	private TreeMap<String, ArrayList<String>> phaseActions;
@@ -21,7 +21,7 @@ public class ActionDefinitionLibrary implements HoldsActionDefinitions {
 	public static HoldsActionDefinitions getInstance() {
 		if(instance == null) {
 			instance = new ActionDefinitionLibrary();
-			instance.resourcePath = "./main/json/game_settings/actions.json";
+			((ActionDefinitionLibrary)instance).resourcePath = "./main/json/game_settings/actions.json";
 		}
 		return instance;
 	}

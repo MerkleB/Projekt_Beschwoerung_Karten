@@ -17,11 +17,6 @@ public abstract class Action implements GameAction {
 	protected Player actionIsActivFor;
 	protected Stackable activator;
     
-    
-    @Override
-	public String getName() {
-		return getClass().getName();
-	}
 
 	@Override
 	public void activate(Player activator) throws NotActivableException {

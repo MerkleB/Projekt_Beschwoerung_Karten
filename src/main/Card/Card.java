@@ -24,8 +24,8 @@ public interface Card{
 	public void setID(UUID uuid) throws NoCardException;
 	public void show();
 	public void show(Graphics2D graphics);
-	public void setActiv(String[] actions, Player activFor);
-	public void setActivBy(String[] actions, Player activFor, Stackable activator);
+	public void setActiv(ArrayList<String> actions, Player activFor);
+	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator);
 	public void setInactive();
 	public void activateGameAction(String action, Player activatingPlayer);
 	public void activateGameAction(String action, Player activatingPlayer, Stackable activator);

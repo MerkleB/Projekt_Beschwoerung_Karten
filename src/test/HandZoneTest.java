@@ -2,12 +2,14 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +21,8 @@ import main.GameApplication.HandZone;
 import main.GameApplication.IsPhaseInGame;
 import main.GameApplication.Player;
 import main.exception.NoCardException;
+import main.jsonObjects.ActionDefinitionLibrary;
+import main.jsonObjects.HoldsActionDefinitions;
 import test.mok.MokProvider;
 import test.mok.TestData;
 
@@ -28,26 +32,54 @@ public class HandZoneTest {
 	private Summon summon;
 	private Spell spell;
 	private Player owner;
+	private UUID spellID;
+	private UUID summonID;
+	private static boolean libraryAlreadyMokked;
+	private static HoldsActionDefinitions realLibrary;
 	
 	@Before
 	public void setUp() {
-		cut = new HandZone();
+		owner = MokProvider.getPlayer();
+		cut = new HandZone(owner);
 		summon = (Summon)TestData.getCard("bsc-su-00-1");
 		spell = (Spell)TestData.getCard("bsc-su-01");
 		try {
-			owner = MokProvider.getPlayer();
 			spell.setOwningPlayer(owner);
-			String uuidString = spell.getName()+spell.getOwningPlayer().getID()+1;
-			spell.setID(UUID.fromString(uuidString));
+			spellID = UUID.randomUUID();
+			spell.setID(spellID);
 			summon.setOwningPlayer(owner);
-			uuidString = summon.getName()+summon.getOwningPlayer().getID()+1;
-			summon.setID(UUID.fromString(uuidString));
+			summonID = UUID.randomUUID();
+			summon.setID(summonID);
 			cut.addCard(spell);
 			cut.addCard(summon);
+			if(!libraryAlreadyMokked) {
+				libraryAlreadyMokked = true;
+				HoldsActionDefinitions library = ActionDefinitionLibrary.getInstance();
+				realLibrary = library;
+				try {
+					Field libraryInstance = library.getClass().getDeclaredField("instance");
+					libraryInstance.setAccessible(true);
+					HoldsActionDefinitions libraryMok = MokProvider.getActionDefinitions();
+					libraryInstance.set(null, libraryMok);
+				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+					fail("Error in setUp (mokking): "+e.getMessage());
+				}
+			}
 		} catch (NoCardException e) {
 			fail("Error in setUp: "+e.getMessage());
 		}
 		
+	}
+	
+	@AfterClass
+	public static void teardown() {
+		try {
+			Field instanceField = realLibrary.getClass().getDeclaredField("instance");
+			instanceField.setAccessible(true);
+			instanceField.set(null, realLibrary);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			fail("Error in teardown. Subsequent test may be affected.");
+		}
 	}
 	
 	@Test
@@ -63,8 +95,7 @@ public class HandZoneTest {
 
 	@Test
 	public void testFindCard() {
-		String uuidString = summon.getName()+summon.getOwningPlayer().getID()+1;
-		Card card = cut.findCard(UUID.fromString(uuidString));
+		Card card = cut.findCard(summonID);
 		if(card != summon) {
 			fail("Expected summon was not retrieved");
 		}
@@ -78,9 +109,9 @@ public class HandZoneTest {
 		} catch (NoCardException e) {
 			fail("Unexpected NoCardException");
 		}
-		String uuidString = summon.getName()+summon.getOwningPlayer().getID()+2;
-		UUID id = UUID.fromString(uuidString);
+		UUID id = UUID.randomUUID();
 		newSummon.setID(id);
+		cut.addCard(newSummon);
 		if(cut.getCards().get(2) != newSummon) {
 			fail("Expected newSummon was not retrieved");
 		}
@@ -97,8 +128,7 @@ public class HandZoneTest {
 		} catch (NoCardException e) {
 			fail("Unexpected NoCardException");
 		}
-		String uuidString = summon.getName()+summon.getOwningPlayer().getID()+1;
-		UUID id = UUID.fromString(uuidString);
+		UUID id = UUID.randomUUID();
 		newSummon.setID(id);
 		if(cut.findCard(id) != null) {
 			fail("Error: Same id should not be in hashtable");
@@ -136,41 +166,11 @@ public class HandZoneTest {
 	public void testActivate() {
 		IsPhaseInGame phase = MokProvider.getGamePhase();
 		cut.activate(owner, phase);
-		ArrayList<GameAction> actions;
 		ArrayList<Card> cards = cut.getCards();
 		ArrayList<String> controlList = getListOfActionsWichShouldBeActiv(phase.getName());
 		boolean allActionsHaveCorrectActivValue = true;
 		for(Card card : cards) {
-			boolean allCardActionsAreCorrect = true;
-			actions = card.getActions();
-			for(GameAction action : actions) {
-				try {
-					Field activField = action.getClass().getDeclaredField("activ");
-					boolean isActive = activField.getBoolean(action);
-					boolean activFoundInControlList = false;
-					boolean inactivFoundInControlList = false;
-					if(isActive) {
-						for(String controlEntry : controlList) {
-							if(action.getName().equals(controlEntry)) {
-								activFoundInControlList = true;
-							}
-						}
-					}else {
-						for(String controlEntry : controlList) {
-							if(action.getName().equals(controlEntry)) {
-								inactivFoundInControlList = true;
-							}
-						}
-					}
-					
-					if(!activFoundInControlList || inactivFoundInControlList) {
-						allCardActionsAreCorrect = false;
-					}
-				} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-					fail("ReflectionError in testActivate");
-				}
-			}
-			if(!allCardActionsAreCorrect) {
+			if(allActionsAreCorrectlySetInCard(card, controlList) == false) {
 				allActionsHaveCorrectActivValue = false;
 			}
 		}
@@ -194,6 +194,38 @@ public class HandZoneTest {
 		}
 		return activActions;
 	}
+	
+	private boolean allActionsAreCorrectlySetInCard(Card card, ArrayList<String> controlList) {
+		for(GameAction action : card.getActions()) {
+			if(fieldIsCorrectlySetInAction(action, controlList) == false) return false;
+		}
+		return true;
+	}
+	
+	private boolean fieldIsCorrectlySetInAction(GameAction action, ArrayList<String> controlList) {
+		Field activField;
+		try {
+			activField = action.getClass().getDeclaredField("activ");
+			activField.setAccessible(true);
+			boolean isActive = activField.getBoolean(action);
+			if(isActive) {
+				for(String controlEntry : controlList) {
+					if(action.getName().equals(controlEntry)) {
+						return true;
+					}
+				}
+			}else {
+				for(String controlEntry : controlList) {
+					if(action.getName().equals(controlEntry)) {
+						return false;
+					}
+				}
+			}
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			fail("ReflectionError in testActivate");
+		}
+		return true; //not activ but this is correct
+	}
 
 	@Test
 	public void testDeavtivateAll() {
@@ -207,6 +239,7 @@ public class HandZoneTest {
 				Field activField;
 				try {
 					activField = action.getClass().getDeclaredField("activ");
+					activField.setAccessible(true);
 					boolean isActive = activField.getBoolean(action);
 					if(isActive) {
 						allInactiv = false;

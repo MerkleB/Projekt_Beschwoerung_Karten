@@ -10,7 +10,7 @@ public interface Player extends CollectsMagicEnergy{
 	 * @param zoneName
 	 * @return GameZone of name == zoneName
 	 */
-	public GameZone getGameZone(String zoneName);
+	public IsAreaInGame getGameZone(String zoneName);
 	
 	/**
 	 * Get Players ID

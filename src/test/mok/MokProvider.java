@@ -9,7 +9,7 @@ import main.Action.Effect;
 import main.Action.GameAction;
 import main.Action.Stackable;
 import main.Card.Card;
-import main.GameApplication.GameZone;
+import main.GameApplication.IsAreaInGame;
 import main.GameApplication.IsPhaseInGame;
 import main.GameApplication.Player;
 import main.build_cards.CreatesActions;
@@ -123,7 +123,7 @@ public class MokProvider {
 		return new Player() {
 
 			@Override
-			public GameZone getGameZone(String zoneName) {
+			public IsAreaInGame getGameZone(String zoneName) {
 				// TODO Auto-generated method stub
 				return null;
 			}

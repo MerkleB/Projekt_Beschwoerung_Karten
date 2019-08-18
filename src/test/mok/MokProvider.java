@@ -221,6 +221,12 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				return 0;
 			}
+
+			@Override
+			public ArrayList<IsAreaInGame> getGameZones() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
 	}
 
@@ -238,6 +244,7 @@ public class MokProvider {
 
 			@Override
 			public void execute() {
+				if(activ && isActivated);
 				//do nothing
 			}
 
@@ -321,9 +328,11 @@ public class MokProvider {
 			private boolean initialized;
 			private ArrayList<String> zoneActions1;
 			private ArrayList<String> zoneActions2;
+			private ArrayList<String> zoneActions3;
 			private TreeMap<String, ArrayList<String>> zoneActions;
 			private ArrayList<String> phaseActions1;
 			private ArrayList<String> phaseActions2;
+			private ArrayList<String> phaseActions3;
 			private TreeMap<String, ArrayList<String>> phaseActions;
 			private ArrayList<String> cardActions1;
 			private ArrayList<String> cardActions2;
@@ -344,8 +353,11 @@ public class MokProvider {
 					zoneActions2 = new ArrayList<String>();
 					zoneActions2.add("Promote");
 					zoneActions2.add("AttackPlayer");
+					zoneActions3 = new ArrayList<String>();
+					zoneActions3.add("Draw");
 					zoneActions.put("HandZone", zoneActions1);
 					zoneActions.put("SummonZone", zoneActions2);
+					zoneActions.put("DeckZone", zoneActions3);
 					
 					phaseActions1 = new ArrayList<String>();
 					phaseActions1.add("Summon");
@@ -356,17 +368,22 @@ public class MokProvider {
 					phaseActions1.add("CallBack");
 					phaseActions2 = new ArrayList<String>();
 					phaseActions2.add("Cast");
+					phaseActions3 = new ArrayList<String>();
+					phaseActions3.add("Draw");
 					phaseActions.put("MainPhase", phaseActions1);
 					phaseActions.put("CombatPhase", phaseActions2);
+					phaseActions.put("DrawPhase", phaseActions3);
 					
 					cardActions1 = new ArrayList<String>();
 					cardActions1.add("Summon");
 					cardActions1.add("SetAsCollector");
 					cardActions1.add("Promote");
 					cardActions1.add("AttackPlayer");
+					cardActions1.add("Draw");
 					cardActions2 = new ArrayList<String>();
 					cardActions2.add("Cast");
 					cardActions2.add("SetAsCollector");
+					cardActions2.add("Draw");
 					cardActions3 = new ArrayList<String>();
 					cardActions3.add("CallBack");
 					cardActions.put("Summon", cardActions1);
@@ -600,7 +617,7 @@ public class MokProvider {
 			}
 	};
 	}
-	public static IsPhaseInGame getGamePhase() {
+	public static IsPhaseInGame getGamePhase(String phaseName) {
 		return new IsPhaseInGame() {
 			
 			@Override
@@ -611,7 +628,7 @@ public class MokProvider {
 			
 			@Override
 			public String getName() {
-				return "MainPhase";
+				return phaseName;
 			}
 			
 			@Override

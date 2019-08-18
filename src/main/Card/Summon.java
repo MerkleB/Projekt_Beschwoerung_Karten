@@ -26,6 +26,7 @@ public class Summon implements Card{
 	private int attack;
 	private int heal;
 	private int vitality;
+	private int initiative;
 	private int maxVitality;
 	private String summonClass;
 	private String rank;
@@ -46,6 +47,7 @@ public class Summon implements Card{
 		this.summoningPoints = summoningPoints;
 		this.attack = attack;
 		this.heal = heal;
+		this.initiative = 0;
 		this.maxVitality = vitality;
 		this.vitality = vitality;
 		this.summonClass = summonClass;
@@ -197,6 +199,14 @@ public class Summon implements Card{
 
 	public void setAttack(int attack) throws NoCardException {
 		this.attack = attack;
+	}
+	
+	public int getInitiative() {
+		return this.initiative; 
+	}
+	
+	public void setInitiative(int init) {
+		this.initiative = init;
 	}
 
 	public int getHeal() throws NoCardException {

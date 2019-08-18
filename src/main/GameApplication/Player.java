@@ -1,5 +1,6 @@
 package main.GameApplication;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import main.Card.CollectsMagicEnergy;
@@ -11,6 +12,12 @@ public interface Player extends CollectsMagicEnergy{
 	 * @return GameZone of name == zoneName
 	 */
 	public IsAreaInGame getGameZone(String zoneName);
+	
+	/**
+	 * Retrieves all game zones
+	 * @return list of game zones
+	 */
+	public ArrayList<IsAreaInGame> getGameZones();
 	
 	/**
 	 * Get Players ID

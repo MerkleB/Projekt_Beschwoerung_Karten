@@ -2,11 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import org.junit.AfterClass;
@@ -164,7 +161,7 @@ public class HandZoneTest {
 
 	@Test
 	public void testActivate() {
-		IsPhaseInGame phase = MokProvider.getGamePhase();
+		IsPhaseInGame phase = MokProvider.getGamePhase("MainPhase");
 		cut.activate(owner, phase);
 		ArrayList<Card> cards = cut.getCards();
 		ArrayList<String> controlList = getListOfActionsWichShouldBeActiv(phase.getName());
@@ -229,7 +226,7 @@ public class HandZoneTest {
 
 	@Test
 	public void testDeavtivateAll() {
-		IsPhaseInGame phase = MokProvider.getGamePhase();
+		IsPhaseInGame phase = MokProvider.getGamePhase("MainPhase");
 		cut.activate(owner, phase);
 		cut.deavtivateAll();
 		boolean allCardsAreInactiv = true;

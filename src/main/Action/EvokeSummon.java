@@ -1,6 +1,7 @@
 package main.Action;
 
 import main.GameApplication.GameStack;
+import main.GameApplication.IsAreaInGame;
 import main.GameApplication.Player;
 import main.Listeners.GameListener;
 import main.exception.NoCardException;
@@ -57,7 +58,18 @@ public class EvokeSummon extends Action {
 			try {
 				int remainingPoints = ownerOfCard.decreaseSummonigPoints(owningCard.getSummoningPoints());
 				if(remainingPoints != -1) {
-					//TODO: Summon card
+					IsAreaInGame handZone = actionIsActivFor.getGameZone("HandZone");
+					if(handZone == null) {
+						throw new RuntimeException("Fatal error: Player has no HandZone.");
+					}
+					handZone.removeCard(owningCard);
+					IsAreaInGame summonZone = actionIsActivFor.getGameZone("SummonZone");
+					if(summonZone == null) {
+						throw new RuntimeException("Fatal error: Player has no SummonZone");
+					}
+					summonZone.addCard(owningCard);
+					
+					GameListener.getInstance().actionExecuted(this);
 				}
 			} catch (NoCardException e) {
 				System.out.println("Servere Error: " + e.getMessage());

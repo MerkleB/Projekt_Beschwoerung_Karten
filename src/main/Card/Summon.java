@@ -16,23 +16,19 @@ import main.exception.NoCardException;
 import main.exception.NotActivableException;
 import main.util.RankLevelMapper;
 
+/**
+ * Represents a Summon Card in Game
+ * @author Benjamin Merkle
+ *
+ */
 public class Summon implements Card{	
 
 	private String name;
 	private String trivia;
 	private Effect[] effects;
-	private int magicPreservationValue;
-	private int summoningPoints;
-	private int attack;
-	private int heal;
-	private int vitality;
-	private int initiative;
-	private int maxVitality;
-	private String summonClass;
 	private String rank;
 	private KnowsSummonAscentHierarchy summonHierarchy;
-	private String element;
-	private int magicWastageOnDefeat;
+	private SummonStatus status;
 	private UUID id;
 	private MagicCollector collector;
 	private Player owner;
@@ -43,17 +39,8 @@ public class Summon implements Card{
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
 		this.effects = effects;
-		this.magicPreservationValue = preservationValue;
-		this.summoningPoints = summoningPoints;
-		this.attack = attack;
-		this.heal = heal;
-		this.initiative = 0;
-		this.maxVitality = vitality;
-		this.vitality = vitality;
-		this.summonClass = summonClass;
+		this.status = new SummonStatus(preservationValue, summoningPoints, attack, heal, vitality, 0, summonClass, element, magicWastedOnDefeat);
 		this.rank = rank;
-		this.element = element;
-		this.magicWastageOnDefeat = magicWastedOnDefeat;
 		if(owner != null) {
 			this.owner = owner;
 		}
@@ -155,10 +142,10 @@ public class Summon implements Card{
 	public void show() {
 		System.out.println("<<<"+getType().toString()+"-Card>>>");
 		System.out.println("Name: "+getName());
-		System.out.println("Class: "+getSummonClass()+" Rank: "+getRank());
-		System.out.println("Element: "+getElement());
-		System.out.println("SummingPoints: "+summoningPoints + " Preservation: "+magicPreservationValue);
-		System.out.println("Attack: "+attack+" Heal: "+heal+" Vitality: "+vitality);
+		System.out.println("Class: "+status.getSummonClass()+" Rank: "+getRank());
+		System.out.println("Element: "+status.getElement());
+		System.out.println("SummingPoints: "+status.getSummoningPoints() + " Preservation: "+status.getMagicPreservationValue());
+		System.out.println("Attack: "+status.getAttack()+" Heal: "+status.getHeal()+" Vitality: "+status.getVitality());
 		for(int i=0; i<effects.length; i++) {
 			System.out.println("Effect"+i+": "+effects[i].getDescription());
 		}
@@ -177,72 +164,6 @@ public class Summon implements Card{
 		return name;
 	}
 
-	public int getMagicPreservationValue() throws NoCardException {
-		return magicPreservationValue;
-	}
-
-	public void setMagicPreservationValue(int magicPreservationValue) throws NoCardException {
-		this.magicPreservationValue = magicPreservationValue;
-	}
-
-	public int getSummoningPoints() throws NoCardException {
-		return summoningPoints;
-	}
-
-	public void setSummoningPoints(int summoningPoints) throws NoCardException {
-		this.summoningPoints = summoningPoints;
-	}
-
-	public int getAttack() throws NoCardException {
-		return attack;
-	}
-
-	public void setAttack(int attack) throws NoCardException {
-		this.attack = attack;
-	}
-	
-	public int getInitiative() {
-		return this.initiative; 
-	}
-	
-	public void setInitiative(int init) {
-		this.initiative = init;
-	}
-
-	public int getHeal() throws NoCardException {
-		return heal;
-	}
-
-	public void setHeal(int heal) throws NoCardException {
-		this.heal = heal;
-	}
-
-	public int getVitality() throws NoCardException {
-		return vitality;
-	}
-
-	public void setVitality(int vitality) throws NoCardException {
-		this.vitality = vitality;
-	}
-	
-	public int decreaseVitality(int damage) throws NoCardException {
-		if(vitality > damage) {
-			vitality = vitality - damage;
-		}else {
-			vitality = 0;
-		}
-		return vitality;
-	}
-	
-	public int increaseVitality(int heal) throws NoCardException {
-		if(maxVitality > vitality + heal) {
-			vitality = vitality + heal;
-		}else {
-			vitality = maxVitality;
-		}
-		return vitality;
-	}
-
 	public void setName(String name) throws NoCardException {
 		this.name = name;
 	}
@@ -250,25 +171,13 @@ public class Summon implements Card{
 	public void setTrivia(String trivia) throws NoCardException {
 		this.trivia = trivia;
 	}
+	
+	public SummonStatus getStatus() {
+		return status;
+	}
 
 	public void setEffects(Effect[] effects) throws NoCardException {
 		this.effects = effects;
-	}
-
-	public int getMaxVitality() throws NoCardException {
-		return maxVitality;
-	}
-
-	public void setMaxVitality(int maxVitality) throws NoCardException {
-		this.maxVitality = maxVitality;
-	}
-
-	public String getSummonClass() {
-		return summonClass;
-	}
-
-	public void setSummonClass(String summonClass) throws NoCardException {
-		this.summonClass = summonClass;
 	}
 
 	public String getRank() {
@@ -281,22 +190,6 @@ public class Summon implements Card{
 	
 	public int getLevel() {
 		return RankLevelMapper.getInstance().mapRankToLevel(getRank());
-	}
-
-	public String getElement() {
-		return element;
-	}
-
-	public void setElement(String element) throws NoCardException{
-		this.element = element;
-	}
-
-	public int getMagicWastageOnDefeat() {
-		return magicWastageOnDefeat;
-	}
-
-	public void setMagicWastageOnDefeat(int magicWastageOnDefeat) throws NoCardException{
-		this.magicWastageOnDefeat = magicWastageOnDefeat;
 	}
 	
 	public void setSummonHierarchy(KnowsSummonAscentHierarchy hierarchy) {
@@ -335,20 +228,20 @@ public class Summon implements Card{
 		
 		if(!name.equals(anObject.name)) return false;
 		if(!trivia.equals(anObject.trivia)) return false;
-		if(!summonClass.equals(anObject.summonClass)) return false;
+		if(!status.getSummonClass().equals(anObject.getStatus().getSummonClass())) return false;
 		if(!rank.equals(anObject.rank)) return false;
-		if(!element.equals(anObject.element)) return false;
+		if(!status.getElement().equals(anObject.getStatus().getElement())) return false;
 		if(id != null) {
 			if(!id.equals(anObject.id)) return false;
 		}
-		if(magicPreservationValue != anObject.magicPreservationValue) return false;
+		if(status.getMagicPreservationValue() != anObject.getStatus().getMagicPreservationValue()) return false;
 		if(!collector.equals(anObject.collector)) return false;
-		if(summoningPoints != anObject.summoningPoints) return false;
-		if(attack != anObject.attack) return false;
-		if(heal != anObject.heal) return false;
-		if(maxVitality != anObject.maxVitality) return false;
-		if(vitality != anObject.vitality) return false;
-		if(magicWastageOnDefeat != anObject.magicWastageOnDefeat) return false;
+		if(status.getSummoningPoints() != anObject.getStatus().getSummoningPoints()) return false;
+		if(status.getAttack() != anObject.getStatus().getAttack()) return false;
+		if(status.getHeal() != anObject.getStatus().getHeal()) return false;
+		if(status.getMaxVitality() != anObject.getStatus().getMaxVitality()) return false;
+		if(status.getVitality() != anObject.getStatus().getVitality()) return false;
+		if(status.getMagicWastageOnDefeat() != anObject.getStatus().getMagicWastageOnDefeat()) return false;
 		
 		if(effects.length != anObject.effects.length) return false;
 		for(int i=0; i<effects.length; i++) {

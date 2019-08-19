@@ -37,17 +37,12 @@ public class EvokeSummon extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
-			
-		try {
 			Player ownerOfCard = owningCard.getOwningPlayer();
-			if(ownerOfCard.getSummoningPoints() >= owningCard.getSummoningPoints()) {
-				if(ownerOfCard.getFreeEnergy() >= owningCard.getMagicPreservationValue()) {
+			if(ownerOfCard.getSummoningPoints() >= owningCard.getStatus().getSummoningPoints()) {
+				if(ownerOfCard.getFreeEnergy() >= owningCard.getStatus().getMagicPreservationValue()) {
 					return true;
 				}
 			}
-		} catch (NoCardException e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 
@@ -55,24 +50,20 @@ public class EvokeSummon extends Action {
 	public void execute() {
 		if(isActivated && !withdrawn) {
 			Player ownerOfCard = owningCard.getOwningPlayer();
-			try {
-				int remainingPoints = ownerOfCard.decreaseSummonigPoints(owningCard.getSummoningPoints());
-				if(remainingPoints != -1) {
-					IsAreaInGame handZone = actionIsActivFor.getGameZone("HandZone");
-					if(handZone == null) {
-						throw new RuntimeException("Fatal error: Player has no HandZone.");
-					}
-					handZone.removeCard(owningCard);
-					IsAreaInGame summonZone = actionIsActivFor.getGameZone("SummonZone");
-					if(summonZone == null) {
-						throw new RuntimeException("Fatal error: Player has no SummonZone");
-					}
-					summonZone.addCard(owningCard);
-					
-					GameListener.getInstance().actionExecuted(this);
+			int remainingPoints = ownerOfCard.decreaseSummonigPoints(owningCard.getStatus().getSummoningPoints());
+			if(remainingPoints != -1) {
+				IsAreaInGame handZone = actionIsActivFor.getGameZone("HandZone");
+				if(handZone == null) {
+					throw new RuntimeException("Fatal error: Player has no HandZone.");
 				}
-			} catch (NoCardException e) {
-				System.out.println("Servere Error: " + e.getMessage());
+				handZone.removeCard(owningCard);
+				IsAreaInGame summonZone = actionIsActivFor.getGameZone("SummonZone");
+				if(summonZone == null) {
+					throw new RuntimeException("Fatal error: Player has no SummonZone");
+				}
+				summonZone.addCard(owningCard);
+				
+				GameListener.getInstance().actionExecuted(this);
 			}
 		}
 	}

@@ -6,7 +6,8 @@ import main.Card.Summon;
 
 public class SummonAscentHierarchy implements KnowsSummonAscentHierarchy{
 	
-	private TreeMap<String, Summon> summonHierarchie;	
+	private TreeMap<String, Summon> summonHierarchie;
+	private int experience;
 	
 	public static KnowsSummonAscentHierarchy getInstance() {
 		SummonAscentHierarchy instance = new SummonAscentHierarchy();
@@ -41,6 +42,30 @@ public class SummonAscentHierarchy implements KnowsSummonAscentHierarchy{
 	public Summon getSummonOfLevel(int level) {
 		String key = "Level-"+level;
 		return summonHierarchie.get(key);
+	}
+
+	@Override
+	public boolean canAscend() {
+		if(experience >= 4) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	public void addExperience() {
+		experience++;
+	}
+
+	@Override
+	public int getExperience() {
+		return experience;
+	}
+
+	@Override
+	public void clearExperience() {
+		experience = 0;
 	}
 	
 	

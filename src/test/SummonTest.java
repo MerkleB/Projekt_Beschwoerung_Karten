@@ -50,32 +50,24 @@ public class SummonTest {
 	@Test
 	public void testDecreaseVitality() {
 		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
-		try {
-			lcut.decreaseVitality(2);
-			if(lcut.getVitality() != 2) {
+			lcut.getStatus().decreaseVitality(2);
+			if(lcut.getStatus().getVitality() != 2) {
 				fail("Decrease of vitality was not successful.");
 			}
-		} catch (NoCardException e) {
-			fail("Unexpected NoCardException");
-		}
 	}
 
 	@Test
 	public void testIncreaseVitality() {
 		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
-		try {
-			lcut.decreaseVitality(2);
-			lcut.increaseVitality(1);
-			if(lcut.getVitality() != 3) {
+			lcut.getStatus().decreaseVitality(2);
+			lcut.getStatus().increaseVitality(1);
+			if(lcut.getStatus().getVitality() != 3) {
 				fail("Increase of vitality was not successful.");
 			}
-			lcut.increaseVitality(2);
-			if(lcut.getVitality() != 4) {
+			lcut.getStatus().increaseVitality(2);
+			if(lcut.getStatus().getVitality() != 4) {
 				fail("Viatility should not become more than max vitality");
 			}
-		} catch (NoCardException e) {
-			fail("Unexpected NoCardException");
-		}
 	}
 
 }

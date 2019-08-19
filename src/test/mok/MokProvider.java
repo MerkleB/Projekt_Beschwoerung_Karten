@@ -333,6 +333,7 @@ public class MokProvider {
 			private ArrayList<String> phaseActions1;
 			private ArrayList<String> phaseActions2;
 			private ArrayList<String> phaseActions3;
+			private ArrayList<String> phaseActions4;
 			private TreeMap<String, ArrayList<String>> phaseActions;
 			private ArrayList<String> cardActions1;
 			private ArrayList<String> cardActions2;
@@ -353,6 +354,7 @@ public class MokProvider {
 					zoneActions2 = new ArrayList<String>();
 					zoneActions2.add("Promote");
 					zoneActions2.add("AttackPlayer");
+					zoneActions2.add("Retract");
 					zoneActions3 = new ArrayList<String>();
 					zoneActions3.add("Draw");
 					zoneActions.put("HandZone", zoneActions1);
@@ -370,9 +372,12 @@ public class MokProvider {
 					phaseActions2.add("Cast");
 					phaseActions3 = new ArrayList<String>();
 					phaseActions3.add("Draw");
+					phaseActions4 = new ArrayList<String>();
+					phaseActions4.add("Retract");
 					phaseActions.put("MainPhase", phaseActions1);
 					phaseActions.put("CombatPhase", phaseActions2);
 					phaseActions.put("DrawPhase", phaseActions3);
+					phaseActions.put("ClashEndPhase", phaseActions4);
 					
 					cardActions1 = new ArrayList<String>();
 					cardActions1.add("Summon");
@@ -380,6 +385,7 @@ public class MokProvider {
 					cardActions1.add("Promote");
 					cardActions1.add("AttackPlayer");
 					cardActions1.add("Draw");
+					cardActions1.add("Retract");
 					cardActions2 = new ArrayList<String>();
 					cardActions2.add("Cast");
 					cardActions2.add("SetAsCollector");

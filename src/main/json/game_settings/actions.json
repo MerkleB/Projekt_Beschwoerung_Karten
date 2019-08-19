@@ -9,7 +9,7 @@
 		{
 			"actionName" : "Cast",
 			"cardTypes" : ["Spell"],
-			"phases" : ["Main","Combat"],
+			"phases" : ["Main","Combat","ClashBegin"],
 			"zones" : ["HandZone"]
 		},
 		{

@@ -22,13 +22,18 @@ import main.util.RankLevelMapper;
  *
  */
 public class Summon implements Card{	
-
+	
+	public static final String READY = "r";
+	public static final String USED = "u";
+	public static final String IMMOBILIZED = "i";
+	
 	private String name;
 	private String trivia;
 	private Effect[] effects;
 	private String rank;
 	private KnowsSummonAscentHierarchy summonHierarchy;
 	private SummonStatus status;
+	private String activityStatus;
 	private UUID id;
 	private MagicCollector collector;
 	private Player owner;
@@ -41,6 +46,7 @@ public class Summon implements Card{
 		this.effects = effects;
 		this.status = new SummonStatus(preservationValue, summoningPoints, attack, heal, vitality, 0, summonClass, element, magicWastedOnDefeat);
 		this.rank = rank;
+		this.setActivityStatus(READY);
 		if(owner != null) {
 			this.owner = owner;
 		}
@@ -56,6 +62,15 @@ public class Summon implements Card{
 		this.owner = owner;
 	}
 	
+	public String getActivityStatus() {
+		return activityStatus;
+	}
+
+	public void setActivityStatus(String activityStatus) {
+		if(!activityStatus.equals(IMMOBILIZED) && !activityStatus.equals(USED) && !activityStatus.equals(READY)) return;
+		this.activityStatus = activityStatus;
+	}
+
 	@Override
 	public void setActiv(ArrayList<String> actions, Player activFor) {
 		for(int i=0; i < actions.size(); i++) {

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import main.Action.Effect;
 import main.Action.GameAction;
+import main.GameApplication.IsPhaseInGame;
 
 public class GameListener implements ListensToEverything {
 
 	private static ListensToEverything instance;
 	private ArrayList<EffectListener> effect_listeners;
 	private ArrayList<GameActionListener> action_listeners;
+	private ArrayList<PhaseListener> phase_listeners;
 	
 	public static ListensToEverything getInstance() {
 		if(instance == null) {
@@ -49,11 +51,32 @@ public class GameListener implements ListensToEverything {
 		}
 	}
 	
+	@Override
+	public void phaseStarted(IsPhaseInGame phase) {
+		for(PhaseListener listener : phase_listeners) {
+			listener.phaseStarted(phase);
+		}
+	}
+
+	@Override
+	public void phaseEnded(IsPhaseInGame phase) {
+		for(PhaseListener listener : phase_listeners) {
+			listener.phaseEnded(phase);
+		}	
+	}
+
+	
 	public void addGameActionListener(GameActionListener listener) {
 		action_listeners.add(listener);
 	}
 	public void addEffectListener(EffectListener listener) {
 		effect_listeners.add(listener);
+	}
+	
+	@Override
+	public void addPhaseListener(PhaseListener listener) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

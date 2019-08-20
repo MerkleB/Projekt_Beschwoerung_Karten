@@ -91,6 +91,7 @@ public class SummonStatus {
 	}
 	
 	public int decreaseVitality(int damage){
+		//TODO: Raise damageEvent
 		int scDamage = getChangedStatus(damage, StatusChange.DAMAGE);
 		if(vitality > scDamage) {
 			vitality = vitality - scDamage;
@@ -101,6 +102,7 @@ public class SummonStatus {
 	}
 	
 	public int increaseVitality(int heal){
+		//TODO: Raise healEvent
 		int scMaxVitality = getChangedStatus(maxVitality, StatusChange.MAXVITALITY);
 		if(scMaxVitality > vitality + heal) {
 			vitality = vitality + heal;

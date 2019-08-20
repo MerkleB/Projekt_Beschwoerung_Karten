@@ -121,10 +121,17 @@ public class MokProvider {
 	
 	public static Player getPlayer() {
 		return new Player() {
-
+			
+			private ArrayList<IsAreaInGame> zones;
+			private UUID id = UUID.randomUUID();
+			
 			@Override
 			public IsAreaInGame getGameZone(String zoneName) {
-				// TODO Auto-generated method stub
+				for(IsAreaInGame zone : zones) {
+					if(zone.getName().equals(zoneName)) {
+						return zone;
+					}
+				}
 				return null;
 			}
 			
@@ -207,7 +214,7 @@ public class MokProvider {
 
 			@Override
 			public UUID getID() {
-				return UUID.randomUUID();
+				return id;
 			}
 
 			@Override
@@ -224,8 +231,7 @@ public class MokProvider {
 
 			@Override
 			public ArrayList<IsAreaInGame> getGameZones() {
-				// TODO Auto-generated method stub
-				return null;
+				return zones;
 			}
 		};
 	}

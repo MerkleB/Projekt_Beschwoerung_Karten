@@ -1,0 +1,34 @@
+{
+	"elements" : [
+		{
+			"name" : "Fire",
+			"weak" : ["Light"],
+			"strong" : ["Water"] 
+		},
+		{
+			"name" : "Water",
+			"weak" : ["Air"],
+			"strong" : ["Fire"] 
+		},
+		{
+			"name" : "Air",
+			"weak" : ["Darkness"],
+			"strong" : ["Ground"] 
+		},
+		{
+			"name" : "Ground",
+			"weak" : ["Water"],
+			"strong" : ["Air"] 
+		},
+		{
+			"name" : "Light",
+			"weak" : ["Ground"],
+			"strong" : ["Darkness"] 
+		},
+		{
+			"name" : "Darkness",
+			"weak" : ["Fire"],
+			"strong" : ["Light"] 
+		}
+	]
+}

@@ -32,6 +32,7 @@ public class Spell implements Card {
 		if(owner != null) {
 			this.owner = owner;
 		}
+		id = UUID.randomUUID();
 		this.effects = effects;
 		this.neededMagicEnergy = neededMagicEnergy;
 		this.actions = new TreeMap<String, GameAction>();

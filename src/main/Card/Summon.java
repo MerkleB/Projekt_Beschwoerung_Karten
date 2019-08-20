@@ -50,6 +50,7 @@ public class Summon implements Card{
 		if(owner != null) {
 			this.owner = owner;
 		}
+		id = UUID.randomUUID();
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
 			this.actions.put(action.getName(), action);

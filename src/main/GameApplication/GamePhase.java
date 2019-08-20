@@ -34,4 +34,18 @@ public class GamePhase implements IsPhaseInGame {
 		return actionsToActivate;
 	}
 
+	@Override
+	public void process() {
+		restorePhaseStatus();
+	}
+
+	@Override
+	public void leave() {
+		Player activPlayer = Application.getInstance(null).getGame().getActivePlayer();
+		ArrayList<IsAreaInGame> zones = activPlayer.getGameZones();
+		for(IsAreaInGame zone : zones) {
+			zone.deavtivateAll();
+		}
+	}
+
 }

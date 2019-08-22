@@ -44,4 +44,24 @@ public interface Player extends CollectsMagicEnergy{
 	 * @return New value of summoning points
 	 */
 	public int addSummoningPoints(int points);
+	
+	/**
+	 * Retrieves the current health points
+	 * @return Health points
+	 */
+	public int getHealthPoints();
+	
+	/**
+	 * Heals the player 
+	 * @param heal
+	 * @return new value of health points
+	 */
+	public int increaseHealthPoints(int heal);
+	
+	/**
+	 * Put damage to player
+	 * @param damage
+	 * @return new value of healt points
+	 */
+	public int decreaseHealthPoints(int damage);
 }

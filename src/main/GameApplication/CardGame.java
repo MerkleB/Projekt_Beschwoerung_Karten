@@ -36,7 +36,7 @@ public class CardGame implements Game {
 	}
 	
 	@Override
-	public void prompt(Player promptedPlayer, String message) {
+	public void prompt(Player promptedPlayer, String message, AcceptPromptAnswers prompter) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -45,6 +45,12 @@ public class CardGame implements Game {
 	public Player getPlayer(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public static void main(String[] args) {

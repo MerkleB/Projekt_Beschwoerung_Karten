@@ -647,6 +647,18 @@ public class MokProvider {
 			public ArrayList<String> getActionsToActivate() {
 				return getActionDefinitions().getPhaseActions(getName());
 			}
+
+			@Override
+			public void process() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void leave() {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 	}
 }

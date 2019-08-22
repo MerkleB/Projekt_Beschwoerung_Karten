@@ -218,9 +218,6 @@ public class Spell implements Card {
 		if(owner != null) {
 			if(!owner.equals(anObject.owner)) return false;
 		}
-		if(id != null) {
-			if(!id.equals(anObject.id)) return false;
-		}
 		return true;
 	}	
 

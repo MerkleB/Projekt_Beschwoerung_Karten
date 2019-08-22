@@ -247,9 +247,6 @@ public class Summon implements Card{
 		if(!status.getSummonClass().equals(anObject.getStatus().getSummonClass())) return false;
 		if(!rank.equals(anObject.rank)) return false;
 		if(!status.getElement().equals(anObject.getStatus().getElement())) return false;
-		if(id != null) {
-			if(!id.equals(anObject.id)) return false;
-		}
 		if(status.getMagicPreservationValue() != anObject.getStatus().getMagicPreservationValue()) return false;
 		if(!collector.equals(anObject.collector)) return false;
 		if(status.getSummoningPoints() != anObject.getStatus().getSummoningPoints()) return false;

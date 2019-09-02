@@ -38,6 +38,7 @@ public class Summon implements Card{
 	private MagicCollector collector;
 	private Player owner;
 	private TreeMap<String, GameAction> actions;
+	private ArrayList<Effect> enchantments;
 	
 	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, GameAction[] actions) {
 		this.name = name;
@@ -152,6 +153,10 @@ public class Summon implements Card{
 			effect = effects[index];
 		}
 		return effect;
+	}
+	
+	public ArrayList<Effect> getEnchantments() {
+		return enchantments;
 	}
 
 	@Override

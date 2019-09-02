@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import main.Action.Effect;
 import main.Action.GameAction;
+import main.Card.Card;
+import main.Card.StatusChange;
+import main.Card.Summon;
 import main.GameApplication.IsPhaseInGame;
 
 public class GameListener implements ListensToEverything {
@@ -12,6 +15,7 @@ public class GameListener implements ListensToEverything {
 	private ArrayList<EffectListener> effect_listeners;
 	private ArrayList<GameActionListener> action_listeners;
 	private ArrayList<PhaseListener> phase_listeners;
+	private ArrayList<SummonListener> summon_listeners;
 	
 	public static ListensToEverything getInstance() {
 		if(instance == null) {
@@ -64,8 +68,28 @@ public class GameListener implements ListensToEverything {
 			listener.phaseEnded(phase);
 		}	
 	}
-
 	
+	@Override
+	public void summonDestroyed(Card destroyer, Summon summon) {
+		for(SummonListener listener : summon_listeners) {
+			listener.summonDestroyed(destroyer, summon);
+		}
+	}
+
+	@Override
+	public void summonEnchanted(Effect effect, Summon summon) {
+		for(SummonListener listener : summon_listeners) {
+			listener.summonEnchanted(effect, summon);
+		}
+	}
+
+	@Override
+	public void summonStatusChanged(StatusChange change, Summon summon) {
+		for(SummonListener listener : summon_listeners) {
+			listener.summonStatusChanged(change, summon);
+		}
+	}
+
 	public void addGameActionListener(GameActionListener listener) {
 		action_listeners.add(listener);
 	}
@@ -75,8 +99,13 @@ public class GameListener implements ListensToEverything {
 	
 	@Override
 	public void addPhaseListener(PhaseListener listener) {
-		// TODO Auto-generated method stub
+		phase_listeners.add(listener);
 		
+	}
+	
+	@Override
+	public void addSummonListener(SummonListener listener) {
+		summon_listeners.add(listener);		
 	}
 
 }

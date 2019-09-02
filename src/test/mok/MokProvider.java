@@ -233,6 +233,24 @@ public class MokProvider {
 			public ArrayList<IsAreaInGame> getGameZones() {
 				return zones;
 			}
+
+			@Override
+			public int getHealthPoints() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int increaseHealthPoints(int heal) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public int decreaseHealthPoints(int damage) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
 		};
 	}
 

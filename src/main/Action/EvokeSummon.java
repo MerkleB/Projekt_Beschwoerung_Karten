@@ -6,6 +6,7 @@ import main.GameApplication.Player;
 import main.Listeners.GameListener;
 import main.exception.NoCardException;
 import main.exception.NotActivableException;
+import main.Card.*;
 
 public class EvokeSummon extends Action {
 	
@@ -38,8 +39,8 @@ public class EvokeSummon extends Action {
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
 			Player ownerOfCard = owningCard.getOwningPlayer();
-			if(ownerOfCard.getSummoningPoints() >= owningCard.getStatus().getSummoningPoints()) {
-				if(ownerOfCard.getFreeEnergy() >= owningCard.getStatus().getMagicPreservationValue()) {
+			if(ownerOfCard.getSummoningPoints() >= ((Summon) owningCard).getStatus().getSummoningPoints()) {
+				if(ownerOfCard.getFreeEnergy() >= ((Summon) owningCard).getStatus().getMagicPreservationValue()) {
 					return true;
 				}
 			}
@@ -50,7 +51,7 @@ public class EvokeSummon extends Action {
 	public void execute() {
 		if(isActivated && !withdrawn) {
 			Player ownerOfCard = owningCard.getOwningPlayer();
-			int remainingPoints = ownerOfCard.decreaseSummonigPoints(owningCard.getStatus().getSummoningPoints());
+			int remainingPoints = ownerOfCard.decreaseSummonigPoints(((Summon) owningCard).getStatus().getSummoningPoints());
 			if(remainingPoints != -1) {
 				IsAreaInGame handZone = actionIsActivFor.getGameZone("HandZone");
 				if(handZone == null) {

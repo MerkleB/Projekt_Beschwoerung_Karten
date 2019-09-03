@@ -8,8 +8,7 @@ import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
 public abstract class Action implements GameAction {
-	protected Summon owningCard;
-
+	protected Card owningCard;
 	protected boolean activ = false;
 	protected boolean withdrawn = false;
 	protected boolean isActivated = false;

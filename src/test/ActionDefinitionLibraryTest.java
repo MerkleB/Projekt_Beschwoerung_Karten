@@ -142,7 +142,7 @@ public class ActionDefinitionLibraryTest {
 	}
 	
 	public void setPathToTestResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		String testPath = "./test/testJSON/actions.json";
+		String testPath = "test/testJSON/actions.json";
 		Field pathField;
 		pathField = cut.getClass().getDeclaredField("resourcePath");
 		pathField.setAccessible(true);

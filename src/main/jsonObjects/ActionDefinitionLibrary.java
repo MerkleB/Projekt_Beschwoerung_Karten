@@ -21,7 +21,7 @@ public class ActionDefinitionLibrary implements HoldsActionDefinitions {
 	public static HoldsActionDefinitions getInstance() {
 		if(instance == null) {
 			instance = new ActionDefinitionLibrary();
-			((ActionDefinitionLibrary)instance).resourcePath = "./main/json/game_settings/actions.json";
+			((ActionDefinitionLibrary)instance).resourcePath = "/main/json/game_settings/actions.json";
 		}
 		return instance;
 	}

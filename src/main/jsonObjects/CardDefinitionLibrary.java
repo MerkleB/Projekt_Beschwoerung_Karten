@@ -21,7 +21,7 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 	public static HoldsCardDefinitions getInstance() {
 		if(instance == null) {
 			instance = new CardDefinitionLibrary();
-			instance.resourcePath = "./main/json/card_lists/";
+			instance.resourcePath = "/main/json/card_lists/";
 		}
 		return instance;
 	}

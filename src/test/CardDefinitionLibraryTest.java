@@ -93,7 +93,7 @@ public class CardDefinitionLibraryTest {
 	}
 	
 	public void setPathToTestResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		String testPath = "./test/testJSON/";
+		String testPath = "test/testJSON/";
 		Field pathField;
 		pathField = cut.getClass().getDeclaredField("resourcePath");
 		pathField.setAccessible(true);

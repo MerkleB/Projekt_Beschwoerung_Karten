@@ -44,7 +44,7 @@ public class DeckZone extends GameZone implements AcceptPromptAnswers {
 			lastCard.setActiv(actionsToActivate, player);
 		}else {
 			promptedPlayer = player;
-			Application.getInstance(null).getGame().prompt(player, "#1-You have no cards to draw. "
+			game.prompt(player, "#1-You have no cards to draw. "
 																	+"You either can loose 1 HP or pay 5 HP to draw a card from Discard pile."
 																	+"\r\nWhat do you want to do?"
 																	+"\r\n=damage;pay", this);
@@ -70,7 +70,7 @@ public class DeckZone extends GameZone implements AcceptPromptAnswers {
 			break;
 		default:
 			System.out.println("Invalid command.");
-			Application.getInstance(null).getGame().prompt(promptedPlayer, "#1-You have no cards to draw. "
+			game.prompt(promptedPlayer, "#1-You have no cards to draw. "
 					+"You either can loose 1 HP or pay 5 HP to draw a card from Discard pile."
 					+"\r\nWhat do you want to do?"
 					+"\r\n=damage;pay", this);

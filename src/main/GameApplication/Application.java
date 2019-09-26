@@ -1,6 +1,5 @@
 package main.GameApplication;
 
-import main.Listeners.GameActionListener;
 import main.Listeners.GameListener;
 import main.Listeners.ListensToEverything;
 import main.jsonObjects.ActionDefinitionLibrary;
@@ -25,7 +24,7 @@ public class Application implements HostsGame {
 	 * @param game [optional]
 	 * @return
 	 */
-	public static HostsGame getInstance(Game game) {
+	public static HostsGame getInstance() {
 		if(instance == null) {
 			instance = new Application();
 			((Application)instance).gameListener = GameListener.getInstance();
@@ -33,10 +32,14 @@ public class Application implements HostsGame {
 			((Application)instance).actionLibrary = ActionDefinitionLibrary.getInstance();
 			((Application)instance).mapper = RankLevelMapper.getInstance();
 		}
-		if(game != null) {
-			((Application)instance).game = game;
-		}
 		return instance;
+	}
+	
+	@Override
+	public void setGame(Game game) {
+		if(game != null) {
+			this.game = game;
+		}
 	}
 	
 	@Override

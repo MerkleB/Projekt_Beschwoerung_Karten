@@ -6,6 +6,7 @@ import main.jsonObjects.HoldsCardDefinitions;
 import main.util.mapsRankAndLevel;
 
 public interface HostsGame {
+	public void setGame(Game game);
 	public Game getGame();
 	public ListensToEverything getGameListener();
 	public HoldsCardDefinitions getCardLibrary();

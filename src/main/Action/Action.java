@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 import main.Card.Card;
 import main.Card.Summon;
+import main.GameApplication.Game;
 import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
@@ -15,6 +16,7 @@ public abstract class Action implements GameAction {
 	protected Hashtable<String, String> metadata;
 	protected Player actionIsActivFor;
 	protected Stackable activator;
+	protected Game game;
     
 
 	@Override
@@ -107,6 +109,16 @@ public abstract class Action implements GameAction {
 			if(getName().equals(action.getName())) areEqual = true;
 		}
 		return areEqual;
+	}
+
+	@Override
+	public Game getGame() {
+		return game;
+	}
+
+	@Override
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }

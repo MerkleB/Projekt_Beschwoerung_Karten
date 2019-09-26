@@ -9,6 +9,7 @@ import main.Card.Card;
 import main.Card.MagicCollector;
 import main.Card.Spell;
 import main.Card.Summon;
+import main.GameApplication.Game;
 import main.exception.CardCreationException;
 import main.exception.InvalidCardException;
 import main.exception.NotAllowedCardException;
@@ -26,6 +27,7 @@ public class CardFactory implements CreatesCards {
 	private CreatesActions actionFactory;
 	private CreatesEffects effectFactory;
 	private Hashtable<String, String> allowedCards;
+	private Game game;
 	
 	public static CreatesCards getInstance() {
 		CardFactory instance = new CardFactory();
@@ -33,6 +35,7 @@ public class CardFactory implements CreatesCards {
 		instance.cardLibrary = CardDefinitionLibrary.getInstance();
 		instance.actionFactory = GameActionFactory.getInstance();
 		instance.effectFactory = EffectFactory.getInstance();
+		instance.game = null;
 		return instance;
 	}
 	
@@ -42,11 +45,13 @@ public class CardFactory implements CreatesCards {
 		for(String entry : allowedCards) {
 			instance.allowedCards.put(entry, entry);
 		}
+		instance.game = null;
 		return instance;
 	}
 	
 	@Override
-	public Card createCard(String card_id) throws NotAllowedCardException, InvalidCardException, CardCreationException {
+	public Card createCard(String card_id, Game game) throws NotAllowedCardException, InvalidCardException, CardCreationException {
+		this.game = game;
 		checkCardIdIsAllowed(card_id);
 		
 		CardDefinition cardDefinition = cardLibrary.getCardDefinition(card_id);
@@ -115,6 +120,7 @@ public class CardFactory implements CreatesCards {
 		Effect[] effects = new Effect[definition.effects.length];
 		for(int i=0; i<definition.effects.length; i++) {
 			effects[i] = effectFactory.createEffect(definition.effects[i].effectClass);
+			effects[i].setGame(game);
 		}
 		return effects;
 	}
@@ -124,6 +130,7 @@ public class CardFactory implements CreatesCards {
 		GameAction[] actions = new GameAction[actionNames.size()];
 		for(int i=0; i<actionNames.size(); i++) {
 			actions[i] = actionFactory.createAction(actionNames.get(i));
+			actions[i].setGame(game);
 		}
 		return actions;
 	}

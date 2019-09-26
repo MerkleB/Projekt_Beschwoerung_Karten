@@ -12,6 +12,7 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 	private String name;
 	private ArrayList<String> actionsToActivate;
 	private Player activePlayer;
+	private Game game;
 	
 	public DrawPhase(String phaseName) {
 		name = phaseName;
@@ -25,7 +26,7 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 
 	@Override
 	public void restorePhaseStatus() {
-		activePlayer = Application.getInstance(null).getGame().getActivePlayer();
+		activePlayer = game.getActivePlayer();
 		ArrayList<IsAreaInGame> zones = activePlayer.getGameZones();
 		for(IsAreaInGame zone : zones) {
 			zone.activate(activePlayer, this);
@@ -66,6 +67,18 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 		ArrayList<IsAreaInGame> zones = activePlayer.getGameZones();
 		for(IsAreaInGame zone : zones) {
 			zone.deavtivateAll();
+		}
+	}
+
+	@Override
+	public Game getGame() {
+		return game;
+	}
+
+	@Override
+	public void setGame(Game game) {
+		if(game != null) {
+			this.game = game;
 		}
 	}
 

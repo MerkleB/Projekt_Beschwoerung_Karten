@@ -65,7 +65,7 @@ public class CardFactoryTest {
 	public void testCreateSummon() {
 		String card_id = "bsc-su-00-0";
 		try {
-			Card summon = cut.createCard(card_id);
+			Card summon = cut.createCard(card_id, null);
 			if((summon instanceof Summon) == false) {
 				fail("Wrong type of card was retrieved");
 			}
@@ -95,7 +95,7 @@ public class CardFactoryTest {
 	public void testCreateSpell() {
 		try {
 			String card_id = "bsc-su-01";
-			Spell spell = (Spell)cut.createCard(card_id);
+			Spell spell = (Spell)cut.createCard(card_id, null);
 			if((spell instanceof Spell)==false) {
 				fail("Wrong type of card was retrieved");
 			}
@@ -114,7 +114,7 @@ public class CardFactoryTest {
 		String card_id = "bla-su-00-0";
 		boolean exceptionAppeared = false;
 		try {
-			cut.createCard(card_id);
+			cut.createCard(card_id, null);
 		}catch(InvalidCardException e) {
 			exceptionAppeared = true;
 		} catch (NotAllowedCardException e) {
@@ -136,7 +136,7 @@ public class CardFactoryTest {
 		mapperAlreadyMokked = false;
 		mokFields((CardFactory)cut);
 		try {
-			Card summon = cut.createCard(card_id);
+			Card summon = cut.createCard(card_id, null);
 			if((summon instanceof Summon) == false) {
 				fail("Wrong type of card was retrieved");
 			}
@@ -169,7 +169,7 @@ public class CardFactoryTest {
 		mapperAlreadyMokked = false;
 		mokFields((CardFactory)cut);
 		try {
-			Card summon = cut.createCard(card_id);
+			Card summon = cut.createCard(card_id, null);
 			if((summon instanceof Summon) == false) {
 				fail("Wrong type of card was retrieved");
 			}
@@ -199,7 +199,7 @@ public class CardFactoryTest {
 		mokFields((CardFactory)cut);
 		boolean exceptionWasThrown = false;
 		try {
-			cut.createCard(card_id);
+			cut.createCard(card_id, null);
 		}catch(NotAllowedCardException e) {
 			exceptionWasThrown = true;
 		} catch (InvalidCardException e) {

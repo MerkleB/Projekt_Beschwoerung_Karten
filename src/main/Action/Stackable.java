@@ -3,10 +3,11 @@ package main.Action;
 import java.util.Hashtable;
 
 import main.Card.Card;
+import main.GameApplication.GameObject;
 import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
-public interface Stackable{
+public interface Stackable extends GameObject{
 	public String getName();
 	public void activate(Player activator) throws NotActivableException;
 	public boolean activateable(Player activator);

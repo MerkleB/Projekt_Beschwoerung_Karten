@@ -9,6 +9,7 @@ import main.jsonObjects.ActionDefinitionLibrary;
 public class RefreshmentPhase implements IsPhaseInGame {
 	
 	private ArrayList<String> actionsToActivate;
+	private Game game;
 	
 	@Override
 	public String getName() {
@@ -17,7 +18,7 @@ public class RefreshmentPhase implements IsPhaseInGame {
 
 	@Override
 	public void restorePhaseStatus() {
-		Player activPlayer = Application.getInstance(null).getGame().getActivePlayer();
+		Player activPlayer = game.getActivePlayer();
 		int usedEnergy = activPlayer.getUsedEnergy();
 		activPlayer.increaseFreeEnergyFromUsed(usedEnergy);
 		SummonZone summonZone = (SummonZone)activPlayer.getGameZone("SummonZone");
@@ -45,10 +46,22 @@ public class RefreshmentPhase implements IsPhaseInGame {
 
 	@Override
 	public void leave() {
-		Player activPlayer = Application.getInstance(null).getGame().getActivePlayer();
+		Player activPlayer = game.getActivePlayer();
 		ArrayList<IsAreaInGame> zones = activPlayer.getGameZones();
 		for(IsAreaInGame zone : zones) {
 			zone.deavtivateAll();
+		}
+	}
+
+	@Override
+	public Game getGame() {
+		return game;
+	}
+
+	@Override
+	public void setGame(Game game) {
+		if(game != null) {
+			this.game = game;
 		}
 	}
 

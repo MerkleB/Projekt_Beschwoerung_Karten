@@ -9,6 +9,7 @@ import main.Action.Effect;
 import main.Action.GameAction;
 import main.Action.Stackable;
 import main.Card.Card;
+import main.GameApplication.Game;
 import main.GameApplication.IsAreaInGame;
 import main.GameApplication.IsPhaseInGame;
 import main.GameApplication.Player;
@@ -25,7 +26,9 @@ import main.util.mapsRankAndLevel;
 public class MokProvider {
 	public static Effect getEffect() {
 		return new Effect(){
-		
+			
+			private Game game;
+			
 			@Override
 			public void execute() {
 				
@@ -101,7 +104,6 @@ public class MokProvider {
 
 			@Override
 			public void activate(Player activator) throws NotActivableException {
-				// TODO Auto-generated method stub
 				
 			}
 
@@ -114,7 +116,16 @@ public class MokProvider {
 			@Override
 			public void setActiv(Player activFor) {
 				// TODO Auto-generated method stub
-				
+			}
+
+			@Override
+			public Game getGame() {
+				return game;
+			}
+
+			@Override
+			public void setGame(Game game) {
+				this.game = game;				
 			}
 		};
 	}
@@ -260,6 +271,7 @@ public class MokProvider {
 			public boolean withdrawn = false;
 			public boolean activ = false;
 			public boolean isActivated = false;
+			public Game game;
 			
 			@Override
 			public String getName() {
@@ -342,6 +354,16 @@ public class MokProvider {
 			public Stackable getActivatingStackable() {
 				// TODO Auto-generated method stub
 				return null;
+			}
+
+			@Override
+			public Game getGame() {
+				return game;
+			}
+
+			@Override
+			public void setGame(Game game) {
+				this.game = game;				
 			}
 		};
 	}
@@ -650,6 +672,8 @@ public class MokProvider {
 	public static IsPhaseInGame getGamePhase(String phaseName) {
 		return new IsPhaseInGame() {
 			
+			public Game game;
+			
 			@Override
 			public void restorePhaseStatus() {
 				// TODO Auto-generated method stub
@@ -676,6 +700,18 @@ public class MokProvider {
 			public void leave() {
 				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			public Game getGame() {
+				return game;
+			}
+
+			@Override
+			public void setGame(Game game) {
+				if(game != null) {
+					this.game = game;
+				}
 			}
 		};
 	}

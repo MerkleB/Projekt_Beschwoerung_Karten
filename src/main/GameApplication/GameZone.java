@@ -15,6 +15,7 @@ public abstract class GameZone implements IsAreaInGame {
 	protected ArrayList<Card> cardList;
 	protected Hashtable<UUID, Card> cardHash;
 	protected Player owner;
+	protected Game game;
 	
 	public GameZone(Player owner) {
 		cardList = new ArrayList<Card>();
@@ -89,6 +90,16 @@ public abstract class GameZone implements IsAreaInGame {
 	@Override
 	public Player getOwner() {
 		return owner;
+	}
+
+	@Override
+	public Game getGame() {
+		return game;
+	}
+
+	@Override
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }

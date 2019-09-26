@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import main.Card.Card;
 
-public interface HoldingCards {
+public interface HoldingCards extends GameObject {
 	public Card findCard(UUID id);
 	public ArrayList<Card> getCards();
 	public void addCard(Card card);

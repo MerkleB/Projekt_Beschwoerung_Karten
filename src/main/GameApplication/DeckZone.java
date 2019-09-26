@@ -13,6 +13,7 @@ import main.util.ActionMatchFinder;
 public class DeckZone extends GameZone implements AcceptPromptAnswers {
 
 	private Player promptedPlayer;
+	private static final String[] answers = {"pay", "damage"};
 	
 	public DeckZone(Player owner, ArrayList<Card> deck) {
 		super(owner);
@@ -75,6 +76,11 @@ public class DeckZone extends GameZone implements AcceptPromptAnswers {
 					+"\r\nWhat do you want to do?"
 					+"\r\n=damage;pay", this);
 		}
+	}
+
+	@Override
+	public String[] getPossibleAnswers() {
+		return answers;
 	}
 	
 	

@@ -8,7 +8,7 @@
 				"type" : "Summon",
 				"maxEnergy" : 5,
 				"maxHealth" : 8,
-				"trivia" : "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete",
+				"trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino.",
 				"effects" : 
 				[
 					{"effectClass" : "effect_000"}

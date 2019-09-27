@@ -37,7 +37,7 @@ public class TestData {
 		String element = "Fire";
 		int magicWastageOnDefeat = 1;
 		int neededMagicEnergy = 0;
-		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
+		testCards.put(id, new Summon(id, name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
 		addActionsToCollector(testCards.get(id).getCollector());
 		
 		name = "Aries";
@@ -56,7 +56,7 @@ public class TestData {
 		element = "Fire";
 		magicWastageOnDefeat = 2;
 		neededMagicEnergy = 0;
-		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
+		testCards.put(id, new Summon(id, name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
 		addActionsToCollector(testCards.get(id).getCollector());
 		
 		name = "Aries";
@@ -75,7 +75,7 @@ public class TestData {
 		element = "Fire";
 		magicWastageOnDefeat = 3;
 		neededMagicEnergy = 0;
-		testCards.put(id, new Summon(name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
+		testCards.put(id, new Summon(id, name, trivia, effects, magicPreservationValue, summoningPoints, attack, heal, maxVitality, summonClass, rank, element, magicWastageOnDefeat, maxEnergy, maxHealth, null, actions));
 		addActionsToCollector(testCards.get(id).getCollector());
 		
 		name = "Diamond Storm";
@@ -98,7 +98,7 @@ public class TestData {
 		element = "";
 		magicWastageOnDefeat = 0;
 		neededMagicEnergy = 5;
-		testCards.put(id, new Spell(name, trivia, effects, neededMagicEnergy, maxEnergy, maxHealth, null, mokActions));
+		testCards.put(id, new Spell(id, name, trivia, effects, neededMagicEnergy, maxEnergy, maxHealth, null, mokActions));
 		addActionsToCollector(testCards.get(id).getCollector());
 		
 		return testCards.get(card_id);

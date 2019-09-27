@@ -1,0 +1,28 @@
+{
+	"card_trivias" : [
+		{
+			"language" : "DE",
+		 	"trivias" : [
+		 		{"card_id" : "bsc-su-00-0", "trivia" : "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete."},
+		 		{"card_id" : "bsc-su-00-1", "trivia" : "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete."},
+		 		{"card_id" : "bsc-su-00-2", "trivia" : "Ein sagenhafter Widder der einst Phrixos und seine Schwester Helle vor ihrer Stiefmutter Ino rettete."}
+		 	]
+		}
+		{
+			"language" : "EN",
+		 	"trivias" : [
+		 		{"card_id" : "bsc-su-00-0", "trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino."},
+		 		{"card_id" : "bsc-su-00-1", "trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino."},
+		 		{"card_id" : "bsc-su-00-2", "trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino."}
+		 	]
+		}
+	],
+	"card_names" : [
+		{
+			"language" : "DE",
+			"names" : [
+				{"card_id" : "bsc-su-00-0", "name" : "Aries"}
+			]
+		}
+	]
+}

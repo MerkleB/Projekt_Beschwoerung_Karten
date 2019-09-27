@@ -82,7 +82,7 @@ public class CardFactory implements CreatesCards {
 	private Summon createSummon(CardDefinition definition) {
 		Effect[] effects = getEffects(definition); 
 		GameAction[] actions = getActions(definition.type);
-		Summon summon = new Summon(definition.name, definition.trivia, effects, definition.magicPreservationValue, definition.summoningPoints, definition.attack, definition.heal, definition.maxVitality, definition.summonClass, definition.rank, definition.element, definition.magicWastageOnDefeat, definition.maxEnergy, definition.maxHealth, null, actions);
+		Summon summon = new Summon(definition.card_id, definition.name, definition.trivia, effects, definition.magicPreservationValue, definition.summoningPoints, definition.attack, definition.heal, definition.maxVitality, definition.summonClass, definition.rank, definition.element, definition.magicWastageOnDefeat, definition.maxEnergy, definition.maxHealth, null, actions);
 		return summon;
 	}
 	
@@ -106,7 +106,7 @@ public class CardFactory implements CreatesCards {
 	private Spell createSpell(CardDefinition definition) {
 		Effect[] effects = getEffects(definition); 
 		GameAction[] actions = getActions(definition.type);
-		Spell spell = new Spell(definition.name, definition.trivia, effects, definition.neededMagicEnergy, definition.maxEnergy, definition.maxHealth, null, actions);
+		Spell spell = new Spell(definition.card_id, definition.name, definition.trivia, effects, definition.neededMagicEnergy, definition.maxEnergy, definition.maxHealth, null, actions);
 		setCollectorActions(spell.getCollector());
 		return spell;
 	}

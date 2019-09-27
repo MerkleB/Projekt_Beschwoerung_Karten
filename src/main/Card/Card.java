@@ -17,9 +17,11 @@ public interface Card{
 	public MagicCollector getCollector();
 	public CardTypes getType();
 	public String getTrivia();
+	public void setTrivia(String trivia);
 	public Effect[] getEffects() throws NoCardException;
 	public Effect getEffect(int index) throws NoCardException;
 	public String getName();
+	public String getCardID();
 	public UUID getID();
 	public void setID(UUID uuid) throws NoCardException;
 	public void show();

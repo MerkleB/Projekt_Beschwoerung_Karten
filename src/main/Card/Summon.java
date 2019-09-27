@@ -27,6 +27,7 @@ public class Summon implements Card{
 	public static final String USED = "u";
 	public static final String IMMOBILIZED = "i";
 	
+	private String cardID;
 	private String name;
 	private String trivia;
 	private Effect[] effects;
@@ -40,7 +41,8 @@ public class Summon implements Card{
 	private TreeMap<String, GameAction> actions;
 	private ArrayList<Effect> enchantments;
 	
-	public Summon(String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+	public Summon(String cardID, String name, String trivia, Effect[] effects, int preservationValue, int summoningPoints, int attack, int heal, int vitality, String summonClass, String rank, String element, int magicWastedOnDefeat, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+		this.cardID = cardID;
 		this.name = name;
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
@@ -134,6 +136,16 @@ public class Summon implements Card{
 	}
 
 	@Override
+	public String getCardID() {
+		return cardID;
+	}
+	
+	@Override
+	public void setTrivia(String trivia){
+		this.trivia = trivia;
+	}
+
+	@Override
 	public String getTrivia() {
 		if(trivia == null) {
 			trivia = "";
@@ -185,19 +197,15 @@ public class Summon implements Card{
 		return name;
 	}
 
-	public void setName(String name) throws NoCardException {
+	public void setName(String name){
 		this.name = name;
-	}
-
-	public void setTrivia(String trivia) throws NoCardException {
-		this.trivia = trivia;
 	}
 	
 	public SummonStatus getStatus() {
 		return status;
 	}
 
-	public void setEffects(Effect[] effects) throws NoCardException {
+	public void setEffects(Effect[] effects) {
 		this.effects = effects;
 	}
 
@@ -205,7 +213,7 @@ public class Summon implements Card{
 		return rank;
 	}
 
-	public void setRank(String rank) throws NoCardException{
+	public void setRank(String rank){
 		this.rank = rank;
 	}
 	

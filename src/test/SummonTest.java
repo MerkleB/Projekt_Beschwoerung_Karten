@@ -24,7 +24,7 @@ public class SummonTest {
 		effectDummies[0] = effectDummy;
 		mokActions = new GameAction[1];
 		mokActions[0] = MokProvider.getGameAction("MokAction");
-		cut = new Summon("Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		cut = new Summon("bsc-su-00-0", "Summon-0", "Test", effectDummies, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class SummonTest {
 
 	@Test
 	public void testDecreaseVitality() {
-		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		Summon lcut = new Summon("bsc-su-00-0", "Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 			lcut.getStatus().decreaseVitality(2);
 			if(lcut.getStatus().getVitality() != 2) {
 				fail("Decrease of vitality was not successful.");
@@ -58,7 +58,7 @@ public class SummonTest {
 
 	@Test
 	public void testIncreaseVitality() {
-		Summon lcut = new Summon("Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		Summon lcut = new Summon("bsc-su-00-0", "Test Summon", "Test", effectDummies, 2, 1, 5, 1, 4, "Natürliche Bestie", "Junges", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 			lcut.getStatus().decreaseVitality(2);
 			lcut.getStatus().increaseVitality(1);
 			if(lcut.getStatus().getVitality() != 3) {

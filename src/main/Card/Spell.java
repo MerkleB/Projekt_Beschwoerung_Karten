@@ -16,6 +16,7 @@ import main.exception.NotActivableException;
 
 public class Spell implements Card {
 
+	private String cardID;
 	private String trivia;
 	private Effect[] effects;
 	private String name;
@@ -25,7 +26,8 @@ public class Spell implements Card {
 	private Player owner;
 	private TreeMap<String, GameAction> actions;
 	
-	public Spell(String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+	public Spell(String cardID, String name, String trivia, Effect[] effects, int neededMagicEnergy, int energy, int collectorHealth, Player owner, GameAction[] actions) {
+		this.cardID = cardID;
 		this.name = name;
 		this.collector = new MagicCollector(this, energy, collectorHealth);
 		this.trivia = trivia;
@@ -99,6 +101,16 @@ public class Spell implements Card {
 	@Override
 	public CardTypes getType() {
 		return CardTypes.Spell;
+	}
+
+	@Override
+	public void setTrivia(String trivia) {
+		this.trivia = trivia;		
+	}
+
+	@Override
+	public String getCardID() {
+		return cardID;
 	}
 
 	@Override

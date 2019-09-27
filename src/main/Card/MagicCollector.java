@@ -360,4 +360,14 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 		return actionList;
 	}
 
+	@Override
+	public String getCardID() {
+		return realCard.getCardID();
+	}
+
+	@Override
+	public void setTrivia(String trivia) {
+		realCard.setTrivia(trivia);
+	}
+
 }

@@ -608,6 +608,11 @@ public class MokProvider {
 				}
 				return set.get(card_id);
 			}
+
+			@Override
+			public String getCardSetName(String card_id) {
+				return "bsc";
+			}
 		};
 	}
 	

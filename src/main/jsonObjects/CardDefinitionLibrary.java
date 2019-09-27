@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 
 public class CardDefinitionLibrary implements HoldsCardDefinitions {
 	
-	private static CardDefinitionLibrary instance;	
+	private static HoldsCardDefinitions instance;	
 	private Hashtable<String, SetToken> card_sets;
 	private Hashtable<String, TreeMap<String, CardDefinition>> cardDefinitions;
 	private String resourcePath;
@@ -21,7 +21,7 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 	public static HoldsCardDefinitions getInstance() {
 		if(instance == null) {
 			instance = new CardDefinitionLibrary();
-			instance.resourcePath = "/main/json/card_lists/";
+			((CardDefinitionLibrary)instance).resourcePath = "/main/json/card_lists/";
 		}
 		return instance;
 	}
@@ -40,11 +40,12 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 		return definition;
 	}
 	
-	private String getCardSetName(String card_id) {
+	@Override
+	public String getCardSetName(String card_id) {
 		String token = card_id.split("-")[0];
 		if(card_sets == null) {
 			card_sets = new Hashtable<String, SetToken>();
-			instance.loadListOfCardSets();
+			((CardDefinitionLibrary)instance).loadListOfCardSets();
 		}
 		return card_sets.get(token).name;
 	}

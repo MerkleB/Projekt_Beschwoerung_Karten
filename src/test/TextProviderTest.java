@@ -29,6 +29,7 @@ public class TextProviderTest {
 			library_instance.set(null, MokProvider.getCardDefinitions());
 		}
 		cut = TextProvider.getInstance();
+		setPathToTestResources();
 	}
 
 	@Test
@@ -50,6 +51,14 @@ public class TextProviderTest {
 		if(!"A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino.".equals(cut.getCardTrivia("bsc-su-00-0", "EN"))) {
 			fail("Expected Trivia for bsc-su-00-0 in language EN was not retrieved.");
 		}
+	}
+	
+	public void setPathToTestResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		String testPath = "test/testJSON/";
+		Field pathField;
+		pathField = cut.getClass().getDeclaredField("resourcePath");
+		pathField.setAccessible(true);
+		pathField.set(cut, testPath);
 	}
 	
 	@AfterClass

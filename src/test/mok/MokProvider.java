@@ -611,7 +611,7 @@ public class MokProvider {
 
 			@Override
 			public String getCardSetName(String card_id) {
-				return "bsc";
+				return "basic_set";
 			}
 		};
 	}

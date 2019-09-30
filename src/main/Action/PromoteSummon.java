@@ -1,5 +1,6 @@
 package main.Action;
 
+import main.GameApplication.GameStack;
 import main.GameApplication.Player;
 import main.GameApplication.SummonZone;
 import main.Listeners.GameListener;
@@ -28,12 +29,14 @@ public class PromoteSummon extends Action {
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);
 		GameListener.getInstance().actionActivated(this);
+		GameStack.getInstance().addEntry(this);
 	}
 
 	@Override
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
 		GameListener.getInstance().actionActivated(this);
+		GameStack.getInstance().addEntry(this);
 	}
 
 	@Override

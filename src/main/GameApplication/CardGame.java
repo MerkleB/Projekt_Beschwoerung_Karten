@@ -42,6 +42,12 @@ public class CardGame implements Game {
 	}
 	
 	@Override
+	public void prompt(Player promptedPlayer, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public Player getPlayer(UUID id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -56,6 +62,12 @@ public class CardGame implements Game {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public IsPhaseInGame getActivePhase() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

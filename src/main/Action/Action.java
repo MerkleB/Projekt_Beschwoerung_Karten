@@ -11,6 +11,11 @@ import main.exception.NotActivableException;
 import main.util.TextProvider;
 
 public abstract class Action implements GameAction {
+	protected static final String SummonSelect = "SelectSummon";
+	protected static final String CollectorSelect = "SelectMagicCollector";
+	protected static final String SummonZone = "SummonZone";
+	protected static final String CollectorZone = "CollectorZone";
+	
 	protected Card owningCard;
 	protected boolean activ = false;
 	protected boolean withdrawn = false;

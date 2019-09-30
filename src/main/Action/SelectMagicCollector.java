@@ -4,11 +4,11 @@ import main.GameApplication.Player;
 import main.Listeners.GameListener;
 import main.exception.NotActivableException;
 
-public class SelectSummon extends Action {
+public class SelectMagicCollector extends Action {
 
 	@Override
 	public String getCode() {
-		return "SelectSummon";
+		return "SelectMagicCollector";
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class SelectSummon extends Action {
 	public void execute() {
 		if(isActivated && !withdrawn) {
 			initMetadata();
-			metadata.put("Summon-ID", owningCard.getID().toString());
+			metadata.put("Collector-ID", owningCard.getID().toString());
 			GameListener.getInstance().actionExecuted(this);
 		}
 	}

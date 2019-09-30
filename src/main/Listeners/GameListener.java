@@ -108,4 +108,24 @@ public class GameListener implements ListensToEverything {
 		summon_listeners.add(listener);		
 	}
 
+	@Override
+	public void removeGameActionListener(GameActionListener listener) {
+		action_listeners.remove(listener);		
+	}
+
+	@Override
+	public void removeEffectListener(EffectListener listener) {
+		effect_listeners.remove(listener);		
+	}
+
+	@Override
+	public void removePhaseListener(PhaseListener listener) {
+		phase_listeners.remove(phase_listeners);
+	}
+
+	@Override
+	public void removeSummonListener(SummonListener listener) {
+		summon_listeners.remove(listener);		
+	}
+
 }

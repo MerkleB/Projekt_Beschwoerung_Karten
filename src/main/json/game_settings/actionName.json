@@ -8,6 +8,7 @@
 			{"code" : "Draw", "name" : "Draw"},
 			{"code" : "EvokeSummon", "name" : "Evoke Summon"}, 
 			{"code" : "PromoteSummon", "name" : "Promote Summon"},
+			{"code" : "SelectMagicCollector", "name" : "Select Magic Collector"},
 			{"code" : "SelectSummon", "name" : "Select Summon"}
 		] 
 		},
@@ -19,6 +20,7 @@
 			{"code" : "Draw", "name" : "Ziehen"},
 			{"code" : "EvokeSummon", "name" : "Beschwören"}, 
 			{"code" : "PromoteSummon", "name" : "Aufsteigen"},
+			{"code" : "SelectMagicCollector", "name" : "Magiesammler auswählen"},
 			{"code" : "SelectSummon", "name" : "Beschwörung auswählen"} 
 		] 
 		}

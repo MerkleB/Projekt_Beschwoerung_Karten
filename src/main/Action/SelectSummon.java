@@ -5,7 +5,7 @@ import main.Listeners.GameListener;
 public class SelectSummon extends Action {
 
 	@Override
-	public String getName() {
+	public String getCode() {
 		return "SelectSummon";
 	}
 

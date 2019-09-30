@@ -7,6 +7,8 @@ import main.util.mapsRankAndLevel;
 
 public interface HostsGame {
 	public void setGame(Game game);
+	public void setLanguage(String language);
+	public String getLanguage();
 	public Game getGame();
 	public ListensToEverything getGameListener();
 	public HoldsCardDefinitions getCardLibrary();

@@ -1,0 +1,16 @@
+{
+	"languages" : [
+		{
+		"language" : "EN", 
+		"actions" : [ 
+			{"code" : "PromoteSummon", "name" : "Promote Summon"}
+		] 
+		},
+		{
+		"language" : "DE", 
+		"actions" : [ 
+			{"code" : "PromoteSummon", "name" : "Aufsteigen"}
+		] 
+		}
+	]
+}

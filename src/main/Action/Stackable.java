@@ -8,6 +8,7 @@ import main.GameApplication.Player;
 import main.exception.NotActivableException;
 
 public interface Stackable extends GameObject{
+	public String getCode();
 	public String getName();
 	public void activate(Player activator) throws NotActivableException;
 	public boolean activateable(Player activator);

@@ -1,0 +1,26 @@
+{
+	"languages" : [
+		{
+		"language" : "EN", 
+		"actions" : [
+			{"code" : "AttackPlayer", "name" : "Attack Player"},
+			{"code" : "DeclareBattle", "name" : "Declare Battle"},
+			{"code" : "Draw", "name" : "Draw"},
+			{"code" : "EvokeSummon", "name" : "Evoke Summon"}, 
+			{"code" : "PromoteSummon", "name" : "Promote Summon"},
+			{"code" : "SelectSummon", "name" : "Select Summon"}
+		] 
+		},
+		{
+		"language" : "DE", 
+		"actions" : [
+			{"code" : "AttackPlayer", "name" : "Spieler angreifen"},
+			{"code" : "DeclareBattle", "name" : "Beschwörung angreigen"},
+			{"code" : "Draw", "name" : "Ziehen"},
+			{"code" : "EvokeSummon", "name" : "Beschwören"}, 
+			{"code" : "PromoteSummon", "name" : "Aufsteigen"},
+			{"code" : "SelectSummon", "name" : "Beschwörung auswählen"} 
+		] 
+		}
+	]
+}

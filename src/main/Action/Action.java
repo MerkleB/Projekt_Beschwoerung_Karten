@@ -4,9 +4,11 @@ import java.util.Hashtable;
 
 import main.Card.Card;
 import main.Card.Summon;
+import main.GameApplication.Application;
 import main.GameApplication.Game;
 import main.GameApplication.Player;
 import main.exception.NotActivableException;
+import main.util.TextProvider;
 
 public abstract class Action implements GameAction {
 	protected Card owningCard;
@@ -18,7 +20,11 @@ public abstract class Action implements GameAction {
 	protected Stackable activator;
 	protected Game game;
     
-
+	@Override
+	public String getName() {
+		return TextProvider.getInstance().getActionName(getCode(), Application.getInstance().getLanguage());
+	}
+	
 	@Override
 	public void activate(Player activator) throws NotActivableException {
 		if(activator != actionIsActivFor || !activateable(activator)) {

@@ -53,12 +53,27 @@ public class TextProviderTest {
 		}
 	}
 	
+	@Test
+	public void testGetActionName() {
+		if(!"Promote Summon".equals(cut.getActionName("PromoteSummon", "EN"))) {
+			fail("Expected Action name was not retrieved for language EN");
+		}
+		if(!"Aufsteigen".equals(cut.getActionName("PromoteSummon", "DE"))) {
+			fail("Expected Action name was not retrieved for language DE");
+		}
+	}
+	
 	public void setPathToTestResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		String testPath = "test/testJSON/";
 		Field pathField;
-		pathField = cut.getClass().getDeclaredField("resourcePath");
+		pathField = cut.getClass().getDeclaredField("resourcePathCards");
 		pathField.setAccessible(true);
 		pathField.set(cut, testPath);
+		String testPathAction = "test/testJSON/actionName.json";
+		Field pathFieldAction;
+		pathFieldAction = cut.getClass().getDeclaredField("resourcePathActions");
+		pathFieldAction.setAccessible(true);
+		pathFieldAction.set(cut, testPathAction);
 	}
 	
 	@AfterClass

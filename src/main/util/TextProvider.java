@@ -11,18 +11,22 @@ import main.jsonObjects.CardDefinitionLibrary;
 
 public class TextProvider implements ManagesTextLanguages {
 	
-	private String resourcePath;
+	private String resourcePathCards;
+	private String resourcePathActions;
 	private Hashtable<String, Hashtable<String, String>> triviasByLanguageAndCardID;
 	private Hashtable<String, Hashtable<String, String>> namesByLanguageAndCardID;
+	private Hashtable<String, Hashtable<String, String>> actionsByLanguageAndCode;
 	
 	public static ManagesTextLanguages getInstance() {
 		return new TextProvider();
 	}
 	
 	private TextProvider() {
-		resourcePath = "/main/json/card_lists/";
+		resourcePathCards = "/main/json/card_lists/";
+		resourcePathActions = "/main/json/game_settings/actionName.json";
 		triviasByLanguageAndCardID = new Hashtable<String, Hashtable<String, String>>();
 		namesByLanguageAndCardID = new Hashtable<String, Hashtable<String, String>>();
+		actionsByLanguageAndCode = new Hashtable<String, Hashtable<String, String>>();
 	}
 	
 	@Override
@@ -41,11 +45,20 @@ public class TextProvider implements ManagesTextLanguages {
 	private void loadCardTexts(String card_id) {
 		FileLoader loader = new FileLoader();
 		String cardSet = CardDefinitionLibrary.getInstance().getCardSetName(card_id);
-		InputStream jsonStream = loader.getFileAsStream(resourcePath+cardSet+"_texts.json");
+		InputStream jsonStream = loader.getFileAsStream(resourcePathCards+cardSet+"_texts.json");
 		Gson gson = new Gson();
 		JsonReader reader = new JsonReader(new InputStreamReader(jsonStream));
 		CardTexts texts = gson.fromJson(reader, CardTexts.class);
 		convertToHashtable(texts);
+	}
+	
+	private void loadActionNames() {
+		FileLoader loader = new FileLoader();
+		InputStream jsonStream = loader.getFileAsStream(resourcePathActions);
+		Gson gson = new Gson();
+		JsonReader reader = new JsonReader(new InputStreamReader(jsonStream));
+		ActionLanguageNames actions = gson.fromJson(reader, ActionLanguageNames.class);
+		convertToHashtable(actions);
 	}
 	
 	private void convertToHashtable(CardTexts texts) {
@@ -71,6 +84,19 @@ public class TextProvider implements ManagesTextLanguages {
 			}
 		}
 	}
+	
+	private void convertToHashtable(ActionLanguageNames actionLanguages) {
+		for(ActionLanguage language : actionLanguages.languages) {
+			Hashtable<String, String> action_language = actionsByLanguageAndCode.get(language.language);
+			if(action_language == null) {
+				action_language = new Hashtable<String, String>();
+				actionsByLanguageAndCode.put(language.language, action_language);
+			}
+			for(ActionName name : language.actions) {
+				action_language.put(name.code, name.name);
+			}
+		}
+	}
 
 	@Override
 	public String getCardTrivia(String cardID, String language) {
@@ -83,6 +109,19 @@ public class TextProvider implements ManagesTextLanguages {
 			loadCardTexts(cardID);
 		}
 		return triviasInLanguage.get(cardID);
+	}
+
+	@Override
+	public String getActionName(String actionCode, String language) {
+		Hashtable<String, String> namesInLanguage = actionsByLanguageAndCode.get(language);
+		if(namesInLanguage == null) {
+			loadActionNames();
+			namesInLanguage = actionsByLanguageAndCode.get(language);
+		}
+		if(!namesInLanguage.containsKey(actionCode)) {
+			loadCardTexts(actionCode);
+		}
+		return namesInLanguage.get(actionCode);
 	}
 
 }

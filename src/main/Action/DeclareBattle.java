@@ -11,7 +11,7 @@ public class DeclareBattle extends Action {
 	public ProcessesBattle battle;
 	
 	@Override
-	public String getName() {
+	public String getCode() {
 		return "DeclareBattle";
 	}
 

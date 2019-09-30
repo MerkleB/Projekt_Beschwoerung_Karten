@@ -127,6 +127,11 @@ public class MokProvider {
 			public void setGame(Game game) {
 				this.game = game;				
 			}
+
+			@Override
+			public String getCode() {
+				return "EffectCode";
+			}
 		};
 	}
 	
@@ -364,6 +369,11 @@ public class MokProvider {
 			@Override
 			public void setGame(Game game) {
 				this.game = game;				
+			}
+
+			@Override
+			public String getCode() {
+				return actionName.replace(" ", "");
 			}
 		};
 	}

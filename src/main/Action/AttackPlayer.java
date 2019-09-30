@@ -1,6 +1,5 @@
 package main.Action;
 
-import main.GameApplication.Application;
 import main.GameApplication.GameStack;
 import main.GameApplication.Player;
 import main.Listeners.GameListener;
@@ -26,7 +25,7 @@ public class AttackPlayer extends Action {
 	}
 
 	@Override
-	public String getName() {
+	public String getCode() {
 		return "AttackPlayer";
 	}
 	

@@ -11,7 +11,7 @@ import main.Card.*;
 public class EvokeSummon extends Action {
 	
 	@Override
-	public String getName() {
+	public String getCode() {
 		return "EvokeSummon";
 	}
 

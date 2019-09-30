@@ -14,6 +14,7 @@ public class Application implements HostsGame {
 	
 	private static HostsGame instance;
 	private Game game;
+	private String language; 
 	private ListensToEverything gameListener;
 	private HoldsCardDefinitions cardLibrary;
 	private HoldsActionDefinitions actionLibrary;
@@ -45,6 +46,16 @@ public class Application implements HostsGame {
 	@Override
 	public Game getGame() {
 		return game;
+	}
+
+	@Override
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	@Override
+	public String getLanguage() {
+		return this.language;
 	}
 
 	@Override

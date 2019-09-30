@@ -10,7 +10,7 @@ import main.exception.NotActivableException;
 public class Draw extends Action {
 
 	@Override
-	public String getName() {
+	public String getCode() {
 		return "Draw";
 	}
 

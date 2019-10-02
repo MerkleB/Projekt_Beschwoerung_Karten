@@ -12,6 +12,7 @@ import main.Card.Card;
 import main.GameApplication.Game;
 import main.GameApplication.IsAreaInGame;
 import main.GameApplication.IsPhaseInGame;
+import main.GameApplication.OwnsGameStack;
 import main.GameApplication.Player;
 import main.build_cards.CreatesActions;
 import main.build_cards.CreatesEffects;
@@ -727,6 +728,18 @@ public class MokProvider {
 				if(game != null) {
 					this.game = game;
 				}
+			}
+
+			@Override
+			public OwnsGameStack getActiveGameStack() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public ArrayList<OwnsGameStack> getFinisheGameStacks() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

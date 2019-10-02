@@ -19,7 +19,7 @@ public class Draw extends Action {
 		super.activate(activator);
 		initMetadata();
 		metadata.put("Target-ID", owningCard.getID().toString());
-		GameStack.getInstance().addEntry(this);
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
 

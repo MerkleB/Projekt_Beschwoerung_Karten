@@ -35,6 +35,7 @@ public class DeclareBattle extends Action {
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);
 		initializeBattle();
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
 

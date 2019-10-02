@@ -5,33 +5,35 @@ import java.util.ArrayList;
 import main.Action.Stackable;
 
 public class GameStack implements OwnsGameStack {
-
-	private static OwnsGameStack instance;
 	
 	private ArrayList<Stackable> stack;
 	private boolean start;
 	private int status;
 	
+	private GameStack() {
+		stack = new ArrayList<Stackable>();
+		start = false;
+		status = 0;
+	}
+	
 	public static OwnsGameStack getInstance() {
-		if(instance == null) {
-			instance = new GameStack();
-			((GameStack)instance).stack = new ArrayList<Stackable>();
-			((GameStack)instance).start = false;
-			((GameStack)instance).status = 0;
-		}
-		return instance;
+		return new GameStack();
 	}
 	
 	@Override
 	public void run() {
-		while(true) {
+		while(status > -1) {
 			while(!start);
 			status = 1;
 			for(int i=stack.size()-1; i>=0; i--) {
 				if(!stack.get(i).isWithdrawn()) {
 					stack.get(i).execute();
 				}
+				if(status == -1) {
+					break;
+				}
 			}
+			status = -1;
 		}
 	}
 
@@ -50,6 +52,12 @@ public class GameStack implements OwnsGameStack {
 		if(status == 1) {
 			return true;
 		}else return false;
+	}
+
+	@Override
+	public void finish() {
+		status = -1;
+		
 	}
 
 	@Override

@@ -28,6 +28,7 @@ public class Heal extends Action{
 		super.activate(activator);
 		clear();
 		selectCardToHeal();
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
 
@@ -36,8 +37,8 @@ public class Heal extends Action{
 		super.activateBy(activator, activatingPlayer);
 		clear();
 		selectCardToHeal();
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
-		execute();
 	}
 
 	@Override
@@ -100,29 +101,41 @@ public class Heal extends Action{
 				
 				@Override
 				public void actionExecuted(GameAction action) {
+					if(action != selectAction) return;
+					
 					Hashtable<String, String> metadata = action.getMetaData();
 					if(action.getCode().equals(SummonSelect)) {
 						UUID id = UUID.fromString(metadata.get("Summon-ID"));
 						cardToHeal = owningCard.getOwningPlayer().getGameZone(SummonZone).findCard(id);
-						selectAction = action;
 						summonHealed = true;
 						
 					}
 					if(action.getCode().equals(CollectorSelect)) {
 						UUID id = UUID.fromString(metadata.get("Collector-ID"));
 						cardToHeal = owningCard.getOwningPlayer().getGameZone(CollectorZone).findCard(id);
-						selectAction = action;
 						collectorHealed = true;
 					}
+					GameListener.getInstance().removeGameActionListener(this);
 				}
 				
 				@Override
 				public void actionActivated(GameAction action) {
+					if(selectAction == null) {
+						if(action.getCode().equals(SummonSelect)) {
+							selectAction = action;
+						}
+						if(action.getCode().equals(CollectorSelect)) {
+							selectAction = action;
+						}
+						
+						if(selectAction != null) {
+							owningCard.getOwningPlayer().getGameZone(SummonZone).deavtivateAll();
+							owningCard.getOwningPlayer().getGameZone(CollectorZone).deavtivateAll();
+						}
+					}
 				}
 			};
 			GameListener.getInstance().addGameActionListener(listener);
-			while(cardToHeal == null);
-			GameListener.getInstance().removeGameActionListener(listener);
 		}else {
 			cardToHeal = owningCard;
 		}

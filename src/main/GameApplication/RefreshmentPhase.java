@@ -4,12 +4,20 @@ import java.util.ArrayList;
 
 import main.Card.Card;
 import main.Card.Summon;
+import main.Listeners.GameListener;
 import main.jsonObjects.ActionDefinitionLibrary;
 
 public class RefreshmentPhase implements IsPhaseInGame {
 	
 	private ArrayList<String> actionsToActivate;
 	private Game game;
+	private OwnsGameStack activeGameStack;
+	private ArrayList<OwnsGameStack> finishedStacks;
+	
+	public RefreshmentPhase() {
+		activeGameStack = GameStack.getInstance();
+		finishedStacks = new ArrayList<OwnsGameStack>();
+	}
 	
 	@Override
 	public String getName() {
@@ -41,11 +49,16 @@ public class RefreshmentPhase implements IsPhaseInGame {
 
 	@Override
 	public void process() {
+		Thread stackThread = new Thread(activeGameStack);
+		stackThread.start();
 		restorePhaseStatus();
 	}
 
 	@Override
 	public void leave() {
+		activeGameStack.finish();
+		finishedStacks.add(activeGameStack);
+		activeGameStack = null;
 		Player activPlayer = game.getActivePlayer();
 		ArrayList<IsAreaInGame> zones = activPlayer.getGameZones();
 		for(IsAreaInGame zone : zones) {
@@ -63,6 +76,23 @@ public class RefreshmentPhase implements IsPhaseInGame {
 		if(game != null) {
 			this.game = game;
 		}
+	}
+
+	@Override
+	public OwnsGameStack getActiveGameStack() {
+		if(activeGameStack == null) {
+			activeGameStack = GameStack.getInstance();
+		}
+		if(activeGameStack.hasFinished()) {
+			finishedStacks.add(activeGameStack);
+			activeGameStack = GameStack.getInstance();
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<OwnsGameStack> getFinisheGameStacks() {
+		return finishedStacks;
 	}
 
 }

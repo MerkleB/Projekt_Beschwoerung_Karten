@@ -12,9 +12,17 @@ public class SelectMagicCollector extends Action {
 	}
 
 	@Override
+	public void activate(Player activator) throws NotActivableException {
+		super.activate(activator);
+		game.getActivePhase().getActiveGameStack().addEntry(this);
+		GameListener.getInstance().actionActivated(this);
+	}
+
+	@Override
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
-		execute();
+		game.getActivePhase().getActiveGameStack().addEntry(this);
+		GameListener.getInstance().actionActivated(this);
 	}
 
 	@Override

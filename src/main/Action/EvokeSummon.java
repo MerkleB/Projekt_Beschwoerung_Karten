@@ -1,10 +1,8 @@
 package main.Action;
 
-import main.GameApplication.GameStack;
 import main.GameApplication.IsAreaInGame;
 import main.GameApplication.Player;
 import main.Listeners.GameListener;
-import main.exception.NoCardException;
 import main.exception.NotActivableException;
 import main.Card.*;
 
@@ -21,7 +19,7 @@ public class EvokeSummon extends Action {
 			
 		initMetadata();
 		metadata.put("Target-ID", owningCard.getID().toString());
-		GameStack.getInstance().addEntry(this);
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 		
 	}

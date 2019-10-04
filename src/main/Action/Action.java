@@ -15,6 +15,7 @@ public abstract class Action implements GameAction {
 	protected static final String CollectorSelect = "SelectMagicCollector";
 	protected static final String SummonZone = "SummonZone";
 	protected static final String CollectorZone = "CollectorZone";
+	protected static final String HandZone = "HandZone";
 	
 	protected Card owningCard;
 	protected boolean activ = false;

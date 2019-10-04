@@ -268,6 +268,24 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				return 0;
 			}
+
+			@Override
+			public int getNumberOfRemainingCollectorActions() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public void increaseNumberOfRemainingCollectorActions(int actions) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void decreaseNumberOfRemainingCollectorActions(int actions) {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 	}
 

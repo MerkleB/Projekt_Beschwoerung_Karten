@@ -64,4 +64,22 @@ public interface Player extends CollectsMagicEnergy{
 	 * @return new value of healt points
 	 */
 	public int decreaseHealthPoints(int damage);
+	
+	/**
+	 * Retrieves the number of collector actions which can be done 
+	 * @return int
+	 */
+	public int getNumberOfRemainingCollectorActions();
+	
+	/**
+	 * Increases the number of possible collector actions by the given value
+	 * @param int actions
+	 */
+	public void increaseNumberOfRemainingCollectorActions(int actions);
+	
+	/**
+	 * Decreases the number of remaining collector actions
+	 * @param int actions
+	 */
+	public void decreaseNumberOfRemainingCollectorActions(int actions);
 }

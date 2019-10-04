@@ -1,11 +1,14 @@
 package main.Action;
 
+import main.GameApplication.Application;
 import main.GameApplication.IsAreaInGame;
 import main.GameApplication.Player;
 import main.Listeners.GameActionListener;
 import main.Listeners.GameListener;
 import main.exception.NoCollectorException;
 import main.exception.NotActivableException;
+import main.util.GameMessageProvider;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.UUID;
@@ -71,6 +74,15 @@ public class Heal extends Action{
 	
 	private void selectCardToHeal() {
 		if(((Summon)owningCard).getStatus().getSummonClass().equals("Healer")) {
+			setSelectActionsActiv();
+			listenToSelectActions();
+			
+		}else {
+			cardToHeal = owningCard;
+		}
+	}
+	
+	private void setSelectActionsActiv() {
 			for(Player player : game.getPlayers()) {
 				ArrayList<IsAreaInGame> zones = player.getGameZones();
 				for(IsAreaInGame zone : zones) {
@@ -96,49 +108,51 @@ public class Heal extends Action{
 					}
 				}
 			}
-			game.prompt(actionIsActivFor, "Please select the Summon or Magic Collector to heal.");
-			GameActionListener listener = new GameActionListener() {
+	}
+	
+	private void listenToSelectActions() {
+		game.prompt(actionIsActivFor, GameMessageProvider.getInstance().getMessage("#2", Application.getInstance().getLanguage()));
+		GameActionListener listener = new GameActionListener() {
+			
+			/**
+			 * If the executed action is the same as the registered select-Action retrieve the selected card.
+			 */
+			@Override
+			public void actionExecuted(GameAction action) {
+				if(action != selectAction) return;
 				
-				@Override
-				public void actionExecuted(GameAction action) {
-					if(action != selectAction) return;
+				cardToHeal = action.getCard();
+				if(action.getCode().equals(SummonSelect)) {
+					summonHealed = true;
 					
-					Hashtable<String, String> metadata = action.getMetaData();
+				}
+				if(action.getCode().equals(CollectorSelect)) {
+					collectorHealed = true;
+				}
+				GameListener.getInstance().removeGameActionListener(this);
+			}
+			
+			/**
+			 * Registers a select action and if one was selected all actions are set as inactiv.
+			 */
+			@Override
+			public void actionActivated(GameAction action) {
+				if(selectAction == null) {
 					if(action.getCode().equals(SummonSelect)) {
-						UUID id = UUID.fromString(metadata.get("Summon-ID"));
-						cardToHeal = owningCard.getOwningPlayer().getGameZone(SummonZone).findCard(id);
-						summonHealed = true;
-						
+						selectAction = action;
 					}
 					if(action.getCode().equals(CollectorSelect)) {
-						UUID id = UUID.fromString(metadata.get("Collector-ID"));
-						cardToHeal = owningCard.getOwningPlayer().getGameZone(CollectorZone).findCard(id);
-						collectorHealed = true;
+						selectAction = action;
 					}
-					GameListener.getInstance().removeGameActionListener(this);
-				}
-				
-				@Override
-				public void actionActivated(GameAction action) {
-					if(selectAction == null) {
-						if(action.getCode().equals(SummonSelect)) {
-							selectAction = action;
-						}
-						if(action.getCode().equals(CollectorSelect)) {
-							selectAction = action;
-						}
-						
-						if(selectAction != null) {
-							owningCard.getOwningPlayer().getGameZone(SummonZone).deavtivateAll();
-							owningCard.getOwningPlayer().getGameZone(CollectorZone).deavtivateAll();
-						}
+					
+					if(selectAction != null) {
+						owningCard.getOwningPlayer().getGameZone(SummonZone).deavtivateAll();
+						owningCard.getOwningPlayer().getGameZone(CollectorZone).deavtivateAll();
 					}
 				}
-			};
-			GameListener.getInstance().addGameActionListener(listener);
-		}else {
-			cardToHeal = owningCard;
-		}
+			}
+		};
+		GameListener.getInstance().addGameActionListener(listener);
 	}
 	
 	private void clear() {

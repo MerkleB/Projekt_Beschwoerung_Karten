@@ -1,13 +1,25 @@
 package main.Action;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import main.Card.Card;
+import main.GameApplication.AcceptPromptAnswers;
+import main.GameApplication.Application;
 import main.GameApplication.DeckZone;
+import main.GameApplication.DiscardPile;
 import main.GameApplication.GameStack;
 import main.GameApplication.HandZone;
+import main.GameApplication.IsAreaInGame;
 import main.GameApplication.Player;
 import main.Listeners.GameListener;
 import main.exception.NotActivableException;
+import main.util.GameMessageProvider;
 
-public class Draw extends Action {
+public class Draw extends Action implements AcceptPromptAnswers {
+
+	private Player promptedPlayer;
+	private static final String[] answers = {"pay", "damage"};
 
 	@Override
 	public String getCode() {
@@ -20,7 +32,14 @@ public class Draw extends Action {
 		initMetadata();
 		metadata.put("Target-ID", owningCard.getID().toString());
 		game.getActivePhase().getActiveGameStack().addEntry(this);
-		GameListener.getInstance().actionActivated(this);
+		if(checkIfCardCanBeDrawnFromDeck()) {
+			GameListener.getInstance().actionActivated(this);
+		}else {
+			withdrawn = true;
+			promptedPlayer = activator;
+			game.prompt(promptedPlayer, GameMessageProvider.getInstance().getMessage("#1", Application.getInstance().getLanguage()), this);
+		}
+		
 	}
 
 	@Override
@@ -43,5 +62,44 @@ public class Draw extends Action {
 			GameListener.getInstance().actionExecuted(this);
 		}
 	}
+	
+	private boolean checkIfCardCanBeDrawnFromDeck() {
+		boolean result = false;
+		IsAreaInGame deck = owningCard.getOwningPlayer().getGameZone("DeckZone");
+		if(deck.getCards().size() != 0) {
+			result = true;
+			if(owningCard.getCardID().equals("DUMMY")) {
+				result = false;
+			}
+		}else {
+			result = false;
+		}
+		return result;
+	}
 
+	@Override
+	public void accept(String answer) {
+		if(owningCard.getOwningPlayer().getHealthPoints() < 5) {
+			
+		}
+		switch(answer) {
+		case "pay":
+			owningCard.getOwningPlayer().decreaseHealthPoints(5);
+			IsAreaInGame discardPile = owningCard.getOwningPlayer().getGameZone("DiscardPile");
+			ArrayList<Card> pile = (ArrayList<Card>) discardPile.getCards().clone();
+			Collections.shuffle(pile);
+			Card cardFromDiscardPile = pile.get(pile.size()-1);
+			discardPile.removeCard(cardFromDiscardPile);
+			IsAreaInGame deck = owningCard.getOwningPlayer().getGameZone("DeckZone");
+			deck.addCard(cardFromDiscardPile);
+			cardFromDiscardPile.activateGameAction("Draw", actionIsActivFor, this);
+			break;
+		case "damage":
+			owningCard.getOwningPlayer().decreaseHealthPoints(1);
+			break;
+		default:
+			game.prompt(promptedPlayer, GameMessageProvider.getInstance().getMessage("#1", Application.getInstance().getLanguage()), this);
+			break;
+		}
+	}
 }

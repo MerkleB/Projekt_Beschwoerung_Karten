@@ -3,17 +3,15 @@ package main.GameApplication;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import javax.print.attribute.standard.MediaSize.Other;
-
+import main.Action.Action;
+import main.Action.Draw;
 import main.Card.Card;
+import main.Card.Spell;
 import main.jsonObjects.ActionDefinitionLibrary;
 import main.jsonObjects.HoldsActionDefinitions;
 import main.util.ActionMatchFinder;
 
-public class DeckZone extends GameZone implements AcceptPromptAnswers {
-
-	private Player promptedPlayer;
-	private static final String[] answers = {"pay", "damage"};
+public class DeckZone extends GameZone{
 	
 	public DeckZone(Player owner, ArrayList<Card> deck) {
 		super(owner);
@@ -44,45 +42,13 @@ public class DeckZone extends GameZone implements AcceptPromptAnswers {
 			Card lastCard = cardList.get(lastIndex);
 			lastCard.setActiv(actionsToActivate, player);
 		}else {
-			promptedPlayer = player;
-			game.prompt(player, "#1-You have no cards to draw. "
-																	+"You either can loose 1 HP or pay 5 HP to draw a card from Discard pile."
-																	+"\r\nWhat do you want to do?"
-																	+"\r\n=damage;pay", this);
-			promptedPlayer = null;
+			//Set a dummy card to have still a draw action
+			Action[] actions = new Action[1];
+			actions[0] = new Draw();
+			Card dummyCard = new Spell("DUMMY", "Dummy", "", null, 0, 0, 0, player, actions);
+			actions[0].setCard(dummyCard);
+			dummyCard.setActiv(actionsToActivate, player);
 		}
-	}
-
-	@Override
-	public void accept(String answer) {
-		switch(answer) {
-		case "damage":
-			promptedPlayer.decreaseHealthPoints(1);
-			break;
-		case "pay":
-			promptedPlayer.decreaseHealthPoints(5);
-			DiscardPile discardPile = (DiscardPile) promptedPlayer.getGameZone("DiscardPile");
-			@SuppressWarnings("unchecked") 
-			ArrayList<Card> cards = (ArrayList<Card>) discardPile.getCards().clone();
-			Collections.shuffle(cards);
-			Card drawnCard = cards.get(cards.size()-1);
-			discardPile.removeCard(drawnCard);
-			promptedPlayer.getGameZone("HandZone").addCard(drawnCard);
-			break;
-		default:
-			System.out.println("Invalid command.");
-			game.prompt(promptedPlayer, "#1-You have no cards to draw. "
-					+"You either can loose 1 HP or pay 5 HP to draw a card from Discard pile."
-					+"\r\nWhat do you want to do?"
-					+"\r\n=damage;pay", this);
-		}
-	}
-
-	@Override
-	public String[] getPossibleAnswers() {
-		return answers;
-	}
-	
-	
+	}	
 
 }

@@ -11,7 +11,7 @@ public interface ProcessesBattle{
 	public static final String INIT = "initial";
 	
 	public void proceed(Player player);
-	public void setCombatants(Summon combatantOne, Summon combatantTow);
+	public void setCombatants(Summon attacker, Summon defender);
 	public void start();
 	public void end();
 	public void remove(UUID summonID);

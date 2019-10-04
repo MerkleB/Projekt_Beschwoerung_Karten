@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import main.Card.*;
+import main.GameApplication.Application;
 import main.GameApplication.Battle;
 import main.GameApplication.IsAreaInGame;
 import main.GameApplication.Player;
@@ -11,6 +12,7 @@ import main.GameApplication.ProcessesBattle;
 import main.Listeners.GameActionListener;
 import main.Listeners.GameListener;
 import main.exception.NotActivableException;
+import main.util.GameMessageProvider;
 
 public class DeclareBattle extends Action {
 	
@@ -25,9 +27,9 @@ public class DeclareBattle extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			battle.setCombatants((Summon)owningCard, attackedSummon);
+			GameListener.getInstance().actionExecuted(this);
 			battle.start();
-			while(battle.getStatus().equals(ProcessesBattle.RUNNING));
-			game.getActivePhase().restorePhaseStatus();
 		}
 	}
 
@@ -44,7 +46,6 @@ public class DeclareBattle extends Action {
 		super.activateBy(activator, activatingPlayer);
 		initializeBattle();
 		GameListener.getInstance().actionActivated(this);
-		execute();
 	}
 
 	@Override
@@ -88,6 +89,7 @@ public class DeclareBattle extends Action {
 					if(action.getCode().equals(SummonSelect)) {
 						String id = action.getMetaData().get("Summon-ID");
 						attackedSummon = (Summon)zone.findCard(UUID.fromString(id));
+						GameListener.getInstance().removeGameActionListener(this);
 					}
 				}
 				
@@ -95,10 +97,8 @@ public class DeclareBattle extends Action {
 				public void actionActivated(GameAction action) {
 				}
 			};
-			game.prompt(actionIsActivFor, "Select the Summon you wan to attack!");
+			game.prompt(actionIsActivFor, GameMessageProvider.getInstance().getMessage("#3", Application.getInstance().getLanguage()));
 			GameListener.getInstance().addGameActionListener(listener);
-			while(attackedSummon == null);
-			GameListener.getInstance().removeGameActionListener(listener);
 		}
 	}
 

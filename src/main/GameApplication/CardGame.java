@@ -2,6 +2,7 @@ package main.GameApplication;
 
 import java.util.UUID;
 
+import main.util.MessageInLanguage;
 import main.util.RankLevelMapper;
 import main.util.mapsRankAndLevel;
 
@@ -36,13 +37,13 @@ public class CardGame implements Game {
 	}
 	
 	@Override
-	public void prompt(Player promptedPlayer, String message, AcceptPromptAnswers prompter) {
+	public void prompt(Player promptedPlayer, MessageInLanguage message, AcceptPromptAnswers prompter) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void prompt(Player promptedPlayer, String message) {
+	public void prompt(Player promptedPlayer, MessageInLanguage message) {
 		// TODO Auto-generated method stub
 		
 	}

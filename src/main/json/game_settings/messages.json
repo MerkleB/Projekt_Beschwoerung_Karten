@@ -1,0 +1,25 @@
+{
+	"messages" : [
+		{ 
+			"id" : "#1",
+			"texts" : [
+				{"language" : "EN", "text" : "You have no cards to draw.\r\nYou either can loose 1 HP or pay 5 HP to draw a card from Discard pile.\r\nWhat do you want to do?\r\n", "answers" : [{"code" : "damage", "text" : "Damage"},{"code" : "pay", "text" : "Pay"}]},
+				{"language" : "DE", "text" : "Du hast keine Karten mehr im Deck.\r\nZahle entweder 5 Lebenspunkte um eine Karte vom Ablagestapel zu ziehen oder erleide einen Schaden.\r\nWas wirst du tun?\r\n", "answers" : [{"code" : "damage", "text" : "Schaden"},{"code" : "pay", "text" : "Zahlen"}]}
+			]
+		},
+		{ 
+			"id" : "#2",
+			"texts" : [
+				{"language" : "EN", "text" : "Please select the Summon or MagicCollector to heal.", "answers" : []},
+				{"language" : "DE", "text" : "Wähle die Beschwörung oder den Magiesammler welchen du heilen möchtest.", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#3",
+			"texts" : [
+				{"language" : "EN", "text" : "Select the Summon you want to attack!", "answers" : []},
+				{"language" : "DE", "text" : "Wähle die Beschwörung, die du angreifen möchtest", "answers" : []}
+			]
+		}
+	]
+}

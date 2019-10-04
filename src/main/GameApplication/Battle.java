@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import main.Card.Summon;
 import main.Card.SummonStatus;
+import main.Listeners.BattleEventObject;
 import main.Listeners.GameListener;
 import main.jsonObjects.ElementDefinition;
 import main.util.CalculatesElementEffectivities;
@@ -55,6 +56,7 @@ public class Battle implements ProcessesBattle {
 
 	@Override
 	public void start() {
+		GameListener.getInstance().battleStarted(this);
 		status = ProcessesBattle.RUNNING;
 		determineFastSummon();
 		System.out.println("Fast summon "+fastSummon.getName()+"#"+fastSummon.getID());
@@ -68,17 +70,20 @@ public class Battle implements ProcessesBattle {
 			deactivate(attackingPlayer);
 			deactivate(defendingPlayer);
 			if(fastSummon != null && slowSummon != null) {
-				//TODO: Raise attack event
 				int fastSummonAttack = calculateAttack(fastSummon, slowSummon);
 				int slowSummonVitality = slowSummon.getStatus().decreaseVitality(fastSummonAttack);
+				GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, fastSummon, slowSummon, fastSummonAttack));
 				if(slowSummonVitality == 0) {
 					setBattleResult(fastSummon, slowSummon);
+					break;
 				}
-				//TODO: Raise attack event				
+				
 				int slowSummonAttack = calculateAttack(slowSummon, fastSummon);
 				int fastSummonVitality = fastSummon.getStatus().decreaseVitality(slowSummonAttack);
+				GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, slowSummon, fastSummon, slowSummonAttack));
 				if(fastSummonVitality == 0) {
 					setBattleResult(slowSummon, fastSummon);
+					break;
 				}
 				
 				activateBattlePhase("ClashEnd", fastSummon.getOwningPlayer());
@@ -97,6 +102,7 @@ public class Battle implements ProcessesBattle {
 				end();
 			};
 		}
+		GameListener.getInstance().battleEnded(this);
 	}
 
 	@Override
@@ -107,7 +113,7 @@ public class Battle implements ProcessesBattle {
 			fastSummon.setActivityStatus(Summon.IMMOBILIZED);
 		}else slowSummon.setActivityStatus(Summon.IMMOBILIZED);
 		System.out.println("Battle was abrupt.");
-		//TODO: Raise battle abort event
+		GameListener.getInstance().battleAbrupt(this);
 	}
 
 	@Override
@@ -170,7 +176,6 @@ public class Battle implements ProcessesBattle {
 		for(IsAreaInGame zone : zones) {
 			zone.activate(player, battlePhase);
 		}
-		GameListener.getInstance().phaseStarted(battlePhase);
 	}
 	
 	private void deactivate(Player player) {
@@ -188,7 +193,6 @@ public class Battle implements ProcessesBattle {
 		status = ProcessesBattle.ENDED;
 		System.out.println("Winning card "+winner.getName()+"#"+winner.getID());
 		System.out.println("Loosing card "+looser.getName()+"#"+looser.getID());
-		//TODO: Raise battle end event
 	}
 	
 	private int calculateAttack(Summon summon, Summon attackedSummon) {

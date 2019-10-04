@@ -52,6 +52,7 @@ public class RefreshmentPhase implements IsPhaseInGame {
 		Thread stackThread = new Thread(activeGameStack);
 		stackThread.start();
 		restorePhaseStatus();
+		GameListener.getInstance().phaseStarted(this);
 	}
 
 	@Override
@@ -64,6 +65,7 @@ public class RefreshmentPhase implements IsPhaseInGame {
 		for(IsAreaInGame zone : zones) {
 			zone.deavtivateAll();
 		}
+		GameListener.getInstance().phaseEnded(this);
 	}
 
 	@Override

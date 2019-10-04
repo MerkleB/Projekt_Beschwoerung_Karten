@@ -49,6 +49,7 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 		Thread stackThread = new Thread(activeGameStack);
 		stackThread.start();
 		restorePhaseStatus();
+		GameListener.getInstance().phaseStarted(this);
 	}
 
 	@Override
@@ -57,18 +58,19 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 		finishedStacks.add(activeGameStack);
 		activeGameStack = null;
 		deactivateDrawActions();
+		GameListener.getInstance().phaseEnded(this);
 	}
 	
 	@Override
 	public void actionActivated(GameAction action) {
-		//do nothing
+		if(action.getName().equals("Draw") && action.getCard().getOwningPlayer() == activePlayer) {
+			deactivateDrawActions();
+		}
 	}
 
 	@Override
 	public void actionExecuted(GameAction action) {
-		if(action.getName().equals("Draw") && action.getCard().getOwningPlayer() == activePlayer) {
-			deactivateDrawActions();
-		}
+		//Do nothing
 	}
 	
 	private void deactivateDrawActions() {

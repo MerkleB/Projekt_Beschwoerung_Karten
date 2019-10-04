@@ -7,6 +7,7 @@ import main.Action.GameAction;
 import main.Card.Card;
 import main.Card.StatusChange;
 import main.Card.Summon;
+import main.GameApplication.Battle;
 import main.GameApplication.IsPhaseInGame;
 
 public class GameListener implements ListensToEverything {
@@ -16,12 +17,16 @@ public class GameListener implements ListensToEverything {
 	private ArrayList<GameActionListener> action_listeners;
 	private ArrayList<PhaseListener> phase_listeners;
 	private ArrayList<SummonListener> summon_listeners;
+	private ArrayList<BattleListener> battle_listeners;
 	
 	public static ListensToEverything getInstance() {
 		if(instance == null) {
 			instance = new GameListener();
 			((GameListener)instance).action_listeners = new ArrayList<GameActionListener>();
 			((GameListener)instance).effect_listeners = new ArrayList<EffectListener>();
+			((GameListener)instance).phase_listeners = new ArrayList<PhaseListener>();
+			((GameListener)instance).summon_listeners = new ArrayList<SummonListener>();
+			((GameListener)instance).battle_listeners = new ArrayList<BattleListener>();
 		}
 		return instance;
 	}
@@ -89,6 +94,34 @@ public class GameListener implements ListensToEverything {
 			listener.summonStatusChanged(change, summon);
 		}
 	}
+	
+	@Override
+	public void battleStarted(Battle battle) {
+		for(BattleListener listener : battle_listeners) {
+			listener.battleStarted(battle);
+		}
+	}
+
+	@Override
+	public void battleEnded(Battle battle) {
+		for(BattleListener listener : battle_listeners) {
+			listener.battleEnded(battle);
+		}	
+	}
+
+	@Override
+	public void battleAbrupt(Battle battle) {
+		for(BattleListener listener : battle_listeners) {
+			listener.battleAbrupt(battle);
+		}	
+	}
+
+	@Override
+	public void attackHappened(BattleEventObject eventDetails) {
+		for(BattleListener listener : battle_listeners) {
+			listener.attackHappened(eventDetails);
+		}
+	}
 
 	public void addGameActionListener(GameActionListener listener) {
 		action_listeners.add(listener);
@@ -120,12 +153,22 @@ public class GameListener implements ListensToEverything {
 
 	@Override
 	public void removePhaseListener(PhaseListener listener) {
-		phase_listeners.remove(phase_listeners);
+		phase_listeners.remove(listener);
 	}
 
 	@Override
 	public void removeSummonListener(SummonListener listener) {
 		summon_listeners.remove(listener);		
+	}
+
+	@Override
+	public void addBattleListener(BattleListener listener) {
+		battle_listeners.add(listener);
+	}
+
+	@Override
+	public void removeBattleListener(BattleListener listener) {
+		battle_listeners.remove(listener);
 	}
 
 }

@@ -1,6 +1,8 @@
 package main.GameApplication;
 
 import java.util.ArrayList;
+
+import main.Listeners.GameListener;
 import main.jsonObjects.ActionDefinitionLibrary;
 
 public class GamePhase implements IsPhaseInGame {
@@ -44,6 +46,7 @@ public class GamePhase implements IsPhaseInGame {
 		Thread stackThread = new Thread(activeGameStack);
 		stackThread.start();
 		restorePhaseStatus();
+		GameListener.getInstance().phaseStarted(this);
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class GamePhase implements IsPhaseInGame {
 		for(IsAreaInGame zone : zones) {
 			zone.deavtivateAll();
 		}
+		GameListener.getInstance().phaseEnded(this);
 	}
 
 	@Override

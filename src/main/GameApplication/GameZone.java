@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.UUID;
 
 import main.Card.Card;
+import main.Listeners.GameListener;
 import main.exception.NoCardException;
 import main.jsonObjects.ActionDefinitionLibrary;
 import main.jsonObjects.HoldsActionDefinitions;
@@ -43,7 +44,8 @@ public abstract class GameZone implements IsAreaInGame {
 				cardList.add(card);
 			} catch (NoCardException e) {
 				System.out.println("Abort adding of card. Reason: "+e.getMessage());
-			}			
+			}
+			GameListener.getInstance().cardAdded(this, card);
 		}
 	}
 
@@ -57,8 +59,8 @@ public abstract class GameZone implements IsAreaInGame {
 			}
 		}
 		if(indexForRemoval > -1) cardList.remove(indexForRemoval);
-		
-		cardHash.remove(card.getID());		
+		cardHash.remove(card.getID());
+		GameListener.getInstance().cardRemoved(this, card);
 	}
 
 	@Override

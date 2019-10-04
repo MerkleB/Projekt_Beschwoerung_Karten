@@ -8,6 +8,7 @@ import main.Card.Card;
 import main.Card.StatusChange;
 import main.Card.Summon;
 import main.GameApplication.Battle;
+import main.GameApplication.IsAreaInGame;
 import main.GameApplication.IsPhaseInGame;
 
 public class GameListener implements ListensToEverything {
@@ -18,6 +19,7 @@ public class GameListener implements ListensToEverything {
 	private ArrayList<PhaseListener> phase_listeners;
 	private ArrayList<SummonListener> summon_listeners;
 	private ArrayList<BattleListener> battle_listeners;
+	private ArrayList<ZoneListener> zone_listeners;
 	
 	public static ListensToEverything getInstance() {
 		if(instance == null) {
@@ -27,6 +29,7 @@ public class GameListener implements ListensToEverything {
 			((GameListener)instance).phase_listeners = new ArrayList<PhaseListener>();
 			((GameListener)instance).summon_listeners = new ArrayList<SummonListener>();
 			((GameListener)instance).battle_listeners = new ArrayList<BattleListener>();
+			((GameListener)instance).zone_listeners = new ArrayList<ZoneListener>();
 		}
 		return instance;
 	}
@@ -123,6 +126,20 @@ public class GameListener implements ListensToEverything {
 		}
 	}
 
+	@Override
+	public void cardAdded(IsAreaInGame zone, Card card) {
+		for(ZoneListener listener : zone_listeners) {
+			listener.cardAdded(zone, card);
+		}
+	}
+
+	@Override
+	public void cardRemoved(IsAreaInGame zone, Card card) {
+		for(ZoneListener listener : zone_listeners) {
+			listener.cardAdded(zone, card);
+		}
+	}
+
 	public void addGameActionListener(GameActionListener listener) {
 		action_listeners.add(listener);
 	}
@@ -139,6 +156,11 @@ public class GameListener implements ListensToEverything {
 	@Override
 	public void addSummonListener(SummonListener listener) {
 		summon_listeners.add(listener);		
+	}
+
+	@Override
+	public void addZoneListener(ZoneListener listener) {
+		zone_listeners.add(listener);		
 	}
 
 	@Override
@@ -169,6 +191,11 @@ public class GameListener implements ListensToEverything {
 	@Override
 	public void removeBattleListener(BattleListener listener) {
 		battle_listeners.remove(listener);
+	}
+
+	@Override
+	public void removeZoneListener(ZoneListener listener) {
+		zone_listeners.remove(listener);
 	}
 
 }

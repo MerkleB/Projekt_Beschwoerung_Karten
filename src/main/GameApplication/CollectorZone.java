@@ -15,9 +15,7 @@ public class CollectorZone extends GameZone {
 
 	@Override
 	public void addCard(Card card) {
-		Card collector = card.getCollector();
-		cardList.add(collector);
-		cardHash.put(collector.getID(), collector);
+		super.addCard(card.getCollector());
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import main.Card.Card;
 import main.GameApplication.AcceptPromptAnswers;
 import main.GameApplication.Application;
 import main.GameApplication.DeckZone;
-import main.GameApplication.DiscardPile;
 import main.GameApplication.GameStack;
 import main.GameApplication.HandZone;
 import main.GameApplication.IsAreaInGame;
@@ -19,7 +18,6 @@ import main.util.GameMessageProvider;
 public class Draw extends Action implements AcceptPromptAnswers {
 
 	private Player promptedPlayer;
-	private static final String[] answers = {"pay", "damage"};
 
 	@Override
 	public String getCode() {

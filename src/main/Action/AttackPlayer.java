@@ -7,7 +7,7 @@ import main.exception.NotActivableException;
 import main.Card.Summon;
 
 public class AttackPlayer extends Action {
-
+	
 	@Override
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);

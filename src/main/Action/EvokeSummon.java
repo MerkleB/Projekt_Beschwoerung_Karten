@@ -61,8 +61,9 @@ public class EvokeSummon extends Action {
 					throw new RuntimeException("Fatal error: Player has no SummonZone");
 				}
 				summonZone.addCard(owningCard);
-				
 				GameListener.getInstance().actionExecuted(this);
+				summonZone.deavtivateAll();
+				summonZone.activate(ownerOfCard, game.getActivePhase());
 			}
 		}
 	}

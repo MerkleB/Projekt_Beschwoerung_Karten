@@ -19,6 +19,9 @@ public class StatusChange {
 	public static final String SUMMONINGPOINT = "summoningPoints";
 	public static final String ELEMENT = "element";
 	public static final String SUMMONCLASS = "summonClass";
+	public static final String TYPE_ADDITION = "A";
+	public static final String TYPE_POS_MULT = "*";
+	public static final String TYPE_NEG_MULT = "/";
 	
 	/**
 	 * The status which has been changed
@@ -33,11 +36,11 @@ public class StatusChange {
 	 */
 	private String changeType;
 	/**
-	 * Value of the status change
+	 * Value of the status change (int)
 	 */
 	private int value;
 	/**
-	 * Value of the status change
+	 * Value of the status change (String)
 	 */
 	private String valueString;
 	

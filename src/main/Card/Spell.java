@@ -140,7 +140,7 @@ public class Spell implements Card {
 		return name;
 	}
 
-	public int getNeededMagicEnergy() throws NoCardException {
+	public int getNeededMagicEnergy(){
 		return neededMagicEnergy;
 	}
 
@@ -152,11 +152,7 @@ public class Spell implements Card {
 	public void show() {
 		System.out.println("<<<"+getType().toString()+"-Card>>>");
 		System.out.println("Name: "+getName());
-		try {
-			System.out.println("MagicEnergy: "+getNeededMagicEnergy());
-		} catch (NoCardException e) {
-			System.out.println(e.getMessage());
-		}
+		System.out.println("MagicEnergy: "+getNeededMagicEnergy());
 		for(int i=0; i<effects.length; i++) {
 			System.out.println("Effect"+i+": "+effects[i].getDescription());
 		}

@@ -42,6 +42,8 @@ public class SetAsCollector extends Action {
 			IsAreaInGame collectorZone = owningCard.getOwningPlayer().getGameZone(CollectorZone);
 			hand.removeCard(owningCard);
 			collectorZone.addCard(owningCard);
+			collectorZone.deavtivateAll();
+			collectorZone.activate(owningCard.getOwningPlayer(), game.getActivePhase());
 			GameListener.getInstance().actionExecuted(this);
 		}
 	}

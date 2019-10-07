@@ -41,6 +41,7 @@ public class AttackPlayer extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			((Summon)owningCard).setActivityStatus(Summon.USED);
 			Player[] players = game.getPlayers();
 			Player attackedPlayer = null;
 			for(Player player : players) {

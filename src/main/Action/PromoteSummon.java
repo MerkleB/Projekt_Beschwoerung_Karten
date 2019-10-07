@@ -41,6 +41,7 @@ public class PromoteSummon extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			((Summon)owningCard).setActivityStatus(Summon.USED);
 			Summon currentLevelCard = (Summon)owningCard;
 			Summon nextLevelCard = hierarchy.getNextSummonInHierarchy(currentLevelCard);
 			SummonZone zone = (SummonZone)owningCard.getOwningPlayer().getGameZone("SummonZone");

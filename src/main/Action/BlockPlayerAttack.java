@@ -49,6 +49,7 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			((Summon)owningCard).setActivityStatus(Summon.USED);
 			Summon attacker = (Summon) actionToBlock.getCard();
 			Summon defender = (Summon) owningCard;
 			ProcessesBattle battle = new Battle();

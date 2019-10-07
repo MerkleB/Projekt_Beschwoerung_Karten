@@ -8,10 +8,7 @@ import main.Listeners.GameListener;
 import main.exception.NoCollectorException;
 import main.exception.NotActivableException;
 import main.util.GameMessageProvider;
-
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.UUID;
 import main.Card.*;
 
 public class Heal extends Action{
@@ -55,6 +52,7 @@ public class Heal extends Action{
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			((Summon)owningCard).setActivityStatus(Summon.USED);
 			int heal = ((Summon)owningCard).getStatus().getHeal();
 			if(summonHealed) {
 				((Summon)cardToHeal).getStatus().increaseVitality(heal);

@@ -27,6 +27,7 @@ public class DeclareBattle extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			((Summon)owningCard).setActivityStatus(Summon.USED);
 			battle.setCombatants((Summon)owningCard, attackedSummon);
 			GameListener.getInstance().actionExecuted(this);
 			battle.start();

@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.RankLevelMapper;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 
 public class CardGame implements Game {
 	
 	private static Game instance;
-	private mapsRankAndLevel rankAndLevelMapper; 
+	private MapsRankAndLevel rankAndLevelMapper; 
 	
 	public static Game getInstance() {
 		if(instance == null) {
@@ -20,7 +20,7 @@ public class CardGame implements Game {
 	}
 	
 	@Override
-	public mapsRankAndLevel getRankMapper() {
+	public MapsRankAndLevel getRankMapper() {
 		return rankAndLevelMapper;
 	}
 

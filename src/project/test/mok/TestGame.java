@@ -11,7 +11,7 @@ import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.RankLevelMapper;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 
 public class TestGame implements Game {
 	
@@ -100,7 +100,7 @@ public class TestGame implements Game {
 	}
 
 	@Override
-	public mapsRankAndLevel getRankMapper() {
+	public MapsRankAndLevel getRankMapper() {
 		return RankLevelMapper.getInstance();
 	}
 

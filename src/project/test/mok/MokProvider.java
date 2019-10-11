@@ -22,7 +22,7 @@ import project.main.jsonObjects.EffectDefinition;
 import project.main.jsonObjects.HoldsActionDefinitions;
 import project.main.jsonObjects.HoldsCardDefinitions;
 import project.main.jsonObjects.SummonAscentHierarchyDefinition;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 
 public class MokProvider {
 	public static Effect getEffect() {
@@ -653,8 +653,8 @@ public class MokProvider {
 		};
 	}
 	
-	public static mapsRankAndLevel getMapperMok() {
-		return new mapsRankAndLevel() {
+	public static MapsRankAndLevel getMapperMok() {
+		return new MapsRankAndLevel() {
 			
 			@Override
 			public int mapRankToLevel(String rank) {

@@ -16,7 +16,7 @@ import project.main.exception.CardCreationException;
 import project.main.exception.InvalidCardException;
 import project.main.exception.NotAllowedCardException;
 import project.main.util.RankLevelMapper;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 import project.test.mok.MokProvider;
 import project.test.mok.TestData;
 
@@ -48,7 +48,7 @@ public class CardFactoryTest {
 
 			if(!mapperAlreadyMokked) {
 				mapperAlreadyMokked = true;
-				mapsRankAndLevel mapper = RankLevelMapper.getInstance();
+				MapsRankAndLevel mapper = RankLevelMapper.getInstance();
 				if(mapper instanceof RankLevelMapper) {
 					Field mapperField = mapper.getClass().getDeclaredField("instance");
 					//Inject mapperMok

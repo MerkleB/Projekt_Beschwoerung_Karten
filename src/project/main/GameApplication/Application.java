@@ -7,7 +7,7 @@ import project.main.jsonObjects.CardDefinitionLibrary;
 import project.main.jsonObjects.HoldsActionDefinitions;
 import project.main.jsonObjects.HoldsCardDefinitions;
 import project.main.util.RankLevelMapper;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 
 public class Application implements HostsGame {
 
@@ -18,7 +18,7 @@ public class Application implements HostsGame {
 	private ListensToEverything gameListener;
 	private HoldsCardDefinitions cardLibrary;
 	private HoldsActionDefinitions actionLibrary;
-	private mapsRankAndLevel mapper;
+	private MapsRankAndLevel mapper;
 	
 	/**
 	 * Get instance and set Game if not null
@@ -73,7 +73,7 @@ public class Application implements HostsGame {
 	}
 
 	@Override
-	public mapsRankAndLevel getRankAndLevelMapper() {
+	public MapsRankAndLevel getRankAndLevelMapper() {
 		return mapper;
 	}
 

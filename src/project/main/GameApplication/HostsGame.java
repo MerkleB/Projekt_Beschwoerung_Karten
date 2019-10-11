@@ -3,7 +3,7 @@ package project.main.GameApplication;
 import project.main.Listeners.ListensToEverything;
 import project.main.jsonObjects.HoldsActionDefinitions;
 import project.main.jsonObjects.HoldsCardDefinitions;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 
 public interface HostsGame {
 	public void setGame(Game game);
@@ -13,5 +13,5 @@ public interface HostsGame {
 	public ListensToEverything getGameListener();
 	public HoldsCardDefinitions getCardLibrary();
 	public HoldsActionDefinitions getActionLibrary();
-	public mapsRankAndLevel getRankAndLevelMapper();
+	public MapsRankAndLevel getRankAndLevelMapper();
 }

@@ -3,10 +3,10 @@ package project.main.GameApplication;
 import java.util.UUID;
 
 import project.main.jsonObjects.MessageInLanguage;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 
 public interface Game extends Runnable{
-	public mapsRankAndLevel getRankMapper(); 
+	public MapsRankAndLevel getRankMapper(); 
 	public Player getActivePlayer();
 	public Player[] getPlayers();
 	public Player getPlayer(UUID id);

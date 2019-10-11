@@ -1,7 +1,8 @@
 package project.main.jsonObjects;
 
-public class rankDefinition {
+public class RankDefinition {
 	public String name;
 	public String summon_class;
-	public int level;
+	public String level;
+	public RankName[] names;
 }

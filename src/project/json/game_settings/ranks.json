@@ -1,11 +1,77 @@
 {
 	"ranks" : 
 	[
-		{"name" : "Cub", "summon_class" : "NaturalBeast", "level" : "0"},
-		{"name" : "Adult", "summon_class" : "NaturalBeast", "level" : "1"},
-		{"name" : "Legend", "summon_class" : "NaturalBeast", "level" : "2"},
-		{"name" : "Cub", "summon_class" : "MysticBeast", "level" : "0"},
-		{"name" : "Adult", "summon_class" : "MysticBeast", "level" : "1"},
-		{"name" : "Legend", "summon_class" : "MysticBeast", "level" : "2"}
+		{"name" : "Cub", "summon_class" : "NaturalBeast", "level" : "0", "names" : [
+																					{"language" : "EN", "name" : "Cub"},
+																					{"language" : "DE", "name" : "Junges"}
+																					]},
+		{"name" : "Adult", "summon_class" : "NaturalBeast", "level" : "1", "names" : [
+																					{"language" : "EN", "name" : "Adult"},
+																					{"language" : "DE", "name" : "Adult"}
+																					]},
+		{"name" : "Legend", "summon_class" : "NaturalBeast", "level" : "2", "names" : [
+																					{"language" : "EN", "name" : "Legend"},
+																					{"language" : "DE", "name" : "Legende"}
+																					]},
+		{"name" : "Cub", "summon_class" : "MysticBeast", "level" : "0", "names" : [
+																					{"language" : "EN", "name" : "Cub"},
+																					{"language" : "DE", "name" : "Junges"}
+																					]},
+		{"name" : "Adult", "summon_class" : "MysticBeast", "level" : "1", "names" : [
+																					{"language" : "EN", "name" : "Adult"},
+																					{"language" : "DE", "name" : "Adult"}
+																					]},
+		{"name" : "Legend", "summon_class" : "MysticBeast", "level" : "2", "names" : [
+																					{"language" : "EN", "name" : "Legend"},
+																					{"language" : "DE", "name" : "Legende"}
+																					]},
+		{"name" : "Prototype", "summon_class" : "CyberneticBeast", "level" : "0", "names" : [
+																					{"language" : "EN", "name" : "Cub"},
+																					{"language" : "DE", "name" : "Junges"}
+																					]},
+		{"name" : "Product", "summon_class" : "CyberneticBeast", "level" : "1", "names" : [
+																					{"language" : "EN", "name" : "Product"},
+																					{"language" : "DE", "name" : "Serienprodukt"}
+																					]},
+		{"name" : "Legendary Unicum", "summon_class" : "CyberneticBeast", "level" : "2", "names" : [
+																					{"language" : "EN", "name" : "Legendary Unicum"},
+																					{"language" : "DE", "name" : "Legendäres Unikat"}
+																					]},
+		{"name" : "Student", "summon_class" : "Healer", "level" : "0", "names" : [
+																					{"language" : "EN", "name" : "Student"},
+																					{"language" : "DE", "name" : "Student"}
+																					]},
+		{"name" : "Doctor", "summon_class" : "Healer", "level" : "1", "names" : [
+																					{"language" : "EN", "name" : "Doctor"},
+																					{"language" : "DE", "name" : "Arzt"}
+																					]},
+		{"name" : "Luminary", "summon_class" : "Healer", "level" : "2", "names" : [
+																					{"language" : "EN", "name" : "Luminary"},
+																					{"language" : "DE", "name" : "Koryphäe"}
+																					]},
+		{"name" : "Apprentice", "summon_class" : "Wizard", "level" : "0", "names" : [
+																					{"language" : "EN", "name" : "Apprentice"},
+																					{"language" : "DE", "name" : "Lehrling"}
+																					]},
+		{"name" : "Scholar", "summon_class" : "Wizard", "level" : "1", "names" : [
+																					{"language" : "EN", "name" : "Scholar"},
+																					{"language" : "DE", "name" : "Gelehrter"}
+																					]},
+		{"name" : "Master", "summon_class" : "Wizard", "level" : "2", "names" : [
+																					{"language" : "EN", "name" : "Master"},
+																					{"language" : "DE", "name" : "Meister"}
+																					]},
+		{"name" : "Rookie", "summon_class" : "Warrior", "level" : "0", "names" : [
+																					{"language" : "EN", "name" : "Rookie"},
+																					{"language" : "DE", "name" : "Junges"}
+																					]},
+		{"name" : "Veteran", "summon_class" : "Warrior", "level" : "1", "names" : [
+																					{"language" : "EN", "name" : "Veteran"},
+																					{"language" : "DE", "name" : "Veteran"}
+																					]},
+		{"name" : "Hero", "summon_class" : "Warrior", "level" : "2", "names" : [
+																					{"language" : "EN", "name" : "Hero"},
+																					{"language" : "DE", "name" : "Held"}
+																					]}
 	]
 }

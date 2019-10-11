@@ -26,8 +26,7 @@
 					{ "level" : 2, "card_id" : "bsc-su-00-2"}
 				],
 				"element" : "Fire",
-				"magicWastageOnDefeat" : 1,
-				"neededMagicEnergy" : 0
+				"magicWastageOnDefeat" : 1
 			},
 			{
 				"name" : "Aries",
@@ -53,8 +52,7 @@
 					{ "level" : 2, "card_id" : "bsc-su-00-2"}
 				],
 				"element" : "Fire",
-				"magicWastageOnDefeat" : 1,
-				"neededMagicEnergy" : 0
+				"magicWastageOnDefeat" : 1
 			},
 			{
 				"name" : "Aries",
@@ -80,8 +78,7 @@
 					{ "level" : 1, "card_id" : "bsc-su-00-1"}
 				],
 				"element" : "Fire",
-				"magicWastageOnDefeat" : 1,
-				"neededMagicEnergy" : 0
+				"magicWastageOnDefeat" : 1
 			},
 			{
 				"name" : "Pain",
@@ -94,16 +91,6 @@
 				[
 					
 				],
-				"magicPreservationValue" : 0,
-				"summoningPoints" : 0,
-				"attack" : 0,
-				"heal" : 0,
-				"maxVitality" : 0,
-				"summonClass" : "",
-				"rank" : "",
-				"summonHierarchy" : [],
-				"element" : "",
-				"magicWastageOnDefeat" : 0,
 				"neededMagicEnergy" : 4
 			}
 	]

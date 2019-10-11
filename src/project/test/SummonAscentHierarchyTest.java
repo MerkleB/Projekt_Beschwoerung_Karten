@@ -10,12 +10,12 @@ import project.main.Action.GameAction;
 import project.main.Card.Summon;
 import project.main.build_cards.KnowsSummonAscentHierarchy;
 import project.main.util.RankLevelMapper;
-import project.main.util.mapsRankAndLevel;
+import project.main.util.MapsRankAndLevel;
 import project.test.mok.MokProvider;
 
 public class SummonAscentHierarchyTest {
 	
-	private mapsRankAndLevel mapperMok;
+	private MapsRankAndLevel mapperMok;
 	private static boolean mapperAlreadyMokked;
 	private KnowsSummonAscentHierarchy cut;
 	private Summon card1;
@@ -30,7 +30,7 @@ public class SummonAscentHierarchyTest {
 			mapperAlreadyMokked = true;
 			Field mapperField;
 			try {
-				mapsRankAndLevel mapper = RankLevelMapper.getInstance();
+				MapsRankAndLevel mapper = RankLevelMapper.getInstance();
 				if(mapper instanceof RankLevelMapper) {
 					mapperField = mapper.getClass().getDeclaredField("instance");
 					//Inject mapperMok

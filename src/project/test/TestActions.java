@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import project.main.Action.GameAction;
 import project.main.Card.Card;
+import project.main.Card.Summon;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.DrawPhase;
 import project.main.GameApplication.Game;
@@ -25,6 +26,7 @@ import project.main.GameApplication.RefreshmentPhase;
 import project.main.Listeners.GameListener;
 import project.main.Listeners.PhaseListener;
 import project.main.build_cards.CardFactory;
+import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 import project.main.jsonObjects.CardDefinitionLibrary;
@@ -99,14 +101,32 @@ public class TestActions {
 			for(int j=0; j<card1.getActions().size(); j++) {
 				card1.getActions().get(j).setGame(g);
 			}
+			for(int j=0; j<card2.getActions().size(); j++) {
+				card2.getActions().get(j).setGame(g);
+			}
 		}
 	}
 	
+	private Summon[] getFirstSummonFromZone(IsAreaInGame zone, int number) {
+		Summon[] summons = new Summon[number];
+		int selected = 0;
+		ArrayList<Card> cards = zone.getCards();
+		for(Card card : cards) {
+			if(card.getType().equals(CardTypes.Summon)) {
+				selected++;
+				summons[selected-1] = (Summon)card;
+			}
+			if(selected == number) break;
+		}
+		return summons;
+	}
+	
 	@Test
-	public void testSummon() {
+	public void testEvokeSummon() {
 		/**
 		 * Preparation 
 		 */
+		System.out.println("-=Test Evoke Summon=-");
 		ReentrantLock lockGame = new ReentrantLock();
 		ReentrantLock lockTest = new ReentrantLock();
 		Condition gameCond = lockGame.newCondition();
@@ -138,7 +158,6 @@ public class TestActions {
 		collectorZone.addCard(collector2);
 		controller1.addAction("EvokeSummon", card1.getID(), "HandZone");
 		controller1.addStackStart();
-		//controller1.addWaitForAction("EvokeSummon");
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
 		Thread ctrlThread1 = new Thread(controller1, "Control1");
@@ -169,6 +188,138 @@ public class TestActions {
 		}
 		if(player1.getGameZone("SummonZone").findCard(card1.getID()) == null) {
 			fail("Card2 is not in SummonZone!");
+		}
+		
+	}
+	
+	@Test
+	public void testDraw() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Draw=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"DrawPhase"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		IsAreaInGame hand = player1.getGameZone("HandZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		Card card1 = deck.getCards().get(3);
+		controller1.addAction("Draw", card1.getID(), "DeckZone");
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		/**
+		 * Check result
+		 */
+		if(deck.findCard(card1.getID()) != null) {
+			fail("Card1 is still in hand");
+		}
+		if(hand.findCard(card1.getID()) == null) {
+			fail("Card2 is not in SummonZone!");
+		}
+		
+	}
+	
+	@Test
+	public void testHeal() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Heal=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame summonZone = player1.getGameZone("SummonZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		Summon[] summons = getFirstSummonFromZone(deck, 2);
+		Card card1 = summons[0];
+		Card card2 = summons[1];
+		if(card2.getType().equals(CardTypes.Spell)) {
+			card2 = deck.getCards().get(2);
+		}
+		((Summon)card2).getStatus().decreaseVitality(2);
+		int card2Vitality = ((Summon)card2).getStatus().getVitality();
+		deck.removeCard(card1);
+		deck.removeCard(card2);
+		summonZone.addCard(card1);
+		summonZone.addCard(card2);
+		controller1.addAction("Heal", card1.getID(), "SummonZone");
+		controller1.addAction("SelectSummon", card2.getID(), "SummonZone");
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");
+		
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		
+		/**
+		 * Check result
+		 */
+		if(((Summon)card2).getStatus().getVitality() == card2Vitality) {
+			fail("Card2 wasn't healed");
+		}
+		
+		if(((Summon)card2).getStatus().getMaxVitality() != ((Summon)card2).getStatus().getVitality()) {
+			fail("Card2 wan't healed to full health");
+		}
+		if(!((Summon)card1).getActivityStatus().equals(Summon.USED)) {
+			fail("Card1's status was not set to used");
 		}
 		
 	}

@@ -3,6 +3,7 @@ package project.test.mok;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -49,17 +50,24 @@ public class PhysicalTestPlayer implements Runnable{
 			public void perform() throws NotActivableException {
 				System.out.println("Controller: Execute Action "+actionName+" on Card "+ card_id.toString() + " in Zone " + zoneName+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 				IsAreaInGame zone = player.getGameZone(zoneName);
+				System.out.println("Selected zone: "+zone.getName());
 				ArrayList<Card> cards = zone.getCards();
+				System.out.println("Search card "+card_id);
 				for(Card card : cards) {
+					System.out.println("Card "+card.getID()+"?");
 					if(card.getID().equals(card_id)) {
+						System.out.println("Found card "+card_id);
 						ArrayList<GameAction> actions = card.getActions();
+						System.out.println("|->Search action "+actionName);
 						for(GameAction action : actions) {
+							System.out.println("Is it action "+action.getCode()+"?");
 							try {
 								if(action.getCode().equals(actionName)) {
+									System.out.println("Activate action "+actionName);
 									action.activate(player);
 								}
 							}catch(NotActivableException e) {
-								throw new NotActivableException("Action could not be activated: "+actionName);
+								throw new NotActivableException("Action could not be activated: "+actionName+" ("+e.getMessage()+")");
 							}
 						}
 					}
@@ -98,11 +106,11 @@ public class PhysicalTestPlayer implements Runnable{
 	}
 	
 	public void prompt(Player promptedPlayer, MessageInLanguage message, AcceptPromptAnswers prompter) {
+		System.out.println("Controller-prompt: "+message);
 	}
 
 	public void prompt(Player promptedPlayer, MessageInLanguage message) {
-		// TODO Auto-generated method stub
-
+		System.out.println("Controller-prompt: "+message);
 	}
 
 	@Override
@@ -132,7 +140,7 @@ public class PhysicalTestPlayer implements Runnable{
 		lock.lock();
 		try {
 			System.out.println("Controller: Wait until game finished"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
-			gameCondition.await();
+			gameCondition.await(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}finally {

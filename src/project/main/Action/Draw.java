@@ -45,7 +45,7 @@ public class Draw extends Action implements AcceptPromptAnswers {
 		super.activateBy(activator, activatingPlayer);
 		initMetadata();
 		metadata.put("Target-ID", owningCard.getID().toString());
-		GameStack.getInstance().addEntry(this);
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
 

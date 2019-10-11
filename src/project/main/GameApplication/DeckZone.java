@@ -13,18 +13,21 @@ import project.main.util.ActionMatchFinder;
 
 public class DeckZone extends GameZone{
 	
+	private String name;
+	
 	public DeckZone(Player owner, ArrayList<Card> deck) {
 		super(owner);
 		cardList = deck;
 		shuffleDeck();
 		for(Card card : cardList) {
 			cardHash.put(card.getID(), card);
+			name = "DeckZone";
 		}
 	}
 
 	@Override
 	public String getName() {
-		return "DeckZone";
+		return name;
 	}
 	
 	public void shuffleDeck() {

@@ -1,7 +1,7 @@
 package project.main.Listeners;
 
-import project.main.Action.Effect;
 import project.main.Card.*;
+import project.main.Effect.Effect;
 
 public interface SummonListener {
 	public void summonDestroyed(Card destroyer, Summon summon);

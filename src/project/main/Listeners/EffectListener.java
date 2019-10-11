@@ -1,6 +1,6 @@
 package project.main.Listeners;
 
-import project.main.Action.Effect;
+import project.main.Effect.Effect;
 
 public interface EffectListener {
 	public void effectActivated(Effect effect);

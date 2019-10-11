@@ -1,11 +1,13 @@
 package project.main.Action;
 
 import project.main.Card.*;
+import project.main.Effect.Effect;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.Player;
 import project.main.Listeners.GameActionListener;
 import project.main.Listeners.GameListener;
+import project.main.exception.NoCardException;
 import project.main.exception.NoCollectorException;
 import project.main.exception.NotActivableException;
 import project.main.util.GameMessageProvider;
@@ -18,6 +20,7 @@ public class Heal extends Action{
 	public GameAction selectAction;
 	public boolean collectorHealed;
 	public boolean summonHealed;
+	private GameActionListener listener;
 	
 	@Override
 	public String getCode() {
@@ -28,7 +31,11 @@ public class Heal extends Action{
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);
 		clear();
-		selectCardToHeal();
+		try {
+			selectCardToHeal();
+		} catch (NoCardException e) {
+			throw new NotActivableException("Not activatable: "+e.getMessage());
+		}
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
@@ -37,7 +44,11 @@ public class Heal extends Action{
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
 		clear();
-		selectCardToHeal();
+		try {
+			selectCardToHeal();
+		} catch (NoCardException e) {
+			throw new NotActivableException("Not activatable: "+e.getMessage());
+		}
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
@@ -65,14 +76,14 @@ public class Heal extends Action{
 					throw new RuntimeException("Non-Collector card was selected as collector");
 				}
 			}
-			((Summon)owningCard).setActivityStatus(Summon.USED);
+			GameListener.getInstance().removeGameActionListener(listener);
 			GameListener.getInstance().actionExecuted(this);
 			game.getActivePhase().restorePhaseStatus();
 		}
 	}
 	
-	private void selectCardToHeal() {
-		if(((Summon)owningCard).getStatus().getSummonClass().equals("Healer")) {
+	private void selectCardToHeal() throws NoCardException {
+		if(isHealer((Summon)owningCard)) {
 			setSelectActionsActiv();
 			listenToSelectActions();
 			
@@ -81,25 +92,41 @@ public class Heal extends Action{
 		}
 	}
 	
+	private boolean isHealer(Summon card) throws NoCardException {
+		if(card.getStatus().getSummonClass().equals("Healer")) {
+			return true;
+		}
+		Effect[] effects = card.getEffects();
+		for(Effect effect : effects) {
+			if(effect.getCode().equals("Healer")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void setSelectActionsActiv() {
-			for(Player player : game.getPlayers()) {
-				ArrayList<IsAreaInGame> zones = player.getGameZones();
-				for(IsAreaInGame zone : zones) {
-					zone.deavtivateAll();
-					if(player == actionIsActivFor) {
-						if(zone.getName().equals(SummonZone) || zone.getName().equals(CollectorZone)) {
-							ArrayList<Card> cards = zone.getCards();
-							for(Card card : cards) {
-								ArrayList<GameAction> actions = card.getActions();
-								for(GameAction action : actions) {
-									if(zone.getName().equals(SummonZone)) {
-										if(action.getCode().equals(SummonSelect)) {
-											action.setActivBy(this, actionIsActivFor);
-										}
-									}else {
-										if(action.getCode().equals(CollectorSelect)) {
-											action.setActivBy(this, actionIsActivFor);
-										}
+		for(Player player : game.getPlayers()) {
+			ArrayList<IsAreaInGame> zones = player.getGameZones();
+			for(IsAreaInGame zone : zones) {
+				ArrayList<Card> cards = zone.getCards();
+				for(Card card : cards) {
+					if(card != owningCard) {
+						card.setInactive();
+					}
+				}
+				if(player == actionIsActivFor) {
+					if(zone.getName().equals(SummonZone) || zone.getName().equals(CollectorZone)) {
+						for(Card card : cards) {
+							ArrayList<GameAction> actions = card.getActions();
+							for(GameAction action : actions) {
+								if(zone.getName().equals(SummonZone)) {
+									if(action.getCode().equals(SummonSelect)) {
+										action.setActivBy(this, actionIsActivFor);
+									}
+								}else {
+									if(action.getCode().equals(CollectorSelect)) {
+										action.setActivBy(this, actionIsActivFor);
 									}
 								}
 							}
@@ -107,11 +134,12 @@ public class Heal extends Action{
 					}
 				}
 			}
+		}
 	}
 	
 	private void listenToSelectActions() {
 		game.prompt(actionIsActivFor, GameMessageProvider.getInstance().getMessage("#2", Application.getInstance().getLanguage()));
-		GameActionListener listener = new GameActionListener() {
+		listener = new GameActionListener() {
 			
 			/**
 			 * If the executed action is the same as the registered select-Action retrieve the selected card.
@@ -128,7 +156,6 @@ public class Heal extends Action{
 				if(action.getCode().equals(CollectorSelect)) {
 					collectorHealed = true;
 				}
-				GameListener.getInstance().removeGameActionListener(this);
 			}
 			
 			/**

@@ -3,12 +3,12 @@ package project.main.build_cards;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Card.Card;
 import project.main.Card.MagicCollector;
 import project.main.Card.Spell;
 import project.main.Card.Summon;
+import project.main.Effect.Effect;
 import project.main.GameApplication.Game;
 import project.main.exception.CardCreationException;
 import project.main.exception.InvalidCardException;

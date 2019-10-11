@@ -34,11 +34,13 @@ public abstract class Action implements GameAction {
 	
 	@Override
 	public void activate(Player activator) throws NotActivableException {
-		if(activator != actionIsActivFor || !activateable(activator)) {
-			throw new NotActivableException(getName()+" is not activateable for card "+owningCard.getID());
-		}else {
-			isActivated = true;
-		}		
+		if(activator != actionIsActivFor) {
+			throw new NotActivableException(getName()+" is not activateable for card "+owningCard.getID()+" by player "+activator.getID());
+		}
+		if(!activateable(activator)) {
+			throw new NotActivableException(getName()+" is not activateable for card "+owningCard.getID()+" because action is not activ");
+		}
+		isActivated = true;
 	}
 	
 	@Override

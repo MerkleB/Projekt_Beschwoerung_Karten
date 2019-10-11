@@ -12,7 +12,7 @@ public class AttackPlayer extends Action {
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);
 		initMetadata();
-		GameStack.getInstance().addEntry(this);
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
 
@@ -20,7 +20,7 @@ public class AttackPlayer extends Action {
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
 		initMetadata();
-		GameStack.getInstance().addEntry(this);
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
 

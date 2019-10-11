@@ -2,12 +2,12 @@ package project.test.mok;
 
 import java.util.Hashtable;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Card.Card;
 import project.main.Card.MagicCollector;
 import project.main.Card.Spell;
 import project.main.Card.Summon;
+import project.main.Effect.Effect;
 
 public class TestData {
 	public static Card getCard(String card_id) {

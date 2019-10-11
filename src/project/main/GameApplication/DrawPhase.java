@@ -18,7 +18,7 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 	
 	public DrawPhase() {
 		GameListener.getInstance().addGameActionListener(this);
-		activeGameStack = GameStack.getInstance();
+		activeGameStack = GameStack.getInstance(this);
 		finishedStacks = new ArrayList<OwnsGameStack>();
 		name = "DrawPhase";
 	}
@@ -93,13 +93,13 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 	@Override
 	public OwnsGameStack getActiveGameStack() {
 		if(activeGameStack == null) {
-			activeGameStack = GameStack.getInstance();
+			activeGameStack = GameStack.getInstance(this);
 		}
 		if(activeGameStack.hasFinished()) {
 			finishedStacks.add(activeGameStack);
-			activeGameStack = GameStack.getInstance();
+			activeGameStack = GameStack.getInstance(this);
 		}
-		return null;
+		return activeGameStack;
 	}
 
 	@Override

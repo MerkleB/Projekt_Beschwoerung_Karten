@@ -1,12 +1,13 @@
 package project.main.Listeners;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Card.Card;
 import project.main.Card.StatusChange;
 import project.main.Card.Summon;
+import project.main.Effect.Effect;
 import project.main.GameApplication.Battle;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.IsPhaseInGame;
@@ -44,7 +45,7 @@ public class GameListener implements ListensToEverything {
 	@Override
 	public void actionExecuted(GameAction action) {
 		for(GameActionListener listener : action_listeners) {
-			listener.actionExecuted(action);
+				listener.actionExecuted(action);
 		}
 	}
 

@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Card.MagicCollector;
 import project.main.Card.Spell;
+import project.main.Effect.Effect;
 import project.main.exception.NoCollectorException;
 import project.test.mok.MokProvider;
 

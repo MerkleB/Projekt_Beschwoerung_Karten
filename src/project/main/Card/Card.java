@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
+import project.main.Effect.Effect;
 import project.main.GameApplication.Player;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;

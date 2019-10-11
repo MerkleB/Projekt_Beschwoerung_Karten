@@ -15,7 +15,7 @@ public class RefreshmentPhase implements IsPhaseInGame {
 	private ArrayList<OwnsGameStack> finishedStacks;
 	
 	public RefreshmentPhase() {
-		activeGameStack = GameStack.getInstance();
+		activeGameStack = GameStack.getInstance(this);
 		finishedStacks = new ArrayList<OwnsGameStack>();
 	}
 	
@@ -80,11 +80,11 @@ public class RefreshmentPhase implements IsPhaseInGame {
 	@Override
 	public OwnsGameStack getActiveGameStack() {
 		if(activeGameStack == null) {
-			activeGameStack = GameStack.getInstance();
+			activeGameStack = GameStack.getInstance(this);
 		}
 		if(activeGameStack.hasFinished()) {
 			finishedStacks.add(activeGameStack);
-			activeGameStack = GameStack.getInstance();
+			activeGameStack = GameStack.getInstance(this);
 		}
 		return null;
 	}

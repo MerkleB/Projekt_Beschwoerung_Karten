@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Card.Summon;
+import project.main.Effect.Effect;
 import project.main.exception.NoCardException;
 import project.test.mok.MokProvider;
 

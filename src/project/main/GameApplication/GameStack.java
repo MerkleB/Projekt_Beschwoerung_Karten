@@ -10,18 +10,20 @@ public class GameStack implements OwnsGameStack {
 	
 	private ArrayList<Stackable> stack;
 	private int status;
+	private IsPhaseInGame phase;
 	private ReentrantLock lock;
 	private Condition condition;
 	
-	private GameStack() {
+	private GameStack(IsPhaseInGame phase) {
 		stack = new ArrayList<Stackable>();
 		status = 0;
 		lock = new ReentrantLock();
 		condition = lock.newCondition();
+		this.phase = phase;
 	}
 	
-	public static OwnsGameStack getInstance() {
-		return new GameStack();
+	public static OwnsGameStack getInstance(IsPhaseInGame phase) {
+		return new GameStack(phase);
 	}
 
 	@Override
@@ -44,6 +46,7 @@ public class GameStack implements OwnsGameStack {
 			}
 		}
 		System.out.println("Stack finished Processing.");
+		phase.restorePhaseStatus();
 		lock.lock();
 		try {
 			condition.signalAll();

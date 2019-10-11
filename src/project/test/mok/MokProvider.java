@@ -5,10 +5,10 @@ import java.util.Hashtable;
 import java.util.TreeMap;
 import java.util.UUID;
 
-import project.main.Action.Effect;
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
 import project.main.Card.Card;
+import project.main.Effect.Effect;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.IsPhaseInGame;
@@ -48,18 +48,6 @@ public class MokProvider {
 			@Override
 			public String getName() {
 				return null;
-			}
-
-			@Override
-			public Card getOwningCard() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public void setOwningCard(Card owningCard) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override

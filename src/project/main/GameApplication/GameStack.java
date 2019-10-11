@@ -1,38 +1,54 @@
 package project.main.GameApplication;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import project.main.Action.Stackable;
 
 public class GameStack implements OwnsGameStack {
 	
 	private ArrayList<Stackable> stack;
-	private boolean start;
 	private int status;
+	private ReentrantLock lock;
+	private Condition condition;
 	
 	private GameStack() {
 		stack = new ArrayList<Stackable>();
-		start = false;
 		status = 0;
+		lock = new ReentrantLock();
+		condition = lock.newCondition();
 	}
 	
 	public static OwnsGameStack getInstance() {
 		return new GameStack();
 	}
-	
+
+	@Override
+	public ReentrantLock getLock() {
+		return lock;
+	}
+
+	@Override
+	public Condition getCondition() {
+		return condition;
+	}
+
 	@Override
 	public void run() {
-		while(status > -1) {
-			while(!start);
-			status = 1;
-			for(int i=stack.size()-1; i>=0; i--) {
-				if(!stack.get(i).isWithdrawn()) {
-					stack.get(i).execute();
-				}
-				if(status == -1) {
-					break;
-				}
+		System.out.println("Stack start processing...");
+		status = 1;
+		for(int i=stack.size()-1; i>=0; i--) {
+			if(!stack.get(i).isWithdrawn()) {
+				stack.get(i).execute();
 			}
+		}
+		System.out.println("Stack finished Processing.");
+		lock.lock();
+		try {
+			condition.signalAll();
+		}finally {
+			lock.unlock();
 			status = -1;
 		}
 	}
@@ -43,21 +59,10 @@ public class GameStack implements OwnsGameStack {
 	}
 
 	@Override
-	public void start() {
-		start = true;
-	}
-
-	@Override
 	public boolean hasStarted() {
 		if(status == 1) {
 			return true;
 		}else return false;
-	}
-
-	@Override
-	public void finish() {
-		status = -1;
-		
 	}
 
 	@Override
@@ -80,6 +85,11 @@ public class GameStack implements OwnsGameStack {
 	@Override
 	public Stackable getEntry(int i) {
 		return stack.get(i);
+	}
+
+	@Override
+	public int getStatus() {
+		return status;
 	}
 
 }

@@ -11,7 +11,7 @@
 				"trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino.",
 				"effects" : 
 				[
-					{"effectClass" : "effect_000"}
+					
 				],
 				"magicPreservationValue" : 2,
 				"summoningPoints" : 1,
@@ -28,6 +28,83 @@
 				"element" : "Fire",
 				"magicWastageOnDefeat" : 1,
 				"neededMagicEnergy" : 0
+			},
+			{
+				"name" : "Aries",
+				"card_id" : "bsc-su-00-1",
+				"type" : "Summon",
+				"maxEnergy" : 5,
+				"maxHealth" : 8,
+				"trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino.",
+				"effects" : 
+				[
+					
+				],
+				"magicPreservationValue" : 2,
+				"summoningPoints" : 1,
+				"attack" : 3,
+				"heal" : 3,
+				"maxVitality" : 10,
+				"summonClass" : "NaturalBeast",
+				"rank" : "Adult",
+				"summonHierarchy" : 
+				[
+					{ "level" : 0, "card_id" : "bsc-su-00-0"},
+					{ "level" : 2, "card_id" : "bsc-su-00-2"}
+				],
+				"element" : "Fire",
+				"magicWastageOnDefeat" : 1,
+				"neededMagicEnergy" : 0
+			},
+			{
+				"name" : "Aries",
+				"card_id" : "bsc-su-00-2",
+				"type" : "Summon",
+				"maxEnergy" : 5,
+				"maxHealth" : 8,
+				"trivia" : "A marvelous ram who save Phrixos and his sister Helle from their stepmother Ino.",
+				"effects" : 
+				[
+					
+				],
+				"magicPreservationValue" : 3,
+				"summoningPoints" : 1,
+				"attack" : 5,
+				"heal" : 5,
+				"maxVitality" : 12,
+				"summonClass" : "NaturalBeast",
+				"rank" : "Legend",
+				"summonHierarchy" : 
+				[
+					{ "level" : 0, "card_id" : "bsc-su-00-0"},
+					{ "level" : 1, "card_id" : "bsc-su-00-1"}
+				],
+				"element" : "Fire",
+				"magicWastageOnDefeat" : 1,
+				"neededMagicEnergy" : 0
+			},
+			{
+				"name" : "Pain",
+				"card_id" : "bsc-sp-00",
+				"type" : "Spell",
+				"maxEnergy" : 5,
+				"maxHealth" : 8,
+				"trivia" : "A spell which causes crucial pain to his victim.",
+				"effects" : 
+				[
+					
+				],
+				"magicPreservationValue" : 0,
+				"summoningPoints" : 0,
+				"attack" : 0,
+				"heal" : 0,
+				"maxVitality" : 0,
+				"summonClass" : "",
+				"rank" : "",
+				"summonHierarchy" : [],
+				"element" : "",
+				"magicWastageOnDefeat" : 0,
+				"neededMagicEnergy" : 4
 			}
 	]
 }

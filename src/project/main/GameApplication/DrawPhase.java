@@ -20,11 +20,12 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 		GameListener.getInstance().addGameActionListener(this);
 		activeGameStack = GameStack.getInstance();
 		finishedStacks = new ArrayList<OwnsGameStack>();
+		name = "DrawPhase";
 	}
 	
 	@Override
 	public String getName() {
-		return "DrawPhase";
+		return name;
 	}
 
 	@Override
@@ -46,15 +47,12 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 
 	@Override
 	public void process() {
-		Thread stackThread = new Thread(activeGameStack);
-		stackThread.start();
 		restorePhaseStatus();
 		GameListener.getInstance().phaseStarted(this);
 	}
 
 	@Override
 	public void leave() {
-		activeGameStack.finish();
 		finishedStacks.add(activeGameStack);
 		activeGameStack = null;
 		deactivateDrawActions();

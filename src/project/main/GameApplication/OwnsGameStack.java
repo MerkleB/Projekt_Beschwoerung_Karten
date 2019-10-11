@@ -1,6 +1,8 @@
 package project.main.GameApplication;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import project.main.Action.Stackable;
 
@@ -10,25 +12,13 @@ import project.main.Action.Stackable;
  * @author D054525
  *
  */
-public interface OwnsGameStack extends Runnable {
+public interface OwnsGameStack extends Runnable{
 	/**
 	 * Adds an stackable to the stack
 	 * @param entry
 	 */
 	public void addEntry(Stackable entry);
-	/**
-	 * Starts the execution of the stack
-	 * The last added entry in the stack will be executed first
-	 */
-	public void start();
-	/**
-	 * Finishes the execution of the stack
-	 */
-	public void finish();
-	/**
-	 * Retrieves if the execution of the stack has started
-	 * @return status = 1 : true (boolean)
-	 */
+	
 	public boolean hasStarted();
 	/**
 	 * Retrieves the stackable which will be executed first 
@@ -51,4 +41,19 @@ public interface OwnsGameStack extends Runnable {
 	 * @return Stackable
 	 */
 	public Stackable getEntry(int i);
+	/**
+	 * Retrieves the status of the stack.
+	 * @return 0=initial; 1=started; -1=finished
+	 */
+	public int getStatus();
+	/**
+	 * Retrieves the Lock-Object associated with the stack
+	 * @return ReentrantLock
+	 */
+	public ReentrantLock getLock();
+	/**
+	 * Retrieves the condition object of the stack
+	 * @return Condition
+	 */
+	public Condition getCondition();
 }

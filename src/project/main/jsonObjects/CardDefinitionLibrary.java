@@ -21,7 +21,7 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 	public static HoldsCardDefinitions getInstance() {
 		if(instance == null) {
 			instance = new CardDefinitionLibrary();
-			((CardDefinitionLibrary)instance).resourcePath = "project/main/json/card_lists/";
+			((CardDefinitionLibrary)instance).resourcePath = "project/json/card_lists/";
 		}
 		return instance;
 	}
@@ -45,6 +45,8 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 		String token = card_id.split("-")[0];
 		if(card_sets == null) {
 			card_sets = new Hashtable<String, SetToken>();
+		}
+		if(card_sets.size() == 0) {
 			((CardDefinitionLibrary)instance).loadListOfCardSets();
 		}
 		return card_sets.get(token).name;

@@ -22,8 +22,8 @@ public class TextProvider implements ManagesTextLanguages {
 	}
 	
 	private TextProvider() {
-		resourcePathCards = "project/main/json/card_lists/";
-		resourcePathActions = "project/main/json/game_settings/actionName.json";
+		resourcePathCards = "project/json/card_lists/";
+		resourcePathActions = "project/json/game_settings/actionName.json";
 		triviasByLanguageAndCardID = new Hashtable<String, Hashtable<String, String>>();
 		namesByLanguageAndCardID = new Hashtable<String, Hashtable<String, String>>();
 		actionsByLanguageAndCode = new Hashtable<String, Hashtable<String, String>>();

@@ -43,15 +43,12 @@ public class GamePhase implements IsPhaseInGame {
 
 	@Override
 	public void process() {
-		Thread stackThread = new Thread(activeGameStack);
-		stackThread.start();
 		restorePhaseStatus();
 		GameListener.getInstance().phaseStarted(this);
 	}
 
 	@Override
 	public void leave() {
-		activeGameStack.finish();
 		finishedStacks.add(activeGameStack);
 		activeGameStack = null;
 		Player activPlayer = game.getActivePlayer();

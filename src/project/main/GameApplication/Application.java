@@ -22,8 +22,7 @@ public class Application implements HostsGame {
 	
 	/**
 	 * Get instance and set Game if not null
-	 * @param game [optional]
-	 * @return
+	 * @return instance
 	 */
 	public static HostsGame getInstance() {
 		if(instance == null) {

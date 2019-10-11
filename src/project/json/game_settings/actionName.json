@@ -10,7 +10,9 @@
 			{"code" : "EvokeSummon", "name" : "Evoke Summon"}, 
 			{"code" : "PromoteSummon", "name" : "Promote Summon"},
 			{"code" : "SelectMagicCollector", "name" : "Select Magic Collector"},
-			{"code" : "SelectSummon", "name" : "Select Summon"}
+			{"code" : "SelectSummon", "name" : "Select Summon"},
+			{"code" : "WithdrawCollector", "name" : "Withdraw Collector"},
+			{"code" : "SetAsCollector", "name" : "Set as Collector"}
 		] 
 		},
 		{
@@ -23,7 +25,9 @@
 			{"code" : "EvokeSummon", "name" : "Beschwören"}, 
 			{"code" : "PromoteSummon", "name" : "Aufsteigen"},
 			{"code" : "SelectMagicCollector", "name" : "Magiesammler auswählen"},
-			{"code" : "SelectSummon", "name" : "Beschwörung auswählen"} 
+			{"code" : "SelectSummon", "name" : "Beschwörung auswählen"},
+			{"code" : "WithdrawCollector", "name" : "Magiesammler zurückziehen"},
+			{"code" : "SetAsCollector", "name" : "Als Magiesammler einsetzen"}   
 		] 
 		}
 	]

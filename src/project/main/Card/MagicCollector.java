@@ -41,7 +41,7 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 			this.actions = new TreeMap<String, GameAction>();
 		}
 		for(GameAction action : actions) {
-			this.actions.put(action.getName(), action);
+			this.actions.put(action.getCode(), action);
 		}
 	}
 	

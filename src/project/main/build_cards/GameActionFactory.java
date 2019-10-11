@@ -10,8 +10,15 @@ public class GameActionFactory implements CreatesActions {
 	
 	@Override
 	public GameAction createAction(String actionName) {
-		// TODO Auto-generated method stub
-		return null;
+		String className = "project.main.Action."+actionName;
+		GameAction action = null;
+		try {
+			Class<?> actionClass = Class.forName(className);
+			action = (GameAction)actionClass.newInstance();
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException("GameActionFactory - Class "+className+" could no be found or instantiated!");
+		}
+		return action;
 	}
 
 }

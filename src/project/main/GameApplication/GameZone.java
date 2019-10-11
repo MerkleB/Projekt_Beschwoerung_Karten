@@ -43,7 +43,7 @@ public abstract class GameZone implements IsAreaInGame {
 				cardHash.put(card.getID(), card);
 				cardList.add(card);
 			} catch (NoCardException e) {
-				System.out.println("Abort adding of card. Reason: "+e.getMessage());
+				System.out.println("Abort adding of card to zone "+getName()+". Reason: "+e.getMessage());
 			}
 			GameListener.getInstance().cardAdded(this, card);
 		}

@@ -54,7 +54,7 @@ public abstract class Action implements GameAction {
 
 	@Override
 	public boolean activateable(Player activator) {
-		if(!activ || actionIsActivFor == activator){
+		if(!activ || actionIsActivFor != activator){
             return false;
         }else return true;
 	}
@@ -100,7 +100,7 @@ public abstract class Action implements GameAction {
 
 	@Override
 	public void setCard(Card card) {
-		owningCard = (Summon)card;
+		owningCard = card;
 	}
 
 	@Override

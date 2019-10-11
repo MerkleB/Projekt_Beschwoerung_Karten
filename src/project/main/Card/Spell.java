@@ -39,7 +39,7 @@ public class Spell implements Card {
 		this.neededMagicEnergy = neededMagicEnergy;
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
-			this.actions.put(action.getName(), action);
+			this.actions.put(action.getCode(), action);
 			action.setCard(this);
 		}
 	}

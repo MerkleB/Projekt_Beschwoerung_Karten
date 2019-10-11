@@ -71,4 +71,22 @@ public class CardGame implements Game {
 		return null;
 	}
 
+	@Override
+	public boolean hasEnded() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean hasStarted() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean processGameStack() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

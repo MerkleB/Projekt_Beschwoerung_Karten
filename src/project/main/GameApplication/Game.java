@@ -11,6 +11,9 @@ public interface Game extends Runnable{
 	public Player[] getPlayers();
 	public Player getPlayer(UUID id);
 	public IsPhaseInGame getActivePhase();
+	public boolean hasEnded();
+	public boolean hasStarted();
+	public boolean processGameStack();
 	public void prompt(Player promptedPlayer, MessageInLanguage message, AcceptPromptAnswers prompter);
 	public void prompt(Player promptedPlayer, MessageInLanguage message);
 }

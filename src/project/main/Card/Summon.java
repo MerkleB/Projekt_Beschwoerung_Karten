@@ -56,7 +56,7 @@ public class Summon implements Card{
 		id = UUID.randomUUID();
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
-			this.actions.put(action.getName(), action);
+			this.actions.put(action.getCode(), action);
 			action.setCard(this);
 		}
 	}

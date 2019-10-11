@@ -13,10 +13,58 @@
 			"zones" : ["HandZone"]
 		},
 		{
-			"actionName" : "CallBack",
+			"actionName" : "WithdrawCollector",
 			"cardTypes" : ["MagicCollector"],
 			"phases" : ["Main"],
-			"zones" : ["MagicCollectorZone"]
+			"zones" : ["CollectorZone"]
+		},
+		{
+			"actionName" : "SetAsCollector",
+			"cardTypes" : ["MagicCollector"],
+			"phases" : ["Main"],
+			"zones" : ["CollectorZone"]
+		},
+		{
+			"actionName" : "Draw",
+			"cardTypes" : ["Summon","Spell"],
+			"phases" : ["DrawPhase"],
+			"zones" : ["DeckZone"]
+		},
+		{
+			"actionName" : "AttackPlayer",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["SummonZone"]
+		},
+		{
+			"actionName" : "DeclareBattle",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["SummonZone"]
+		},
+		{
+			"actionName" : "PromoteSummon",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["SummonZone"]
+		},
+		{
+			"actionName" : "Heal",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["SummonZone"]
+		},
+		{
+			"actionName" : "SelectSummon",
+			"cardTypes" : ["Summon"],
+			"phases" : [],
+			"zones" : ["SummonZone","DeckZone","HandZone","DiscardPile"]
+		},
+		{
+			"actionName" : "SelectMagicCollector",
+			"cardTypes" : ["MagicCollector"],
+			"phases" : [],
+			"zones" : ["CollectorZone"]
 		}
 	]
 	 

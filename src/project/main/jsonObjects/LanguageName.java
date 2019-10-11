@@ -1,4 +1,4 @@
-package project.main.util;
+package project.main.jsonObjects;
 
 public class LanguageName {
 	public String language;

@@ -1,4 +1,4 @@
-package project.main.util;
+package project.main.jsonObjects;
 
 public class LanguageTrivia {
 	public String language;

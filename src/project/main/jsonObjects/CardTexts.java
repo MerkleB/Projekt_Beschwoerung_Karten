@@ -1,4 +1,4 @@
-package project.main.util;
+package project.main.jsonObjects;
 
 public class CardTexts {
 	public LanguageTrivia[] card_trivias;

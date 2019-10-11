@@ -2,7 +2,7 @@ package project.main.GameApplication;
 
 import java.util.UUID;
 
-import project.main.util.MessageInLanguage;
+import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.mapsRankAndLevel;
 
 public interface Game extends Runnable{

@@ -1,0 +1,11 @@
+{
+	"effects" : [
+		{
+			"effectClass" : "Healer",
+			"descriptions" : [
+				{"language": "EN", "name" : "Healer", "description" : "Permanent - This summon is able to heal other summons."},
+				{"language": "DE", "name" : "Heiler", "description" : "Permanent - Diese Beschwörung ist in der Lage andere Beschwörungen zu heilen."}
+			]  
+		}
+	]
+}

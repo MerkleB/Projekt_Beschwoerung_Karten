@@ -147,7 +147,8 @@ public class TestActions {
 		IsAreaInGame hand = player1.getGameZone("HandZone");
 		IsAreaInGame deck = player1.getGameZone("DeckZone");
 		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
-		Card card1 = deck.getCards().get(0);
+		Summon[] summons = getFirstSummonFromZone(deck, 1);
+		Card card1 = summons[0];
 		Card collector1 = deck.getCards().get(1);
 		Card collector2 = deck.getCards().get(2);
 		deck.removeCard(card1);

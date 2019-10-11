@@ -7,6 +7,9 @@ import java.util.Hashtable;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
+import project.main.jsonObjects.MessageInLanguage;
+import project.main.jsonObjects.MessageTexts;
+
 public class GameMessageProvider implements ProvidesMessageTexts {
 
 	private static ProvidesMessageTexts instance;

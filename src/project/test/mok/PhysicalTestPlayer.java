@@ -14,7 +14,7 @@ import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.Player;
 import project.main.exception.NotActivableException;
-import project.main.util.MessageInLanguage;
+import project.main.jsonObjects.MessageInLanguage;
 
 /**
  * Moks the actions of a physical existing player for testing purposes
@@ -65,11 +65,13 @@ public class PhysicalTestPlayer implements Runnable{
 								if(action.getCode().equals(actionName)) {
 									System.out.println("Activate action "+actionName);
 									action.activate(player);
+									break;
 								}
 							}catch(NotActivableException e) {
 								throw new NotActivableException("Action could not be activated: "+actionName+" ("+e.getMessage()+")");
 							}
 						}
+						break;
 					}
 				}
 			}
@@ -140,7 +142,7 @@ public class PhysicalTestPlayer implements Runnable{
 		lock.lock();
 		try {
 			System.out.println("Controller: Wait until game finished"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
-			gameCondition.await(10, TimeUnit.SECONDS);
+			gameCondition.await(5, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}finally {

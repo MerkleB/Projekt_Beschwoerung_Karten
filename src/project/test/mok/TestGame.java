@@ -9,7 +9,7 @@ import project.main.GameApplication.AcceptPromptAnswers;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
-import project.main.util.MessageInLanguage;
+import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.RankLevelMapper;
 import project.main.util.mapsRankAndLevel;
 

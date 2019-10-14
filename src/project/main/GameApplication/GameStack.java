@@ -40,10 +40,8 @@ public class GameStack implements OwnsGameStack {
 	public void run() {
 		System.out.println("Stack start processing...");
 		status = 1;
-		for(int i=stack.size()-1; i>=0; i--) {
-			if(!stack.get(i).isWithdrawn()) {
-				stack.get(i).execute();
-			}
+		for(int i=stack.size()-1; i>=0; i--) { 	
+			stack.get(i).execute();
 		}
 		System.out.println("Stack finished Processing.");
 		phase.restorePhaseStatus();

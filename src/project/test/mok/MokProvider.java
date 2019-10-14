@@ -121,6 +121,12 @@ public class MokProvider {
 			public String getCode() {
 				return "EffectCode";
 			}
+
+			@Override
+			public void initialize(String value) {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 	}
 	
@@ -647,7 +653,7 @@ public class MokProvider {
 		return new CreatesEffects() {
 			
 			@Override
-			public Effect createEffect(String effectName) {
+			public Effect createEffect(EffectDefinition definition) {
 				return getEffect();
 			}
 		};

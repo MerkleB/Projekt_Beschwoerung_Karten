@@ -29,6 +29,15 @@ public abstract class CardEffect implements Effect {
 	}
 
 	@Override
+	public void activate(Player activator) throws NotActivableException {
+		if(!activateable(isActivFor)) {
+			throw new NotActivableException("Effect "+getCode()+" is not activatable");
+		}
+		isActivated = true;
+		
+	}
+
+	@Override
 	public void withdraw() {
 		withdrawn = true;
 	}
@@ -48,6 +57,7 @@ public abstract class CardEffect implements Effect {
 	public void setInactiv() {
 		isActiv = false;
 		isActivFor = null;
+		isActivated = false;
 	}
 
 	@Override
@@ -63,6 +73,11 @@ public abstract class CardEffect implements Effect {
 	@Override
 	public Hashtable<String, String> getMetaData() {
 		return metaData;
+	}
+
+	@Override
+	public void initialize(String value) {
+		metaData = new Hashtable<String,String>();	
 	}
 
 	@Override

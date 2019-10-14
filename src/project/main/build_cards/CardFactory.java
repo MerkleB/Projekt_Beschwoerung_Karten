@@ -119,7 +119,7 @@ public class CardFactory implements CreatesCards {
 	private Effect[] getEffects(CardDefinition definition) {
 		Effect[] effects = new Effect[definition.effects.length];
 		for(int i=0; i<definition.effects.length; i++) {
-			effects[i] = effectFactory.createEffect(definition.effects[i].effectClass);
+			effects[i] = effectFactory.createEffect(definition.effects[i]);
 			effects[i].setGame(game);
 		}
 		return effects;

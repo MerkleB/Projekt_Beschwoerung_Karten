@@ -6,6 +6,14 @@
 				{"language": "EN", "name" : "Healer", "description" : "Permanent - This summon is able to heal other summons."},
 				{"language": "DE", "name" : "Heiler", "description" : "Permanent - Diese Beschwörung ist in der Lage andere Beschwörungen zu heilen."}
 			]  
+		},
+		{
+			"effectClass" : "DMG000",
+			"descriptions" : [
+				{"language": "EN", "name" : "DMG000", "description" : "The opponent player loses &0 shield points."},
+				{"language": "DE", "name" : "DMG000", "description" : "Der gegnerische Spieler verliert &0 Schildpunkte."}
+			]
+			
 		}
 	]
 }

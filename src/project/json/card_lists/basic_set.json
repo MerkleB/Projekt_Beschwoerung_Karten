@@ -89,7 +89,7 @@
 				"trivia" : "A spell which causes crucial pain to his victim.",
 				"effects" : 
 				[
-					
+					{"effectClass" : "DMG000", "effectValue" : "5"}
 				],
 				"neededMagicEnergy" : 4
 			}

@@ -6,4 +6,5 @@ import project.main.Card.Card;
 public interface Effect extends Stackable {
 	public String getDescription();
 	public boolean isExecutable();
+	public void initialize(String value);
 }

@@ -52,7 +52,7 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 			((Summon)owningCard).setActivityStatus(Summon.USED);
 			Summon attacker = (Summon) actionToBlock.getCard();
 			Summon defender = (Summon) owningCard;
-			ProcessesBattle battle = new Battle();
+			ProcessesBattle battle = Battle.getInstance();
 			battle.setCombatants(attacker, defender);
 			GameListener.getInstance().actionExecuted(this);
 			battle.start();

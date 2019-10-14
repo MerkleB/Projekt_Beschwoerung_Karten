@@ -2,6 +2,8 @@ package project.main.GameApplication;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import project.main.Card.Summon;
 import project.main.Card.SummonStatus;
@@ -26,7 +28,21 @@ public class Battle implements ProcessesBattle {
 	private boolean proceedTwo;
 	private boolean proceedFast;
 	private boolean proceedSlow;
+	private boolean waitForBoth;
+	private boolean waitForSlow;
+	private boolean waitForFast;
 	private boolean finished;
+	private ReentrantLock lock;
+	private Condition cond;
+	
+	private Battle() {
+		lock = new ReentrantLock();
+		cond = lock.newCondition();
+		proceedFast = false;
+		proceedSlow = false;
+		proceedOne = false;
+		proceedTwo = false;
+	}
 	
 	public static ProcessesBattle getInstance() {
 		ProcessesBattle instance = new Battle();
@@ -36,14 +52,42 @@ public class Battle implements ProcessesBattle {
 	
 	@Override
 	public void proceed(Player player) {
-		if(player == attackingPlayer) {
-			proceedOne = true;
-		}else proceedTwo = true;
-		if(fastSummon != null && slowSummon != null) {
-			if(fastSummon.getOwningPlayer() == player) {
-				proceedFast = true;
-			}else proceedSlow = true;
+		lock.lock();
+		try {
+			if(waitForBoth) {
+				if(player == attackingPlayer) {
+					proceedOne = true;
+				}else proceedTwo = true;
+				if(proceedOne && proceedTwo) {
+					proceedOne = false;
+					proceedTwo = false;
+					waitForBoth = false;
+					cond.signal();
+				}
+			}
+			
+			if(waitForSlow || waitForFast) {
+				if(fastSummon.getOwningPlayer() == player) {
+					proceedFast = true;
+				}else proceedSlow = true;
+				
+				if(proceedFast && waitForFast) {
+					proceedFast = false;
+					waitForFast = false;
+					cond.signal();
+				}
+				
+				if(proceedSlow && waitForSlow) {
+					proceedSlow = false;
+					waitForSlow = false;
+					cond.signal();
+				}
+			}
+			
+		}finally {
+			lock.unlock();
 		}
+		
 	}
 
 	@Override
@@ -56,53 +100,59 @@ public class Battle implements ProcessesBattle {
 
 	@Override
 	public void start() {
-		GameListener.getInstance().battleStarted(this);
-		status = ProcessesBattle.RUNNING;
-		determineFastSummon();
-		System.out.println("Fast summon "+fastSummon.getName()+"#"+fastSummon.getID());
-		System.out.println("Fast summon "+slowSummon.getName()+"#"+slowSummon.getID());
-		while(!finished) {
-			activateBattlePhase("ClashBegin", attackingPlayer);
-			activateBattlePhase("ClashBegin", defendingPlayer);
-			proceedOne = false;
-			proceedTwo = false;
-			while(!proceedOne || !proceedTwo); //Wait
-			deactivate(attackingPlayer);
-			deactivate(defendingPlayer);
-			if(fastSummon != null && slowSummon != null) {
-				int fastSummonAttack = calculateAttack(fastSummon, slowSummon);
-				int slowSummonVitality = slowSummon.getStatus().decreaseVitality(fastSummonAttack);
-				GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, fastSummon, slowSummon, fastSummonAttack));
-				if(slowSummonVitality == 0) {
-					setBattleResult(fastSummon, slowSummon);
-					break;
-				}
-				
-				int slowSummonAttack = calculateAttack(slowSummon, fastSummon);
-				int fastSummonVitality = fastSummon.getStatus().decreaseVitality(slowSummonAttack);
-				GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, slowSummon, fastSummon, slowSummonAttack));
-				if(fastSummonVitality == 0) {
-					setBattleResult(slowSummon, fastSummon);
-					break;
-				}
-				
-				activateBattlePhase("ClashEnd", fastSummon.getOwningPlayer());
-				proceedFast = false;
-				proceedSlow = false;
-				while(!proceedFast);
-				if(fastSummon == null) end();
-				activateBattlePhase("ClashEnd", slowSummon.getOwningPlayer());
-				while(!proceedSlow);
+		lock.lock();
+		try {
+			GameListener.getInstance().battleStarted(this);
+			status = ProcessesBattle.RUNNING;
+			determineFastSummon();
+			System.out.println("Fast summon "+fastSummon.getName()+"#"+fastSummon.getID());
+			System.out.println("Fast summon "+slowSummon.getName()+"#"+slowSummon.getID());
+			while(!finished) {
+				activateBattlePhase("ClashBegin", attackingPlayer);
+				activateBattlePhase("ClashBegin", defendingPlayer);
+				waitForBoth = true;
+				cond.await(); //Wait until proceed
 				deactivate(attackingPlayer);
 				deactivate(defendingPlayer);
-				if(slowSummon == null) {
+				if(fastSummon != null && slowSummon != null) {
+					int fastSummonAttack = calculateAttack(fastSummon, slowSummon);
+					int slowSummonVitality = slowSummon.getStatus().decreaseVitality(fastSummonAttack);
+					GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, fastSummon, slowSummon, fastSummonAttack));
+					if(slowSummonVitality == 0) {
+						setBattleResult(fastSummon, slowSummon);
+						break;
+					}
+					
+					int slowSummonAttack = calculateAttack(slowSummon, fastSummon);
+					int fastSummonVitality = fastSummon.getStatus().decreaseVitality(slowSummonAttack);
+					GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, slowSummon, fastSummon, slowSummonAttack));
+					if(fastSummonVitality == 0) {
+						setBattleResult(slowSummon, fastSummon);
+						break;
+					}
+					
+					activateBattlePhase("ClashEnd", fastSummon.getOwningPlayer());
+					waitForFast = true;
+					cond.await(); // Wait until "fast" player proceeds
+					if(fastSummon == null) end();
+					activateBattlePhase("ClashEnd", slowSummon.getOwningPlayer());
+					waitForSlow = true;
+					cond.await(); // Wait until "slow" player proceeds
+					deactivate(attackingPlayer);
+					deactivate(defendingPlayer);
+					if(slowSummon == null) {
+						end();
+					}
+				}else{
 					end();
-				}
-			}else{
-				end();
-			};
+				};
+			}
+			GameListener.getInstance().battleEnded(this);
+		} catch (InterruptedException e) {
+			System.out.println("Game was interrupted.");
+		}finally {
+			lock.unlock();
 		}
-		GameListener.getInstance().battleEnded(this);
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public interface ProcessesBattle{
 	/**
 	 * Retrieves the status of the game
 	 * The values are represented by constants in interface ProcessesBattle
-	 * @return ENDED, ABRUPT, RUNNING, INI
+	 * @return ENDED, ABRUPT, RUNNING, INIT
 	 */
 	public String getStatus();
 }

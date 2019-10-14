@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import project.main.Action.GameAction;
 import project.main.Card.Summon;
+import project.main.Effect.Effect;
 import project.main.build_cards.KnowsSummonAscentHierarchy;
 import project.main.util.RankLevelMapper;
 import project.main.util.MapsRankAndLevel;
@@ -44,10 +45,12 @@ public class SummonAscentHierarchyTest {
 		
 		GameAction[] mokActions = new GameAction[1];
 		mokActions[0] = MokProvider.getGameAction("MokAction");
+		Effect[] effects = new Effect[1];
+		effects[0] = MokProvider.getEffect();
 		
-		card1 = new Summon("bsc-su-00-0","Summon-0", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
-		card2 = new Summon("bsc-su-00-1","Summon-1", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
-		card3 = new Summon("bsc-su-00-2","Summon-2", "Test", null, 2, 1, 5, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		card1 = new Summon("bsc-su-00-0","Summon-0", "Test", effects, 2, 1, 5, 1, 4, "NaturalBeast", "Cub", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		card2 = new Summon("bsc-su-00-1","Summon-1", "Test", effects, 2, 1, 5, 1, 4, "NaturalBeast", "Adult", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
+		card3 = new Summon("bsc-su-00-2","Summon-2", "Test", effects, 2, 1, 5, 1, 4, "NaturalBeast", "Legend", "Feuer", 1, 3, 4, MokProvider.getPlayer(), mokActions);
 		
 	}
 

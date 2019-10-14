@@ -24,6 +24,7 @@ public class DMG000 extends CardEffect implements PhaseListener{
 		super.activate(activator);
 		setTarget();
 		metaData.put("TargetID", target.getID().toString());
+		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().effectActivated(this);
 	}
 	

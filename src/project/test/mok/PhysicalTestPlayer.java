@@ -121,7 +121,7 @@ public class PhysicalTestPlayer implements Runnable{
 		System.out.println("Controller started"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 		System.out.println("Controller: Wait until game gives control"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 		try {
-			gameCondition.await();
+			gameCondition.await(10, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}finally {

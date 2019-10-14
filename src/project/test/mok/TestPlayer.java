@@ -239,6 +239,9 @@ public class TestPlayer implements Player {
 	@Override
 	public int decreaseHealthPoints(int damage) {
 		healthPoints = healthPoints - damage;
+		if(healthPoints < 0) {
+			healthPoints = healthPoints*(-1)+healthPoints;
+		}
 		return healthPoints;
 	}
 

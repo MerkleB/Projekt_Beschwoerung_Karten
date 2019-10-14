@@ -6,25 +6,21 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import project.main.Action.GameAction;
 import project.main.Card.Card;
+import project.main.Card.Spell;
 import project.main.Card.Summon;
+import project.main.Effect.Effect;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.DrawPhase;
-import project.main.GameApplication.Game;
 import project.main.GameApplication.GamePhase;
 import project.main.GameApplication.HostsGame;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.RefreshmentPhase;
-import project.main.Listeners.GameListener;
-import project.main.Listeners.PhaseListener;
 import project.main.build_cards.CardFactory;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
@@ -104,6 +100,12 @@ public class TestActions {
 			for(int j=0; j<card2.getActions().size(); j++) {
 				card2.getActions().get(j).setGame(g);
 			}
+			for(Effect effect : card1.getEffects()) {
+				effect.setGame(g);
+			}
+			for(Effect effect : card2.getEffects()) {
+				effect.setGame(g);
+			}
 		}
 	}
 	
@@ -119,6 +121,20 @@ public class TestActions {
 			if(selected == number) break;
 		}
 		return summons;
+	}
+	
+	private Spell[] getFirstSpellFromZone(IsAreaInGame zone, int number) {
+		Spell[] spells = new Spell[number];
+		int selected = 0;
+		ArrayList<Card> cards = zone.getCards();
+		for(Card card : cards) {
+			if(card.getType().equals(CardTypes.Spell)) {
+				selected++;
+				spells[selected-1] = (Spell)card;
+			}
+			if(selected == number) break;
+		}
+		return spells;
 	}
 	
 	@Test
@@ -161,9 +177,7 @@ public class TestActions {
 		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
-		Thread ctrlThread1 = new Thread(controller1, "Control1");
-		Thread ctrlThread2 = new Thread(controller2, "Control2");
-		
+		Thread ctrlThread1 = new Thread(controller1, "Control1");		
 		/**
 		 * Test
 		 */
@@ -321,6 +335,80 @@ public class TestActions {
 		}
 		if(!((Summon)card1).getActivityStatus().equals(Summon.USED)) {
 			fail("Card1's status was not set to used");
+		}
+		
+	}
+	
+	@Test
+	public void testCast() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Cast=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame hand = player1.getGameZone("HandZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
+		Spell[] spells = getFirstSpellFromZone(deck, 1);
+		Card card1 = spells[0];
+		deck.removeCard(card1);
+		hand.addCard(card1);
+		Card collector1 = deck.getCards().get(1);
+		Card collector2 = deck.getCards().get(2);
+		deck.removeCard(collector1);
+		deck.removeCard(collector2);
+		hand.addCard(card1);
+		collectorZone.addCard(collector1);
+		collectorZone.addCard(collector2);
+		controller1.addAction("Cast", card1.getID(), "HandZone");
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		
+		/**
+		 * Check result
+		 */
+		if(player1.getGameZone("HandZone").findCard(card1.getID()) != null) {
+			fail("Card1 is still in HandZone");
+		}
+		
+		if(player1.getGameZone("DiscardPile").findCard(card1.getID()) == null) {
+			fail("Card1 is not in Discard Pile");
+		}
+		
+		if(player2.getHealthPoints() != 0) {
+			fail("Player2's shield points are unequal to 0 ("+player2.getHealthPoints()+")");
 		}
 		
 	}

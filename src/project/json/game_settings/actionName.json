@@ -12,7 +12,8 @@
 			{"code" : "SelectMagicCollector", "name" : "Select Magic Collector"},
 			{"code" : "SelectSummon", "name" : "Select Summon"},
 			{"code" : "WithdrawCollector", "name" : "Withdraw Collector"},
-			{"code" : "SetAsCollector", "name" : "Set as Collector"}
+			{"code" : "SetAsCollector", "name" : "Set as Collector"},
+			{"code" : "SelectSummoningCircle", "name" : "Select summoning circle"}
 		] 
 		},
 		{
@@ -27,7 +28,8 @@
 			{"code" : "SelectMagicCollector", "name" : "Magiesammler auswählen"},
 			{"code" : "SelectSummon", "name" : "Beschwörung auswählen"},
 			{"code" : "WithdrawCollector", "name" : "Magiesammler zurückziehen"},
-			{"code" : "SetAsCollector", "name" : "Als Magiesammler einsetzen"}   
+			{"code" : "SetAsCollector", "name" : "Als Magiesammler einsetzen"},
+			{"code" : "SelectSummoningCircle", "name" : "Beschwörungskreis auswählen"}   
 		] 
 		}
 	]

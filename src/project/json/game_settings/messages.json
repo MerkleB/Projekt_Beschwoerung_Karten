@@ -20,6 +20,13 @@
 				{"language" : "EN", "text" : "Select the Summon you want to attack!", "answers" : []},
 				{"language" : "DE", "text" : "Wähle die Beschwörung, die du angreifen möchtest", "answers" : []}
 			]
+		},
+		{ 
+			"id" : "#4",
+			"texts" : [
+				{"language" : "EN", "text" : "Select the summon circle where you evoke the summon!", "answers" : []},
+				{"language" : "DE", "text" : "Wähle den Beschwörungskreis in welchem du beschwören möchtest!", "answers" : []}
+			]
 		}
 	]
 }

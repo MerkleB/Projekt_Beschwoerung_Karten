@@ -26,6 +26,7 @@ import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 import project.main.jsonObjects.CardDefinitionLibrary;
+import project.main.util.GameMessageProvider;
 import project.test.mok.PhysicalTestPlayer;
 import project.test.mok.TestGame;
 import project.test.mok.TestPlayer;
@@ -44,6 +45,9 @@ public class TestActions {
 		Field actionLibrary = ActionDefinitionLibrary.class.getDeclaredField("instance");
 		actionLibrary.setAccessible(true);
 		actionLibrary.set(null, null);
+		Field messageProvider = GameMessageProvider.class.getDeclaredField("instance");
+		messageProvider.setAccessible(true);
+		messageProvider.set(null, null);
 	}
 	
 	@Before
@@ -68,6 +72,9 @@ public class TestActions {
 		Field cardLibrary = CardDefinitionLibrary.class.getDeclaredField("instance");
 		cardLibrary.setAccessible(true);
 		cardLibrary.set(null, null);
+		Field messageProvider = GameMessageProvider.class.getDeclaredField("instance");
+		messageProvider.setAccessible(true);
+		messageProvider.set(null, null);
 	}
 	
 	public ArrayList<IsPhaseInGame> getPhases(String[] phaseNames){
@@ -106,6 +113,17 @@ public class TestActions {
 			for(Effect effect : card2.getEffects()) {
 				effect.setGame(g);
 			}
+		}
+	}
+	
+	private void setGameForZones(TestGame g) {
+		ArrayList<IsAreaInGame> zones1 = player1.getGameZones();
+		ArrayList<IsAreaInGame> zones2 = player1.getGameZones();
+		for(IsAreaInGame zone : zones1) {
+			zone.setGame(g);
+		}
+		for(IsAreaInGame zone : zones2) {
+			zone.setGame(g);
 		}
 	}
 	
@@ -155,6 +173,7 @@ public class TestActions {
 		} catch (NoCardException e1) {
 			fail("Fail during preparation: set player and game for cards");
 		}
+		setGameForZones(game);
 		app.setGame(game);
 		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
 		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
@@ -174,6 +193,7 @@ public class TestActions {
 		collectorZone.addCard(collector1);
 		collectorZone.addCard(collector2);
 		controller1.addAction("EvokeSummon", card1.getID(), "HandZone");
+		controller1.addAction("SelectSummoningCircle", null, "SummonZone");
 		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");

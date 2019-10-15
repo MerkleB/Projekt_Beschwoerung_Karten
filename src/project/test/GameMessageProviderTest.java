@@ -2,6 +2,8 @@ package project.test;
 
 import static org.junit.Assert.*;
 import java.lang.reflect.Field;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,13 +12,23 @@ import project.main.util.ProvidesMessageTexts;
 
 public class GameMessageProviderTest {
 	
-	private ProvidesMessageTexts cut; 
+	private ProvidesMessageTexts cut;
+	private String originalPath;
 	
 	@Before
 	public void setUp() throws Exception {
 		Field pathField = GameMessageProvider.class.getDeclaredField("resourcePath");
 		pathField.setAccessible(true);
+		originalPath = (String)pathField.get(null);
 		pathField.set(null, "project/test/testJSON/messages.json");
+		cut = GameMessageProvider.getInstance();
+	}
+	
+	@After
+	public void teardown() throws Exception {
+		Field pathField = GameMessageProvider.class.getDeclaredField("resourcePath");
+		pathField.setAccessible(true);
+		pathField.set(null, originalPath);
 		cut = GameMessageProvider.getInstance();
 	}
 

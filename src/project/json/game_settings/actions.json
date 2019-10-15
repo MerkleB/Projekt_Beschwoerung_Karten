@@ -65,6 +65,12 @@
 			"cardTypes" : ["MagicCollector"],
 			"phases" : [],
 			"zones" : ["CollectorZone"]
+		},
+		{
+			"actionName" : "SelectSummoningCircle",
+			"cardTypes" : [],
+			"phases" : [],
+			"zones" : ["SummonZone"]
 		}
 	]
 	 

@@ -13,7 +13,7 @@ import project.main.jsonObjects.MessageTexts;
 public class GameMessageProvider implements ProvidesMessageTexts {
 
 	private static ProvidesMessageTexts instance;
-	private static String resourcePath = "project/json/game_settings/messages.json";
+	private static String  resourcePath = "project/json/game_settings/messages.json";
 	private MessageTexts[] messages;
 	private Hashtable<String, Hashtable<String, MessageInLanguage>> messagesByIdAndLanguage;
 	

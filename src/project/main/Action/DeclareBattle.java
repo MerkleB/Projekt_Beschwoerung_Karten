@@ -18,6 +18,7 @@ public class DeclareBattle extends Action {
 	
 	public ProcessesBattle battle;
 	public Summon attackedSummon;
+	public GameActionListener listener;
 	
 	@Override
 	public String getCode() {
@@ -29,6 +30,7 @@ public class DeclareBattle extends Action {
 		if(isActivated && !isWithdrawn()) {
 			((Summon)owningCard).setActivityStatus(Summon.USED);
 			battle.setCombatants((Summon)owningCard, attackedSummon);
+			GameListener.getInstance().removeGameActionListener(listener);
 			GameListener.getInstance().actionExecuted(this);
 			battle.start();
 		}
@@ -59,6 +61,7 @@ public class DeclareBattle extends Action {
 	private void initializeBattle() {
 		attackedSummon = null;
 		battle = Battle.getInstance();
+		battle.setGame(game);
 		Player opponentPlayer = null;
 		for(Player player : game.getPlayers()) {
 			if(player != actionIsActivFor) {
@@ -66,7 +69,12 @@ public class DeclareBattle extends Action {
 			}
 			ArrayList<IsAreaInGame> zones = player.getGameZones();
 			for(IsAreaInGame zone : zones) {
-				zone.deavtivateAll();
+				ArrayList<Card> cards = zone.getCards();
+				for(Card card : cards) {
+					if(card != owningCard) {
+						card.setInactive();
+					}
+				}
 			}
 		}
 		if(opponentPlayer == null) {
@@ -83,14 +91,13 @@ public class DeclareBattle extends Action {
 					}
 				}
 			}
-			GameActionListener listener = new GameActionListener() {
+			listener = new GameActionListener() {
 				
 				@Override
 				public void actionExecuted(GameAction action) {
 					if(action.getCode().equals(SummonSelect)) {
 						String id = action.getMetaData().get("Summon-ID");
 						attackedSummon = (Summon)zone.findCard(UUID.fromString(id));
-						GameListener.getInstance().removeGameActionListener(this);
 					}
 				}
 				
@@ -98,8 +105,8 @@ public class DeclareBattle extends Action {
 				public void actionActivated(GameAction action) {
 				}
 			};
-			game.prompt(actionIsActivFor, GameMessageProvider.getInstance().getMessage("#3", Application.getInstance().getLanguage()));
 			GameListener.getInstance().addGameActionListener(listener);
+			game.prompt(actionIsActivFor, GameMessageProvider.getInstance().getMessage("#3", Application.getInstance().getLanguage()));
 		}
 	}
 

@@ -9,6 +9,7 @@ import project.main.GameApplication.AcceptPromptAnswers;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
+import project.main.GameApplication.ProcessesBattle;
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.RankLevelMapper;
 import project.main.util.MapsRankAndLevel;
@@ -23,6 +24,7 @@ public class TestGame implements Game {
 	private boolean started;
 	private boolean ended;
 	private boolean phaseEnd;
+	private ProcessesBattle activeBattle;
 	private Condition condition;
 	private ReentrantLock lock;
 	
@@ -162,6 +164,16 @@ public class TestGame implements Game {
 	public boolean processGameStack() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public ProcessesBattle getActiveBattle() {
+		return activeBattle;
+	}
+
+	@Override
+	public void setActiveBattle(ProcessesBattle battle) {
+		this.activeBattle = battle;		
 	}
 
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import org.junit.AfterClass;
@@ -12,7 +13,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import project.main.Card.Card;
 import project.main.Card.Spell;
+import project.main.Card.StatusChange;
 import project.main.Card.Summon;
+import project.main.Card.SummonStatus;
 import project.main.Effect.Effect;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.DrawPhase;
@@ -192,8 +195,8 @@ public class TestActions {
 		hand.addCard(card1);
 		collectorZone.addCard(collector1);
 		collectorZone.addCard(collector2);
-		controller1.addAction("EvokeSummon", card1.getID(), "HandZone");
-		controller1.addAction("SelectSummoningCircle", null, "SummonZone");
+		controller1.addAction("EvokeSummon", card1.getID(), "HandZone", null);
+		controller1.addAction("SelectSummoningCircle", null, "SummonZone", null);
 		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
@@ -214,7 +217,6 @@ public class TestActions {
 		}finally {
 			lockTest.unlock();
 		}
-		
 		/**
 		 * Check result
 		 */
@@ -251,7 +253,7 @@ public class TestActions {
 		IsAreaInGame hand = player1.getGameZone("HandZone");
 		IsAreaInGame deck = player1.getGameZone("DeckZone");
 		Card card1 = deck.getCards().get(3);
-		controller1.addAction("Draw", card1.getID(), "DeckZone");
+		controller1.addAction("Draw", card1.getID(), "DeckZone", null);
 		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
@@ -320,8 +322,8 @@ public class TestActions {
 		deck.removeCard(card2);
 		summonZone.addCard(card1);
 		summonZone.addCard(card2);
-		controller1.addAction("Heal", card1.getID(), "SummonZone");
-		controller1.addAction("SelectSummon", card2.getID(), "SummonZone");
+		controller1.addAction("Heal", card1.getID(), "SummonZone", null);
+		controller1.addAction("SelectSummon", card2.getID(), "SummonZone", null);
 		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
@@ -395,7 +397,7 @@ public class TestActions {
 		hand.addCard(card1);
 		collectorZone.addCard(collector1);
 		collectorZone.addCard(collector2);
-		controller1.addAction("Cast", card1.getID(), "HandZone");
+		controller1.addAction("Cast", card1.getID(), "HandZone", null);
 		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
@@ -429,6 +431,137 @@ public class TestActions {
 		
 		if(player2.getHealthPoints() != 0) {
 			fail("Player2's shield points are unequal to 0 ("+player2.getHealthPoints()+")");
+		}
+		
+	}
+	
+	@Test
+	public void testDeclareBattle() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test DeclareBattle=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame summonZone1 = player1.getGameZone("SummonZone");
+		IsAreaInGame deck1 = player1.getGameZone("DeckZone");
+		Summon[] summons = getFirstSummonFromZone(deck1, 1);
+		Card card1 = summons[0];
+		IsAreaInGame summonZone2 = player2.getGameZone("SummonZone");
+		IsAreaInGame deck2 = player2.getGameZone("DeckZone");
+		summons = getFirstSummonFromZone(deck2, 1);
+		Card card2 = summons[0];
+		deck1.removeCard(card1);
+		deck2.removeCard(card2);
+		summonZone1.addCard(card1);
+		summonZone2.addCard(card2);
+		controller1.addAction("DeclareBattle", card1.getID(), "SummonZone", null);
+		//Ensure that card 1 is faster than card 2
+		((Summon)card1).getStatus().addStatusChange(new StatusChange(StatusChange.INITIATIVE, UUID.randomUUID(), StatusChange.TYPE_ADDITION, 2));
+		controller1.addAction("SelectSummon", card2.getID(), "SummonZone", player2);
+		controller1.addStackStart();
+		 //Round1
+		controller1.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller1.addExpectedPrompt("#6", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller2.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		controller2.addExpectedPrompt("#6", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		 //Round2
+		controller1.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller1.addExpectedPrompt("#6", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller2.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		controller2.addExpectedPrompt("#6", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		 //Round3
+		controller1.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller1.addExpectedPrompt("#6", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller2.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		controller2.addExpectedPrompt("#6", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		 //Round4
+		controller1.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player1);
+		});
+		controller1.addPhaseEndAction();
+		controller2.addExpectedPrompt("#5", ()->{
+			game.getActiveBattle().proceed(player2);
+		});
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		/**
+		 * Check result
+		 */
+		if(((Summon)card2).getStatus().getVitality() != 0) {
+			fail("Card2 was not really defeated");
+		}
+		if(((Summon)card1).getStatus().getVitality() != 2) {
+			fail("Card1 didn't got the expected damage");
+		}
+		if(!((Summon)card1).getActivityStatus().equals(Summon.USED)) {
+			fail("Card1's status was not set to used");
+		}
+		if(player2.getGameZone("DiscardPile").findCard(card2.getID()) == null) {
+			fail("Card2 was not added to discard pile.");
+		}
+		if(player2.getGameZone("SummonZone").findCard(card2.getID()) != null) {
+			fail("Card2 was not removed from Summon zone.");
+		}
+		if(player1.getGameZone("DiscardPile").findCard(card1.getID()) != null) {
+			fail("Card1 was added to discard pile.");
+		}
+		if(player1.getGameZone("SummonZone").findCard(card1.getID()) == null) {
+			fail("Card1 was removed from Summon zone.");
 		}
 		
 	}

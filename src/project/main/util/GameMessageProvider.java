@@ -47,6 +47,7 @@ public class GameMessageProvider implements ProvidesMessageTexts {
 		newMessage.answers = message.answers;
 		newMessage.language = message.language;
 		newMessage.text = message.text;
+		newMessage.id = message.id;
 		for(int i=0; i<parameters.length; i++) {
 			String param = "&" + i;
 			newMessage.text = newMessage.text.replaceAll(param, parameters[i]);
@@ -63,6 +64,7 @@ public class GameMessageProvider implements ProvidesMessageTexts {
 				messagesByIdAndLanguage.put(messageIds.id, messagesInLanguage);
 			}
 			for(MessageInLanguage text : messageIds.texts) {
+				text.id = messageIds.id;
 				messagesInLanguage.put(text.language, text);
 			}
 		}

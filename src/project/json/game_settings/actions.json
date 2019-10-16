@@ -71,6 +71,12 @@
 			"cardTypes" : [],
 			"phases" : [],
 			"zones" : ["SummonZone"]
+		},
+		{
+			"actionName" : "WithdrawFromBattle",
+			"cardTypes" : ["Summon"],
+			"phases" : ["ClashEnd"],
+			"zones" : ["SummonZone"]
 		}
 	]
 	 

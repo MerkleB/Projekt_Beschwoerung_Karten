@@ -1,6 +1,7 @@
 package project.main.GameApplication;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -9,16 +10,20 @@ import project.main.Card.Summon;
 import project.main.Card.SummonStatus;
 import project.main.Listeners.BattleEventObject;
 import project.main.Listeners.GameListener;
-import project.main.jsonObjects.ElementDefinition;
 import project.main.util.CalculatesElementEffectivities;
 import project.main.util.ElementDefinitionLibrary;
+import project.main.util.GameMessageProvider;
 
 public class Battle implements ProcessesBattle {
 	
+	private Game game;
+	private IsPhaseInGame activeBattlePhase;
+	private Hashtable<String, IsPhaseInGame> battlePhases;
 	private Player attackingPlayer;
 	private Summon attackingSummon;
 	private Player defendingPlayer;
 	private Summon defendingSummon;
+	private Player activePlayer;
 	private Summon fastSummon;
 	private Summon slowSummon;
 	private Summon winner;
@@ -26,22 +31,23 @@ public class Battle implements ProcessesBattle {
 	private String status;
 	private boolean proceedOne;
 	private boolean proceedTwo;
-	private boolean proceedFast;
-	private boolean proceedSlow;
 	private boolean waitForBoth;
-	private boolean waitForSlow;
-	private boolean waitForFast;
 	private boolean finished;
 	private ReentrantLock lock;
 	private Condition cond;
+	private int round;
 	
 	private Battle() {
 		lock = new ReentrantLock();
 		cond = lock.newCondition();
-		proceedFast = false;
-		proceedSlow = false;
 		proceedOne = false;
 		proceedTwo = false;
+		battlePhases = new Hashtable<String, IsPhaseInGame>();
+		BattlePhase phase = new BattlePhase("ClashBegin");
+		battlePhases.put(phase.getName(), phase);
+		phase = new BattlePhase("ClashEnd");
+		battlePhases.put(phase.getName(), phase);
+		round = 0;
 	}
 	
 	public static ProcessesBattle getInstance() {
@@ -51,39 +57,37 @@ public class Battle implements ProcessesBattle {
 	}
 	
 	@Override
+	public void setGame(Game game) {
+		this.game = game;
+		game.setActiveBattle(this);
+		battlePhases.get("ClashBegin").setGame(game);
+		battlePhases.get("ClashEnd").setGame(game);
+	}
+
+	@Override
 	public void proceed(Player player) {
 		lock.lock();
 		try {
-			if(waitForBoth) {
+			if(player == activePlayer) {
 				if(player == attackingPlayer) {
 					proceedOne = true;
 				}else proceedTwo = true;
-				if(proceedOne && proceedTwo) {
+				
+				if(waitForBoth) {
+					if(proceedOne && proceedTwo) {
+						getActivePhase().getActiveGameStack().run();
+						proceedOne = false;
+						proceedTwo = false;
+						waitForBoth = false;
+					}
+				}else {
+					getActivePhase().getActiveGameStack().run();
 					proceedOne = false;
 					proceedTwo = false;
-					waitForBoth = false;
-					cond.signal();
 				}
-			}
-			
-			if(waitForSlow || waitForFast) {
-				if(fastSummon.getOwningPlayer() == player) {
-					proceedFast = true;
-				}else proceedSlow = true;
+				cond.signal();
 				
-				if(proceedFast && waitForFast) {
-					proceedFast = false;
-					waitForFast = false;
-					cond.signal();
-				}
-				
-				if(proceedSlow && waitForSlow) {
-					proceedSlow = false;
-					waitForSlow = false;
-					cond.signal();
-				}
 			}
-			
 		}finally {
 			lock.unlock();
 		}
@@ -99,6 +103,12 @@ public class Battle implements ProcessesBattle {
 	}
 
 	@Override
+	public Summon[] getCombatants() {
+		Summon[] summons = {attackingSummon, defendingSummon};
+		return summons;
+	}
+
+	@Override
 	public void start() {
 		lock.lock();
 		try {
@@ -108,15 +118,21 @@ public class Battle implements ProcessesBattle {
 			System.out.println("Fast summon "+fastSummon.getName()+"#"+fastSummon.getID());
 			System.out.println("Fast summon "+slowSummon.getName()+"#"+slowSummon.getID());
 			while(!finished) {
-				activateBattlePhase("ClashBegin", attackingPlayer);
-				activateBattlePhase("ClashBegin", defendingPlayer);
+				round++;
+				System.out.println("-==Start round "+round+"==-");
 				waitForBoth = true;
+				activateBattlePhase("ClashBegin", attackingPlayer);
+				promptPlayer("#5", attackingPlayer);
 				cond.await(); //Wait until proceed
 				deactivate(attackingPlayer);
+				activateBattlePhase("ClashBegin", defendingPlayer);
+				promptPlayer("#5", defendingPlayer);
+				cond.await(); //Wait until proceed
 				deactivate(defendingPlayer);
 				if(fastSummon != null && slowSummon != null) {
 					int fastSummonAttack = calculateAttack(fastSummon, slowSummon);
 					int slowSummonVitality = slowSummon.getStatus().decreaseVitality(fastSummonAttack);
+					System.out.println("Slower Summon "+slowSummon.getName()+" gets "+fastSummonAttack+" damage. Current vitality: "+slowSummonVitality);
 					GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, fastSummon, slowSummon, fastSummonAttack));
 					if(slowSummonVitality == 0) {
 						setBattleResult(fastSummon, slowSummon);
@@ -125,6 +141,7 @@ public class Battle implements ProcessesBattle {
 					
 					int slowSummonAttack = calculateAttack(slowSummon, fastSummon);
 					int fastSummonVitality = fastSummon.getStatus().decreaseVitality(slowSummonAttack);
+					System.out.println("Faster Summon "+fastSummon.getName()+" gets "+slowSummonAttack+" damage. Current vitality: "+fastSummonVitality);
 					GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, slowSummon, fastSummon, slowSummonAttack));
 					if(fastSummonVitality == 0) {
 						setBattleResult(slowSummon, fastSummon);
@@ -132,17 +149,15 @@ public class Battle implements ProcessesBattle {
 					}
 					
 					activateBattlePhase("ClashEnd", fastSummon.getOwningPlayer());
-					waitForFast = true;
+					promptPlayer("#6", fastSummon.getOwningPlayer());
 					cond.await(); // Wait until "fast" player proceeds
+					deactivate(attackingPlayer);
 					if(fastSummon == null) end();
 					activateBattlePhase("ClashEnd", slowSummon.getOwningPlayer());
-					waitForSlow = true;
+					promptPlayer("#6", slowSummon.getOwningPlayer());
 					cond.await(); // Wait until "slow" player proceeds
-					deactivate(attackingPlayer);
 					deactivate(defendingPlayer);
-					if(slowSummon == null) {
-						end();
-					}
+					if(slowSummon == null) end();
 				}else{
 					end();
 				};
@@ -177,6 +192,11 @@ public class Battle implements ProcessesBattle {
 	}
 
 	@Override
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+
+	@Override
 	public Summon getWinner() {
 		return winner;
 	}
@@ -189,6 +209,11 @@ public class Battle implements ProcessesBattle {
 	@Override
 	public String getStatus() {
 		return status;
+	}
+
+	@Override
+	public IsPhaseInGame getActivePhase() {
+		return activeBattlePhase;
 	}
 	
 	private void determineFastSummon() {
@@ -220,12 +245,14 @@ public class Battle implements ProcessesBattle {
 		}
 	}
 	
+	private void promptPlayer(String messageID, Player player) {
+		game.prompt(player, GameMessageProvider.getInstance().getMessage(messageID, Application.getInstance().getLanguage()));
+	}
+	
 	private void activateBattlePhase(String phase, Player player) {
-		ArrayList<IsAreaInGame> zones = player.getGameZones();
-		IsPhaseInGame battlePhase = new GamePhase(phase);
-		for(IsAreaInGame zone : zones) {
-			zone.activate(player, battlePhase);
-		}
+		activePlayer = player;
+		activeBattlePhase = battlePhases.get(phase);
+		activeBattlePhase.process();
 	}
 	
 	private void deactivate(Player player) {

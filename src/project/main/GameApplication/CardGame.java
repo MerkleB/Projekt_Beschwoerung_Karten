@@ -89,4 +89,16 @@ public class CardGame implements Game {
 		return false;
 	}
 
+	@Override
+	public ProcessesBattle getActiveBattle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setActiveBattle(ProcessesBattle battle) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

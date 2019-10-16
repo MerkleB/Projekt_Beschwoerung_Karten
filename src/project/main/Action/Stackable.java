@@ -31,6 +31,11 @@ public interface Stackable extends GameObject{
 	 */
 	public void activate(Player activator) throws NotActivableException;
 	/**
+	 * Retrieves the player which activated the action
+	 * @return Player activator; null if the action is not activated
+	 */
+	public Player getActivator();
+	/**
 	 * Retrieves if a stackable ist activatable for the given activator.
 	 * A stackable is only activatable if it is activ for the activator 
 	 * and maybe if certain specific requierements are fullfilled.

@@ -38,10 +38,13 @@ public class GameStack implements OwnsGameStack {
 
 	@Override
 	public void run() {
+		if(status == -1) return; //Already finished stacks can't be executed.
 		System.out.println("Stack start processing...");
 		status = 1;
 		for(int i=stack.size()-1; i>=0; i--) { 	
-			stack.get(i).execute();
+			Stackable currentEntry = stack.get(i);
+			currentEntry.execute();
+			currentEntry.setInactiv();
 		}
 		System.out.println("Stack finished Processing.");
 		phase.restorePhaseStatus();

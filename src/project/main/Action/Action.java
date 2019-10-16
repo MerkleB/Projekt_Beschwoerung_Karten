@@ -55,6 +55,15 @@ public abstract class Action implements GameAction {
 	}
 
 	@Override
+	public Player getActivator() {
+		if(isActivated) {
+			return actionIsActivFor;
+		}else {
+			return null;
+		}
+	}
+
+	@Override
 	public boolean activateable(Player activator) {
 		if(!activ || actionIsActivFor != activator){
             return false;

@@ -48,6 +48,7 @@ public class SummoningCircle implements HoldingCards {
 
 	@Override
 	public Card findCard(UUID id) {
+		if(placedSummon == null) return null;
 		if(placedSummon.getID().equals(id)) {
 			return placedSummon;
 		}

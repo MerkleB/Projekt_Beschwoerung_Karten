@@ -38,6 +38,15 @@ public abstract class CardEffect implements Effect {
 	}
 
 	@Override
+	public Player getActivator() {
+		if(isActivated) {
+			return isActivFor;
+		}else {
+			return null;
+		}
+	}
+
+	@Override
 	public void withdraw() {
 		withdrawn = true;
 	}

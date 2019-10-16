@@ -19,8 +19,9 @@ public class ElementDefinitionLibrary implements CalculatesElementEffectivities 
 	public static CalculatesElementEffectivities getInstance() {
 		if(instance == null) {
 			instance = new ElementDefinitionLibrary();
-			((ElementDefinitionLibrary)instance).loadDefinitions();
 			((ElementDefinitionLibrary)instance).resourcePath = "project/json/game_settings/elements.json";
+			((ElementDefinitionLibrary)instance).loadDefinitions();
+			
 		}
 		return instance;
 	}

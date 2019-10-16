@@ -15,6 +15,10 @@ public interface ProcessesBattle{
 	public static final String INIT = "initial";
 	
 	/**
+	 * Sets the game where the battle ran.
+	 */
+	public void setGame(Game game);
+	/**
 	 * In some points of the process the battle waits for the player if the battle can proceed.
 	 * This method ensures that the battle proceeds if the right player(s) declared to proceed.
 	 * @param player
@@ -26,6 +30,11 @@ public interface ProcessesBattle{
 	 * @param Summon defender
 	 */
 	public void setCombatants(Summon attacker, Summon defender);
+	/**
+	 * Retrieves the Comabatants
+	 * @return Summon[2] = {0:Summon attacker, 1:Summon defender}  
+	 */
+	public Summon[] getCombatants();
 	/**
 	 * Starts the battle. The combatants must be set beforehand.
 	 */
@@ -56,4 +65,14 @@ public interface ProcessesBattle{
 	 * @return ENDED, ABRUPT, RUNNING, INIT
 	 */
 	public String getStatus();
+	/**
+	 * Retrieves the current phase in battle
+	 * @return IsPhaseInGame battlePhase
+	 */
+	public IsPhaseInGame getActivePhase();
+	/**
+	 * Retrieves the player which can currently make his move
+	 * @return Player activePlayer
+	 */
+	public Player getActivePlayer();
 }

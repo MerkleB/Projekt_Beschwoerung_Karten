@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.plaf.SliderUI;
+
 import project.main.Action.GameAction;
 import project.main.Card.Card;
 import project.main.GameApplication.AcceptPromptAnswers;
@@ -29,6 +31,8 @@ public class PhysicalTestPlayer implements Runnable{
 	public boolean hasControl;
 	private ArrayList<PhysicalPlayerAction> actionsToPerform;
 	private Hashtable<String, PhysicalPlayerAction> expectedPrompts;
+	private Hashtable<String, Integer> keyIndexOfExpectedPrompt;
+	private Hashtable<String, Integer> currentKeyIndexOfExpectedPrompt;
 	private Condition gameCondition;
 	private Condition testCondition;
 	private ReentrantLock lock;
@@ -39,20 +43,28 @@ public class PhysicalTestPlayer implements Runnable{
 		game = g;
 		actionsToPerform = new ArrayList<PhysicalPlayerAction>();
 		expectedPrompts = new Hashtable<String, PhysicalPlayerAction>();
+		keyIndexOfExpectedPrompt = new Hashtable<String, Integer>();
+		currentKeyIndexOfExpectedPrompt = new Hashtable<String, Integer>();
 		gameCondition = cg;
 		testCondition = ct;
 		lock = lg;
 		lockTest = lt;
 	}
 	
-	public void addAction(String actionName, UUID card_id, String zoneName) {
+	public void addAction(String actionName, UUID card_id, String zoneName, Player player) {
+		Player affectedPlayer;
+		Player activatingPlayer = this.player;
+		if(this.player == player || player == null) {
+			affectedPlayer = this.player;
+		}else affectedPlayer = player; 
 		PhysicalPlayerAction playerAction = new PhysicalPlayerAction() {
-			
+		
 			@Override
 			public void perform() throws NotActivableException {
-				IsAreaInGame zone = player.getGameZone(zoneName);
+				
+				IsAreaInGame zone = affectedPlayer.getGameZone(zoneName);
 				if(card_id != null) {
-					System.out.println("Controller: Execute Action "+actionName+" on Card "+ card_id.toString() + " in Zone " + zoneName+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+					System.out.println("Controller: Execute Action "+actionName+" on Card "+ card_id.toString() + " in Zone " + zoneName+" (Player-"+activatingPlayer.getID()+", Thread"+Thread.currentThread().getName()+")");
 					System.out.println("Selected zone: "+zone.getName());
 					ArrayList<Card> cards = zone.getCards();
 					System.out.println("Search card "+card_id);
@@ -67,7 +79,7 @@ public class PhysicalTestPlayer implements Runnable{
 								try {
 									if(action.getCode().equals(actionName)) {
 										System.out.println("Activate action "+actionName);
-										action.activate(player);
+										action.activate(activatingPlayer);
 										break;
 									}
 								}catch(NotActivableException e) {
@@ -80,7 +92,7 @@ public class PhysicalTestPlayer implements Runnable{
 				}else {
 					if(zoneName.equals("SummonZone")) {
 						ArrayList<SummoningCircle> circles = ((SummonZone)zone).getCircles();
-						circles.get(2).getAction().activate(player);
+						circles.get(2).getAction().activate(activatingPlayer);
 					}
 				}
 			}
@@ -116,12 +128,51 @@ public class PhysicalTestPlayer implements Runnable{
 		actionsToPerform.add(action);
 	}
 	
+	public void addExpectedPrompt(String id, PhysicalPlayerAction answer) {
+		String indexedID = id;
+		if(keyIndexOfExpectedPrompt.containsKey(id)) {
+			int addingIndex = keyIndexOfExpectedPrompt.get(id).intValue();
+			indexedID = indexedID + "_" + addingIndex;
+			keyIndexOfExpectedPrompt.put(id, new Integer(addingIndex+1));
+		}else {
+			indexedID = indexedID + "_" + 0;
+			keyIndexOfExpectedPrompt.put(id, new Integer(1));
+			currentKeyIndexOfExpectedPrompt.put(id, new Integer(0));
+		}
+		expectedPrompts.put(indexedID, answer);
+	}
+	
 	public void prompt(Player promptedPlayer, MessageInLanguage message, AcceptPromptAnswers prompter) {
 		System.out.println("Controller-prompt: "+message.text);
+		
 	}
 
 	public void prompt(Player promptedPlayer, MessageInLanguage message) {
 		System.out.println("Controller-prompt: "+message.text);
+		int currentIndex = getCurrentPrompKeyIndex(message.id);
+		if(currentIndex == -1) return;
+		PhysicalPlayerAction answer = expectedPrompts.get(message.id+"_"+currentIndex);
+		if(answer != null) {
+			currentKeyIndexOfExpectedPrompt.put(message.id, new Integer(currentIndex+1));
+			new Thread(()->{
+				try {
+					System.out.println("Controller: Wait 1 second until giving answer to the prompt"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+					Thread.sleep(1000);//To emulate the delay of a natural person
+					System.out.println("Controller: Give answer to the prompt"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+					answer.perform();
+					expectedPrompts.remove(message.id);
+				} catch (InterruptedException | NotActivableException e) {
+					e.printStackTrace();
+				}
+			}, "ControllerThread_"+player.getID()).start(); 
+		}else game.getActiveBattle().proceed(promptedPlayer);
+	}
+	
+	private int getCurrentPrompKeyIndex(String id) {
+		Integer value = currentKeyIndexOfExpectedPrompt.get(id);
+		if(value == null) {
+			return -1;
+		}else return value.intValue();
 	}
 
 	@Override

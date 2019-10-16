@@ -27,6 +27,21 @@
 				{"language" : "EN", "text" : "Select the summon circle where you evoke the summon!", "answers" : []},
 				{"language" : "DE", "text" : "Wähle den Beschwörungskreis in welchem du beschwören möchtest!", "answers" : []}
 			]
+		},
+		{ 
+			"id" : "#5",
+			"texts" : [
+				{"language" : "EN", "text" : "The clash begins. Proceed?", "answers" : []},
+				{"language" : "DE", "text" : "Der Schlagabtausch beginnt. Fortfahren?", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#6",
+			"texts" : [
+				{"language" : "EN", "text" : "The clash ended. Proceed or withdraw?", "answers" : []},
+				{"language" : "DE", "text" : "Der Schlagabtausch beginnt. Fortfahren oder zurückziehen?", "answers" : []}
+			]
 		}
+		
 	]
 }

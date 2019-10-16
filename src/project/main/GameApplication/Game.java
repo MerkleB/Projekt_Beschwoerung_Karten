@@ -14,6 +14,8 @@ public interface Game extends Runnable{
 	public boolean hasEnded();
 	public boolean hasStarted();
 	public boolean processGameStack();
+	public ProcessesBattle getActiveBattle();
+	public void setActiveBattle(ProcessesBattle battle);
 	public void prompt(Player promptedPlayer, MessageInLanguage message, AcceptPromptAnswers prompter);
 	public void prompt(Player promptedPlayer, MessageInLanguage message);
 }

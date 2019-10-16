@@ -40,12 +40,17 @@ public class SummonZone extends GameZone {
 
 	@Override
 	public void removeCard(Card card) {
-		removeCard(card.getID());		
+		super.removeCard(card);
+		removeCardFromCircle(card.getID());
 	}
 
 	@Override
 	public void removeCard(UUID id) {
 		super.removeCard(id);
+		removeCardFromCircle(id);
+	}
+	
+	private void removeCardFromCircle(UUID id) {
 		for(int i=0; i<greatCircles.size(); i++) {
 			for(int j=0; j<greatCircles.get(i).size(); j++) {
 				if(greatCircles.get(i).get(j).findCard(id) != null) {

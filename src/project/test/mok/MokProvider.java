@@ -127,6 +127,12 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public Player getActivator() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
 	}
 	
@@ -387,6 +393,12 @@ public class MokProvider {
 			@Override
 			public String getCode() {
 				return actionName.replace(" ", "");
+			}
+
+			@Override
+			public Player getActivator() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

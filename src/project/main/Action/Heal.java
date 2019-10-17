@@ -56,7 +56,7 @@ public class Heal extends Action{
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
-		if(!((Summon)owningCard).getActivityStatus().equals(Summon.READY)) return false;
+		if(!((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.READY)) return false;
 		if(actionIsActivFor.getGameZone(SummonZone).getCards().size() == 0 && actionIsActivFor.getGameZone(CollectorZone).getCards().size() == 0) return false;
 		return true;
 	}
@@ -64,7 +64,7 @@ public class Heal extends Action{
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
-			((Summon)owningCard).setActivityStatus(Summon.USED);
+			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			int heal = ((Summon)owningCard).getStatus().getHeal();
 			if(summonHealed) {
 				((Summon)cardToHeal).getStatus().increaseVitality(heal);

@@ -1,5 +1,6 @@
 package project.main.Action;
 
+import project.main.Card.ActivityStatus;
 import project.main.Card.Summon;
 import project.main.GameApplication.GameStack;
 import project.main.GameApplication.Player;
@@ -32,7 +33,7 @@ public class AttackPlayer extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
-		if(((Summon)owningCard).getActivityStatus().equals(Summon.USED) || ((Summon)owningCard).getActivityStatus().equals(Summon.IMMOBILIZED)) {
+		if(((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.USED) || ((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.IMMOBILIZED)) {
 			return false;
 		}
 		return true;
@@ -41,7 +42,6 @@ public class AttackPlayer extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
-			((Summon)owningCard).setActivityStatus(Summon.USED);
 			Player[] players = game.getPlayers();
 			Player attackedPlayer = null;
 			for(Player player : players) {
@@ -56,7 +56,7 @@ public class AttackPlayer extends Action {
 				int damage = ((Summon) owningCard).getStatus().getAttack();
 				metadata.put("Damage",damage+"");
 				attackedPlayer.decreaseHealthPoints(damage);
-				((Summon) owningCard).setActivityStatus(Summon.USED);
+				((Summon) owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			}
 		}
 		GameListener.getInstance().actionExecuted(this);

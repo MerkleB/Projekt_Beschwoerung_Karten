@@ -28,7 +28,7 @@ public class DeclareBattle extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
-			((Summon)owningCard).setActivityStatus(Summon.USED);
+			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			battle.setCombatants((Summon)owningCard, attackedSummon);
 			GameListener.getInstance().removeGameActionListener(listener);
 			GameListener.getInstance().actionExecuted(this);
@@ -54,7 +54,7 @@ public class DeclareBattle extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
-		if(!((Summon) owningCard).getActivityStatus().equals(Summon.READY)) return false;
+		if(!((Summon) owningCard).getActivityStatus().getStatus().equals(ActivityStatus.READY)) return false;
 		return true;
 	}
 	

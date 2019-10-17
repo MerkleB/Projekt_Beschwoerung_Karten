@@ -42,14 +42,14 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
 		if(actionToBlock == null) return false;
-		if(!((Summon)owningCard).getActivityStatus().equals(Summon.READY)) return false;
+		if(!((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.READY)) return false;
 		return true;
 	}
 
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
-			((Summon)owningCard).setActivityStatus(Summon.USED);
+			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			Summon attacker = (Summon) actionToBlock.getCard();
 			Summon defender = (Summon) owningCard;
 			ProcessesBattle battle = Battle.getInstance();

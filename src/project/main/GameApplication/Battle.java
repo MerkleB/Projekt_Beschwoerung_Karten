@@ -6,10 +6,12 @@ import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import project.main.Card.ActivityStatus;
 import project.main.Card.Summon;
 import project.main.Card.SummonStatus;
 import project.main.Listeners.BattleEventObject;
 import project.main.Listeners.GameListener;
+import project.main.build_cards.KnowsSummonAscentHierarchy;
 import project.main.util.CalculatesElementEffectivities;
 import project.main.util.ElementDefinitionLibrary;
 import project.main.util.GameMessageProvider;
@@ -175,8 +177,10 @@ public class Battle implements ProcessesBattle {
 		finished = true;
 		status = ABRUPT;
 		if(fastSummon == null) {
-			fastSummon.setActivityStatus(Summon.IMMOBILIZED);
-		}else slowSummon.setActivityStatus(Summon.IMMOBILIZED);
+			slowSummon.getSummonHierarchy().addExperience();
+		}else {
+			fastSummon.getSummonHierarchy().addExperience();
+		}
 		System.out.println("Battle was abrupt.");
 		GameListener.getInstance().battleAbrupt(this);
 	}
@@ -185,8 +189,14 @@ public class Battle implements ProcessesBattle {
 	public void remove(UUID summonID) {
 		if(!status.equals(ProcessesBattle.RUNNING))return;
 		if(fastSummon.getID() == summonID) {
+			if(fastSummon == attackingSummon) {
+				fastSummon.setActivityStatus(ActivityStatus.IMMOBILIZED, 1);
+			}
 			fastSummon = null;
 		}else {
+			if(slowSummon == attackingSummon) {
+				slowSummon.setActivityStatus(ActivityStatus.IMMOBILIZED, 1);
+			}
 			slowSummon = null;
 		}
 	}
@@ -264,6 +274,10 @@ public class Battle implements ProcessesBattle {
 	
 	private void setBattleResult(Summon winner, Summon looser) {
 		this.winner = winner;
+		KnowsSummonAscentHierarchy hierarchy = this.winner.getSummonHierarchy();
+		hierarchy.addExperience();
+		hierarchy.addExperience();
+		hierarchy.addExperience();
 		this.looser = looser;
 		looser.getOwningPlayer().getGameZone("SummonZone").removeCard(looser);
 		looser.getOwningPlayer().getGameZone("DiscardPile").addCard(looser);

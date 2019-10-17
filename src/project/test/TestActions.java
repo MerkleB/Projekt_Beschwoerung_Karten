@@ -11,11 +11,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import project.main.Card.ActivityStatus;
 import project.main.Card.Card;
 import project.main.Card.Spell;
 import project.main.Card.StatusChange;
 import project.main.Card.Summon;
-import project.main.Card.SummonStatus;
 import project.main.Effect.Effect;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.DrawPhase;
@@ -355,7 +355,7 @@ public class TestActions {
 		if(((Summon)card2).getStatus().getMaxVitality() != ((Summon)card2).getStatus().getVitality()) {
 			fail("Card2 wan't healed to full health");
 		}
-		if(!((Summon)card1).getActivityStatus().equals(Summon.USED)) {
+		if(!((Summon)card1).getActivityStatus().getStatus().equals(ActivityStatus.USED)) {
 			fail("Card1's status was not set to used");
 		}
 		
@@ -548,7 +548,7 @@ public class TestActions {
 		if(((Summon)card1).getStatus().getVitality() != 2) {
 			fail("Card1 didn't got the expected damage");
 		}
-		if(!((Summon)card1).getActivityStatus().equals(Summon.USED)) {
+		if(!((Summon)card1).getActivityStatus().getStatus().equals(ActivityStatus.USED)) {
 			fail("Card1's status was not set to used");
 		}
 		if(player2.getGameZone("DiscardPile").findCard(card2.getID()) == null) {

@@ -1,5 +1,6 @@
 package project.main.Action;
 
+import project.main.Card.ActivityStatus;
 import project.main.Card.Summon;
 import project.main.GameApplication.Player;
 import project.main.GameApplication.SummonZone;
@@ -19,6 +20,7 @@ public class PromoteSummon extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
+		if(((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.IMMOBILIZED)) return false;
 		hierarchy = ((Summon)owningCard).getSummonHierarchy();
 		if(!hierarchy.canAscend() || !owningCard.equals(hierarchy.getSummonOfLevel(2))) return false;
 		return true;
@@ -41,7 +43,7 @@ public class PromoteSummon extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
-			((Summon)owningCard).setActivityStatus(Summon.USED);
+			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			Summon currentLevelCard = (Summon)owningCard;
 			Summon nextLevelCard = hierarchy.getNextSummonInHierarchy(currentLevelCard);
 			SummonZone zone = (SummonZone)owningCard.getOwningPlayer().getGameZone("SummonZone");

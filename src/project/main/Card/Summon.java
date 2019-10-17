@@ -21,11 +21,7 @@ import project.main.util.RankLevelMapper;
  * @author Benjamin Merkle
  *
  */
-public class Summon implements Card{	
-	
-	public static final String READY = "r";
-	public static final String USED = "u";
-	public static final String IMMOBILIZED = "i";
+public class Summon implements Card{
 	
 	private String cardID;
 	private String name;
@@ -34,7 +30,7 @@ public class Summon implements Card{
 	private String rank;
 	private KnowsSummonAscentHierarchy summonHierarchy;
 	private SummonStatus status;
-	private String activityStatus;
+	private ActivityStatus activityStatus;
 	private UUID id;
 	private MagicCollector collector;
 	private Player owner;
@@ -49,7 +45,7 @@ public class Summon implements Card{
 		this.effects = effects;
 		this.status = new SummonStatus(preservationValue, summoningPoints, attack, heal, vitality, 0, summonClass, element, magicWastedOnDefeat);
 		this.rank = rank;
-		this.setActivityStatus(READY);
+		this.activityStatus = new ActivityStatus();
 		if(owner != null) {
 			this.owner = owner;
 		}
@@ -69,13 +65,13 @@ public class Summon implements Card{
 		this.owner = owner;
 	}
 	
-	public String getActivityStatus() {
+	public ActivityStatus getActivityStatus() {
 		return activityStatus;
 	}
 
-	public void setActivityStatus(String activityStatus) {
-		if(!activityStatus.equals(IMMOBILIZED) && !activityStatus.equals(USED) && !activityStatus.equals(READY)) return;
-		this.activityStatus = activityStatus;
+	public void setActivityStatus(String activityStatus, int durability) {
+		if(!activityStatus.equals(ActivityStatus.IMMOBILIZED) && !activityStatus.equals(ActivityStatus.USED) && !activityStatus.equals(ActivityStatus.READY)) return;
+		this.activityStatus.setStatus(activityStatus, durability);
 	}
 
 	@Override

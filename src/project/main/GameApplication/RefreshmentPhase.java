@@ -2,6 +2,7 @@ package project.main.GameApplication;
 
 import java.util.ArrayList;
 
+import project.main.Card.ActivityStatus;
 import project.main.Card.Card;
 import project.main.Card.Summon;
 import project.main.Listeners.GameListener;
@@ -33,8 +34,16 @@ public class RefreshmentPhase implements IsPhaseInGame {
 		ArrayList<Card> cards = summonZone.getCards();
 		for(Card card : cards) {
 			Summon summon = (Summon)card;
-			if(summon.getActivityStatus().equals(Summon.USED)) {
-				summon.setActivityStatus(Summon.READY);
+			ActivityStatus status = summon.getActivityStatus();
+			
+			if(status.getStatus().equals(ActivityStatus.USED)) {
+				if(status.getDurability() == 0) {
+					summon.setActivityStatus(ActivityStatus.READY, -1);
+				}else status.decreaseDurability();
+			}else if(status.getStatus().equals(ActivityStatus.IMMOBILIZED)) {
+				if(status.getDurability() == 0) {
+					summon.setActivityStatus(ActivityStatus.READY, -1);
+				}else status.decreaseDurability();
 			}
 		}
 	}

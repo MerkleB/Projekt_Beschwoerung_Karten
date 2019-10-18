@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import project.main.Card.CollectsMagicEnergy;
 
-public interface Player extends CollectsMagicEnergy{
+public interface Player{
 	/**
 	 * Retrieves the GameZone with zoneName
 	 * @param zoneName
@@ -82,4 +82,9 @@ public interface Player extends CollectsMagicEnergy{
 	 * @param int actions
 	 */
 	public void decreaseNumberOfRemainingCollectorActions(int actions);
+	/**
+	 * Returns the magic energy stock
+	 * @return CollectsMagicEnergy 
+	 */
+	public CollectsMagicEnergy getMagicEnergyStock();
 }

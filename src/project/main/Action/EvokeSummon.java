@@ -48,7 +48,7 @@ public class EvokeSummon extends Action {
 		if(!super.activateable(activator)) return false;
 			Player ownerOfCard = owningCard.getOwningPlayer();
 			if(ownerOfCard.getSummoningPoints() >= ((Summon) owningCard).getStatus().getSummoningPoints()) {
-				if(ownerOfCard.getFreeEnergy() >= ((Summon) owningCard).getStatus().getMagicPreservationValue()) {
+				if(ownerOfCard.getMagicEnergyStock().getFreeEnergy() >= ((Summon) owningCard).getStatus().getMagicPreservationValue()) {
 					return true;
 				}
 			}

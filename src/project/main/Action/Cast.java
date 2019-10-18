@@ -20,7 +20,7 @@ public class Cast extends Action {
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);
 		activateEffect();
-		activator.decreaseFreeEnergy(((Spell)owningCard).getNeededMagicEnergy());
+		activator.getMagicEnergyStock().decreaseFreeEnergy(((Spell)owningCard).getNeededMagicEnergy());
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
@@ -29,7 +29,7 @@ public class Cast extends Action {
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
 		activateEffect();
-		activatingPlayer.decreaseFreeEnergy(((Spell)owningCard).getNeededMagicEnergy());
+		activatingPlayer.getMagicEnergyStock().decreaseFreeEnergy(((Spell)owningCard).getNeededMagicEnergy());
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
@@ -37,7 +37,7 @@ public class Cast extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
-		if(((Spell)owningCard).getNeededMagicEnergy() > activator.getFreeEnergy()) return false;
+		if(((Spell)owningCard).getNeededMagicEnergy() > activator.getMagicEnergyStock().getFreeEnergy()) return false;
 		try {
 			if(!(owningCard.getEffect(0).activateable(activator))) return false;
 		} catch (NoCardException e) {

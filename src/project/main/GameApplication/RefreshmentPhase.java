@@ -28,8 +28,8 @@ public class RefreshmentPhase implements IsPhaseInGame {
 	@Override
 	public void restorePhaseStatus() {
 		Player activPlayer = game.getActivePlayer();
-		int usedEnergy = activPlayer.getUsedEnergy();
-		activPlayer.increaseFreeEnergyFromUsed(usedEnergy);
+		int usedEnergy = activPlayer.getMagicEnergyStock().getUsedEnergy();
+		activPlayer.getMagicEnergyStock().increaseFreeEnergyFromUsed(usedEnergy);
 		SummonZone summonZone = (SummonZone)activPlayer.getGameZone("SummonZone");
 		ArrayList<Card> cards = summonZone.getCards();
 		for(Card card : cards) {

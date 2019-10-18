@@ -8,6 +8,7 @@ import java.util.UUID;
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
 import project.main.Card.Card;
+import project.main.Card.CollectsMagicEnergy;
 import project.main.Effect.Effect;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
@@ -156,75 +157,9 @@ public class MokProvider {
 			public boolean equals(Object obj) {
 				return true;
 			}
-
-			@Override
-			public int getFreeEnergy() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int getUsedEnergy() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int getDepletedEnergy() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
+			
 			@Override
 			public int getSummoningPoints() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int restoreFreeEnergy() {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int increaseFreeEnergy(int magicEnergy) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int decreaseFreeEnergy(int magicEnergy) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int increaseFreeEnergyFromUsed(int magicEnergy) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int increaseFreeEnergyFromDepleted(int magicEnergy) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int useEnergy(int magicEnergy) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int depleteEnergyFromFree(int magicEnergy) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-			@Override
-			public int depleteEnergyFromUsed(int magicEnergy) {
 				// TODO Auto-generated method stub
 				return 0;
 			}
@@ -285,6 +220,12 @@ public class MokProvider {
 			public void decreaseNumberOfRemainingCollectorActions(int actions) {
 				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			public CollectsMagicEnergy getMagicEnergyStock() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

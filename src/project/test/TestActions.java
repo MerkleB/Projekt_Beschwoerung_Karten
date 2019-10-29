@@ -33,6 +33,7 @@ import project.main.util.GameMessageProvider;
 import project.test.mok.PhysicalTestPlayer;
 import project.test.mok.TestGame;
 import project.test.mok.TestPlayer;
+import project.test.util.ZoneCardProvider;
 
 public class TestActions {
 	
@@ -42,6 +43,7 @@ public class TestActions {
 	private TestPlayer player1;
 	private TestPlayer player2;
 	private HostsGame app;
+	private ZoneCardProvider cardProvider;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
@@ -65,6 +67,7 @@ public class TestActions {
 		player2 = new TestPlayer(3, 3, deck2);
 		app = Application.getInstance();
 		app.setLanguage("EN");
+		cardProvider = new ZoneCardProvider();
 	}
 	
 	@AfterClass
@@ -130,34 +133,6 @@ public class TestActions {
 		}
 	}
 	
-	private Summon[] getFirstSummonFromZone(IsAreaInGame zone, int number) {
-		Summon[] summons = new Summon[number];
-		int selected = 0;
-		ArrayList<Card> cards = zone.getCards();
-		for(Card card : cards) {
-			if(card.getType().equals(CardTypes.Summon)) {
-				selected++;
-				summons[selected-1] = (Summon)card;
-			}
-			if(selected == number) break;
-		}
-		return summons;
-	}
-	
-	private Spell[] getFirstSpellFromZone(IsAreaInGame zone, int number) {
-		Spell[] spells = new Spell[number];
-		int selected = 0;
-		ArrayList<Card> cards = zone.getCards();
-		for(Card card : cards) {
-			if(card.getType().equals(CardTypes.Spell)) {
-				selected++;
-				spells[selected-1] = (Spell)card;
-			}
-			if(selected == number) break;
-		}
-		return spells;
-	}
-	
 	@Test
 	public void testEvokeSummon() {
 		/**
@@ -185,7 +160,7 @@ public class TestActions {
 		IsAreaInGame hand = player1.getGameZone("HandZone");
 		IsAreaInGame deck = player1.getGameZone("DeckZone");
 		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
-		Summon[] summons = getFirstSummonFromZone(deck, 1);
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck, 1);
 		Card card1 = summons[0];
 		Card collector1 = deck.getCards().get(1);
 		Card collector2 = deck.getCards().get(2);
@@ -310,7 +285,7 @@ public class TestActions {
 		player2.setController(controller2);
 		IsAreaInGame summonZone = player1.getGameZone("SummonZone");
 		IsAreaInGame deck = player1.getGameZone("DeckZone");
-		Summon[] summons = getFirstSummonFromZone(deck, 2);
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck, 2);
 		Card card1 = summons[0];
 		Card card2 = summons[1];
 		if(card2.getType().equals(CardTypes.Spell)) {
@@ -386,7 +361,7 @@ public class TestActions {
 		IsAreaInGame hand = player1.getGameZone("HandZone");
 		IsAreaInGame deck = player1.getGameZone("DeckZone");
 		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
-		Spell[] spells = getFirstSpellFromZone(deck, 1);
+		Spell[] spells = cardProvider.getFirstSpellFromZone(deck, 1);
 		Card card1 = spells[0];
 		deck.removeCard(card1);
 		hand.addCard(card1);
@@ -460,11 +435,11 @@ public class TestActions {
 		player2.setController(controller2);
 		IsAreaInGame summonZone1 = player1.getGameZone("SummonZone");
 		IsAreaInGame deck1 = player1.getGameZone("DeckZone");
-		Summon[] summons = getFirstSummonFromZone(deck1, 1);
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck1, 1);
 		Card card1 = summons[0];
 		IsAreaInGame summonZone2 = player2.getGameZone("SummonZone");
 		IsAreaInGame deck2 = player2.getGameZone("DeckZone");
-		summons = getFirstSummonFromZone(deck2, 1);
+		summons = cardProvider.getFirstSummonFromZone(deck2, 1);
 		Card card2 = summons[0];
 		deck1.removeCard(card1);
 		deck2.removeCard(card2);

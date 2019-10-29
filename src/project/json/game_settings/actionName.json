@@ -14,7 +14,8 @@
 			{"code" : "WithdrawCollector", "name" : "Withdraw Collector"},
 			{"code" : "SetAsCollector", "name" : "Set as Collector"},
 			{"code" : "SelectSummoningCircle", "name" : "Select summoning circle"},
-			{"code" : "WithdrawFromBattle", "name" : "Withdraw from battle"}
+			{"code" : "WithdrawFromBattle", "name" : "Withdraw from battle"},
+			{"code" : "UnimmobilizeSummon", "name" : "Unimmobilize summon"}
 		] 
 		},
 		{
@@ -31,7 +32,8 @@
 			{"code" : "WithdrawCollector", "name" : "Magiesammler zurückziehen"},
 			{"code" : "SetAsCollector", "name" : "Als Magiesammler einsetzen"},
 			{"code" : "SelectSummoningCircle", "name" : "Beschwörungskreis auswählen"},
-			{"code" : "WithdrawFromBattle", "name" : "Beschwörung zurück ziehen"}   
+			{"code" : "WithdrawFromBattle", "name" : "Beschwörung zurück ziehen"},
+			{"code" : "UnimmobilizeSummon", "name" : "Beschwöhrung remobilisieren"}   
 		] 
 		}
 	]

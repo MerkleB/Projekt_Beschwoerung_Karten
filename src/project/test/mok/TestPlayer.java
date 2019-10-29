@@ -13,6 +13,7 @@ import project.main.GameApplication.DeckZone;
 import project.main.GameApplication.DiscardPile;
 import project.main.GameApplication.HandZone;
 import project.main.GameApplication.IsAreaInGame;
+import project.main.GameApplication.MagicEnergyStock;
 import project.main.GameApplication.Player;
 import project.main.GameApplication.SummonZone;
 
@@ -26,6 +27,7 @@ public class TestPlayer implements Player {
 	private int collectorActions;
 	private TestGame game;
 	private PhysicalTestPlayer realPlayer;
+	private CollectsMagicEnergy magicEnergyStock;
 	
 	public TestPlayer(int sp, int hp, ArrayList<Card> deck) {
 		id = UUID.randomUUID();
@@ -33,8 +35,10 @@ public class TestPlayer implements Player {
 		zonesTable = new Hashtable<String, IsAreaInGame>();
 		zones.add(new HandZone(this));
 		zones.add(new DeckZone(this, deck));
-		zones.add(new SummonZone(this));
-		zones.add(new CollectorZone(this));
+		IsAreaInGame summonZone = new SummonZone(this);
+		zones.add(summonZone);
+		IsAreaInGame collectorZone = new CollectorZone(this);
+		zones.add(collectorZone);
 		zones.add(new DiscardPile(this));
 		for(IsAreaInGame zone : zones) {
 			zonesTable.put(zone.getName(), zone);
@@ -42,6 +46,7 @@ public class TestPlayer implements Player {
 		summoningPoints = sp;
 		healthPoints = hp;
 		collectorActions = 2;
+		magicEnergyStock = new MagicEnergyStock(collectorZone, summonZone);
 	}
 
 	@Override
@@ -121,8 +126,7 @@ public class TestPlayer implements Player {
 
 	@Override
 	public CollectsMagicEnergy getMagicEnergyStock() {
-		// TODO Auto-generated method stub
-		return null;
+		return magicEnergyStock;
 	}
 
 }

@@ -20,6 +20,7 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	private int freeEnergy;
 	private int usedEnergy;
 	private int depletedEnergy;
+	private int blockedEnergy;
 	private int maxHealth;
 	private int currentHealth;
 	private boolean isCollector;
@@ -31,6 +32,7 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 		this.realCard = card;
 		this.depletedEnergy = 0;
 		this.usedEnergy = 0;
+		this.blockedEnergy = 0;
 		this.maxHealth = collectorHealth;
 		this.currentHealth = collectorHealth;
 		this.isCollector = false;
@@ -115,6 +117,20 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	}
 	
 	@Override
+	public int increaseFreeEnergyFromBlocked(int magicEnergy) {
+		int remainingEnergy = 0;
+		if(blockedEnergy > magicEnergy) {
+			blockedEnergy = blockedEnergy - magicEnergy;
+			remainingEnergy = increaseFreeEnergy(magicEnergy);
+		}else {
+			remainingEnergy = magicEnergy - blockedEnergy;
+			increaseFreeEnergy(blockedEnergy);
+			blockedEnergy = 0;
+		}
+		return remainingEnergy;
+	}
+
+	@Override
 	public int increaseFreeEnergyFromDepleted(int magicEnergy) {
 		int remainingEnergy = 0;
 		if(depletedEnergy > magicEnergy) {
@@ -153,6 +169,32 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	}
 	
 	@Override
+	public int depleteEnergy(int magicEnergy) {
+		int remainingEnergyToDeplete = depleteEnergyFromBlocked(magicEnergy);
+		if(remainingEnergyToDeplete > 0) {
+			remainingEnergyToDeplete = depleteEnergyFromFree(magicEnergy);
+		}
+		if(remainingEnergyToDeplete > 0) {
+			remainingEnergyToDeplete = depleteEnergyFromUsed(magicEnergy);
+		}
+		return remainingEnergyToDeplete;
+	}
+
+	@Override
+	public int depleteEnergyFromBlocked(int magicEnergy) {
+		int remainingEnergyToDeplete = 0;
+		if(blockedEnergy > magicEnergy) {
+			blockedEnergy = blockedEnergy - magicEnergy;
+			depletedEnergy = depletedEnergy + magicEnergy;
+		}else {
+			remainingEnergyToDeplete = magicEnergy - blockedEnergy;
+			depletedEnergy = depletedEnergy + blockedEnergy;
+			blockedEnergy = 0;
+		}
+		return remainingEnergyToDeplete;
+	}
+
+	@Override
 	public int depleteEnergyFromFree(int magicEnergy) {
 		int remainingDepletion = 0;
 		if(freeEnergy > magicEnergy) {
@@ -160,7 +202,7 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 			depletedEnergy = depletedEnergy + magicEnergy;
 		}else {
 			remainingDepletion = magicEnergy - freeEnergy;
-			depletedEnergy = maxEnergy - usedEnergy;
+			depletedEnergy = depletedEnergy + freeEnergy;
 			freeEnergy = 0;			
 		}
 		return remainingDepletion;
@@ -174,12 +216,31 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 			depletedEnergy = depletedEnergy + magicEnergy;
 		}else {
 			remainingDepletion = magicEnergy - usedEnergy;
-			depletedEnergy = maxEnergy - freeEnergy;
+			depletedEnergy = depletedEnergy + usedEnergy;
 			usedEnergy = 0;			
 		}
 		return remainingDepletion;
 	}
 	
+	@Override
+	public int getBlockedEnergy() {
+		return blockedEnergy;
+	}
+
+	@Override
+	public int blockEnergy(int magicEnergy) {
+		int remainingBlockingEnergy = 0;
+		if(freeEnergy > magicEnergy) {
+			freeEnergy = freeEnergy - magicEnergy;
+			blockedEnergy = blockedEnergy + magicEnergy;
+		}else {
+			remainingBlockingEnergy = magicEnergy - freeEnergy;
+			blockedEnergy = blockedEnergy + freeEnergy;
+			freeEnergy = 0;
+		}
+		return remainingBlockingEnergy;
+	}
+
 	public int getMaxHealth() {
 		return maxHealth;
 	}

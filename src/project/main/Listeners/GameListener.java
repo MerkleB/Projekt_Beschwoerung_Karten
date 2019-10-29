@@ -137,7 +137,7 @@ public class GameListener implements ListensToEverything {
 	@Override
 	public void cardRemoved(IsAreaInGame zone, Card card) {
 		for(ZoneListener listener : zone_listeners) {
-			listener.cardAdded(zone, card);
+			listener.cardRemoved(zone, card);
 		}
 	}
 

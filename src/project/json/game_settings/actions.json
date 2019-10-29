@@ -77,6 +77,12 @@
 			"cardTypes" : ["Summon"],
 			"phases" : ["ClashEnd"],
 			"zones" : ["SummonZone"]
+		},
+		{
+			"actionName" : "UnimmobilizeSummon",
+			"cardTypes" : ["Summon"],
+			"phases" : ["RefreshmentPhase"],
+			"zones" : ["SummonZone"]
 		}
 	]
 	 

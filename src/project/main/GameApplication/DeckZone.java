@@ -21,8 +21,8 @@ public class DeckZone extends GameZone{
 		shuffleDeck();
 		for(Card card : cardList) {
 			cardHash.put(card.getID(), card);
-			name = "DeckZone";
 		}
+		name = "DeckZone";
 	}
 
 	@Override

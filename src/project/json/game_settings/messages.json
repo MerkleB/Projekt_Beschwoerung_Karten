@@ -41,6 +41,13 @@
 				{"language" : "EN", "text" : "The clash ended. Proceed or withdraw?", "answers" : []},
 				{"language" : "DE", "text" : "Der Schlagabtausch beginnt. Fortfahren oder zurückziehen?", "answers" : []}
 			]
+		},
+		{ 
+			"id" : "#7",
+			"texts" : [
+				{"language" : "EN", "text" : "You've not enough energy to preserve your summons. \r\nPlease select some summons to immobilize.", "answers" : []},
+				{"language" : "DE", "text" : "Du hast nicht mehr genug magische Energie um deine Beschwörungen aufrecht zu erhalten.\r\nBitte wähle die Beschwörungen aus, welche du immobilisieren möchtest.", "answers" : []}
+			]
 		}
 		
 	]

@@ -42,8 +42,10 @@ public class Spell implements Card {
 			this.actions.put(action.getCode(), action);
 			action.setCard(this);
 		}
-		for(Effect effect : effects) {
-			effect.setCard(this);
+		if(effects != null) {
+			for(Effect effect : effects) {
+				effect.setCard(this);
+			}
 		}
 	}
 	

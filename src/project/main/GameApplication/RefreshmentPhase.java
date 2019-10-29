@@ -27,6 +27,7 @@ public class RefreshmentPhase implements IsPhaseInGame {
 
 	@Override
 	public void restorePhaseStatus() {
+		inactivateAll();
 		Player activPlayer = game.getActivePlayer();
 		int usedEnergy = activPlayer.getMagicEnergyStock().getUsedEnergy();
 		activPlayer.getMagicEnergyStock().increaseFreeEnergyFromUsed(usedEnergy);
@@ -44,6 +45,20 @@ public class RefreshmentPhase implements IsPhaseInGame {
 				if(status.getDurability() == 0) {
 					summon.setActivityStatus(ActivityStatus.READY, -1);
 				}else status.decreaseDurability();
+			}
+		}
+		ArrayList<IsAreaInGame> zones = activPlayer.getGameZones();
+		for(IsAreaInGame zone : zones) {
+			zone.activate(activPlayer, this);
+		}
+	}
+	
+	private void inactivateAll() {
+		Player[] players = game.getPlayers();
+		for(Player player : players) {
+			ArrayList<IsAreaInGame> zones = player.getGameZones();
+			for(IsAreaInGame zone : zones) {
+				zone.deavtivateAll();
 			}
 		}
 	}

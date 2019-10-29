@@ -35,6 +35,7 @@ public class UnpromoteSummonInHand extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
 			IsAreaInGame hand = owningCard.getOwningPlayer().getGameZone(HandZone);
 			hand.removeCard(owningCard);
 			int currentLevel = ((Summon)owningCard).getLevel();

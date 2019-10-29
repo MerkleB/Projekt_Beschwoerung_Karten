@@ -28,6 +28,7 @@ public class DeclareBattle extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			super.execute();
 			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			battle.setCombatants((Summon)owningCard, attackedSummon);
 			GameListener.getInstance().removeGameActionListener(listener);

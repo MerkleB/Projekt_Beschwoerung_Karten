@@ -51,7 +51,10 @@ public class Cast extends Action {
 		if(isActivated) {
 			if(withdrawn) {
 				cast.withdraw();
-			}else GameListener.getInstance().actionExecuted(this);
+			}else {
+				super.execute();
+				GameListener.getInstance().actionExecuted(this);
+			}
 			
 			actionIsActivFor.getGameZone(HandZone).removeCard(owningCard);
 			actionIsActivFor.getGameZone(DiscardPile).addCard(owningCard);

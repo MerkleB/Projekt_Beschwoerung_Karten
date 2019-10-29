@@ -10,6 +10,7 @@ public class CardGame implements Game {
 	
 	private static Game instance;
 	private MapsRankAndLevel rankAndLevelMapper; 
+	private boolean[] stackProceed;
 	
 	public static Game getInstance() {
 		if(instance == null) {
@@ -84,7 +85,7 @@ public class CardGame implements Game {
 	}
 
 	@Override
-	public boolean processGameStack() {
+	public boolean processGameStack(Player player) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -5,11 +5,17 @@ import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import project.main.Action.GameAction;
+import project.main.Action.Stackable;
+import project.main.Card.Card;
+import project.main.Effect.Effect;
 import project.main.GameApplication.AcceptPromptAnswers;
 import project.main.GameApplication.Game;
+import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
 import project.main.GameApplication.ProcessesBattle;
+import project.main.exception.NoCardException;
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.RankLevelMapper;
 import project.main.util.MapsRankAndLevel;
@@ -17,6 +23,7 @@ import project.main.util.MapsRankAndLevel;
 public class TestGame implements Game {
 	
 	private Player[] players;
+	private boolean[] stackProceed;
 	private Player activPlayer;
 	private ArrayList<IsPhaseInGame> phases;
 	private IsPhaseInGame activPhase;
@@ -32,6 +39,9 @@ public class TestGame implements Game {
 		players = new Player[2];
 		players[0] = player1;
 		players[1] = player2;
+		stackProceed = new boolean[2];
+		stackProceed[0] = false;
+		stackProceed[1] = false;
 		phases = p;
 		started = false;
 		ended = false;
@@ -161,11 +171,67 @@ public class TestGame implements Game {
 	}
 
 	@Override
-	public boolean processGameStack() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean processGameStack(Player player) {
+		Player otherPlayer = getOtherPlayer(player);
+		setStackProceed(player);
+		if(!playerIsRelevantForProceed(otherPlayer)) {
+			System.out.println("Game: Game does not need to wait for player "+otherPlayer.getID()+" because non of his actions or effects are activatable.");
+			setStackProceed(otherPlayer);
+		}
+		if(stackProceed[0] && stackProceed[1]) {
+			stackProceed[0] = false;
+			stackProceed[1] = false;
+			Thread stackThread = new Thread(activPhase.getActiveGameStack(), activPhase.getName()+"-Stack");
+			stackThread.start();
+			return true;
+		}else return false;
 	}
-
+	
+	private void setStackProceed(Player player) {
+		System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
+		if(player == players[0]) {
+			stackProceed[0] = true;
+		}else {
+			stackProceed[1] = true;
+		}
+	}
+	
+	private boolean playerIsRelevantForProceed(Player player) {
+		boolean relevant = false;
+		ArrayList<IsAreaInGame> zones = player.getGameZones();
+		for(IsAreaInGame zone : zones) {
+			ArrayList<Card> cards = zone.getCards();
+			for(Card card : cards) {
+				ArrayList<GameAction> actions = card.getActions();
+				for(GameAction action : actions) {
+					if(action.activateable(player)) {
+						relevant = true;
+					}
+				}
+				try {
+					Effect[] effects = card.getEffects();
+					for(Effect effect : effects) {
+						if(effect.activateable(player)) {
+							relevant = true;
+						}
+					}
+				} catch (NoCardException e) {
+					//Effects of MagicCollectors are ignored here
+				}
+				
+			}
+		}
+		return relevant;
+	}
+	
+	private Player getOtherPlayer(Player player) {
+		if(player == players[0]) {
+			return players[1];
+		}else {
+			return players[0];
+		}
+	}
+	
 	@Override
 	public ProcessesBattle getActiveBattle() {
 		return activeBattle;

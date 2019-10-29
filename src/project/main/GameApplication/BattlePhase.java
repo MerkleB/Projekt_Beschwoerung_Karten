@@ -44,11 +44,22 @@ public class BattlePhase implements IsPhaseInGame, GameActionListener, EffectLis
 
 	@Override
 	public void restorePhaseStatus() {
+		inactivateAll();
 		Player player = game.getActiveBattle().getActivePlayer();
 		if(player != null) {
 			ArrayList<IsAreaInGame> zones = player.getGameZones();
 			for(IsAreaInGame zone : zones) {
 				zone.activate(player, this);
+			}
+		}
+	}
+	
+	private void inactivateAll() {
+		Player[] players = game.getPlayers();
+		for(Player player : players) {
+			ArrayList<IsAreaInGame> zones = player.getGameZones();
+			for(IsAreaInGame zone : zones) {
+				zone.deavtivateAll();
 			}
 		}
 	}

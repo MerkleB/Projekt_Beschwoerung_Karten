@@ -14,6 +14,12 @@ import project.main.Action.Stackable;
  */
 public interface OwnsGameStack extends Runnable{
 	/**
+	 * Processes the stack. 
+	 * Gives a Signal to all instances which are waiting for a signal of stacks condition object.
+	 */
+	@Override
+	public void run();
+	/**
 	 * Adds an stackable to the stack
 	 * @param entry
 	 */

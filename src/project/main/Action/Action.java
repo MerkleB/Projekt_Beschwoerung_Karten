@@ -55,6 +55,11 @@ public abstract class Action implements GameAction {
 	}
 
 	@Override
+	public void execute() {
+		System.out.println("Execute Action "+getCode());		
+	}
+
+	@Override
 	public Player getActivator() {
 		if(isActivated) {
 			return actionIsActivFor;

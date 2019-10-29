@@ -34,7 +34,11 @@ public abstract class CardEffect implements Effect {
 			throw new NotActivableException("Effect "+getCode()+" is not activatable");
 		}
 		isActivated = true;
-		
+	}
+
+	@Override
+	public void execute() {
+		System.out.println("Execute Effect "+getName());		
 	}
 
 	@Override

@@ -74,6 +74,9 @@ public class Spell implements Card {
 		actions.forEach((k,a) -> {
 			a.setInactiv();
 		});
+		for(Effect effect : effects) {
+			effect.setInactiv();
+		}
 	}
 	
 	@Override

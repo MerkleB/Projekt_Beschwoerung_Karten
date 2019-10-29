@@ -46,6 +46,7 @@ public class WithdrawCollector extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			super.execute();
 			IsAreaInGame collectorZone = owningCard.getOwningPlayer().getGameZone(CollectorZone);
 			IsAreaInGame hand = owningCard.getOwningPlayer().getGameZone(HandZone);
 			collectorZone.removeCard(owningCard);

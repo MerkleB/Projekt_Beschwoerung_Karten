@@ -40,6 +40,7 @@ public class UnimmobilizeSummon extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
 			((Summon)owningCard).getActivityStatus().setStatus(ActivityStatus.USED, 0);
 			setInactiv();
 			GameListener.getInstance().actionExecuted(this);

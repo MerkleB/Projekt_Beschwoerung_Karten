@@ -28,6 +28,7 @@ public class SelectMagicCollector extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
 			initMetadata();
 			metadata.put("Collector-ID", owningCard.getID().toString());
 			GameListener.getInstance().actionExecuted(this);

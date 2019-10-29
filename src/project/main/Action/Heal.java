@@ -64,6 +64,7 @@ public class Heal extends Action{
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			super.execute();
 			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			int heal = ((Summon)owningCard).getStatus().getHeal();
 			if(summonHealed) {

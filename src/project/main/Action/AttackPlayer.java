@@ -42,6 +42,7 @@ public class AttackPlayer extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			super.execute();
 			Player[] players = game.getPlayers();
 			Player attackedPlayer = null;
 			for(Player player : players) {

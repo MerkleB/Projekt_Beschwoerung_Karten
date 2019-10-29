@@ -45,6 +45,7 @@ public class MagicEnergyStockTest {
 	CollectsMagicEnergy cut;
 	HostsGame app;
 	Player player;
+	Player player2;
 	Game game;
 	DeckZone deckZone;
 	HandZone hand;
@@ -81,11 +82,12 @@ public class MagicEnergyStockTest {
 		deck = new ArrayList<Card>();
 		ArrayList<IsPhaseInGame> phases = new ArrayList<IsPhaseInGame>();
 		phases.add(new GamePhase("Main"));
-		game = new TestGame(player, null, phases, null, null);
+		player = new TestPlayer(3, 3, deck);
+		player2 = new TestPlayer(3, 3, deck);
+		game = new TestGame(player, player2, phases, null, null);
 		Field activePhaseField = game.getClass().getDeclaredField("activPhase");
 		activePhaseField.setAccessible(true);
 		activePhaseField.set(game, phases.get(0));
-		player = new TestPlayer(3, 3, deck);
 		Field activePlayerField = game.getClass().getDeclaredField("activPlayer");
 		activePlayerField.setAccessible(true);
 		activePlayerField.set(game, player);
@@ -264,13 +266,23 @@ public class MagicEnergyStockTest {
 		int usedEnergyBeforeTest = cut.getUsedEnergy();
 		
 		controller.addExpectedPrompt("#7", ()->{
+			ReentrantLock stackLock = null;
 			try {
 				lockTest.lock();
 				System.out.println("Execute prompt answer (immobilize one summon)");
 				summonToEvoke.activateGameAction("SelectSummon", player);
-				game.getActivePhase().getActiveGameStack().run();
+				game.processGameStack(player2);
+				game.processGameStack(player);
+				stackLock = game.getActivePhase().getActiveGameStack().getLock();
+				Condition stackCondition = game.getActivePhase().getActiveGameStack().getCondition();
+				stackLock = game.getActivePhase().getActiveGameStack().getLock();
+				stackLock.lock();
+				stackCondition.await();
 				cond.signal();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}finally {
+				stackLock.unlock();
 				lockTest.unlock();
 			}
 			
@@ -333,13 +345,22 @@ public class MagicEnergyStockTest {
 		cut.blockEnergy(summonToEvoke.getStatus().getMagicPreservationValue());
 		
 		controller.addExpectedPrompt("#7", ()->{
+			ReentrantLock stackLock = null;
 			try {
 				lockTest.lock();
 				System.out.println("Execute prompt answer (immobilize one summon)");
 				summonToEvoke.activateGameAction("SelectSummon", player);
-				game.getActivePhase().getActiveGameStack().run();
+				game.processGameStack(player2);
+				game.processGameStack(player);
+				Condition stackCondition = game.getActivePhase().getActiveGameStack().getCondition();
+				stackLock = game.getActivePhase().getActiveGameStack().getLock();
+				stackLock.lock();
+				stackCondition.await();
 				cond.signal();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}finally {
+				stackLock.unlock();
 				lockTest.unlock();
 			}
 			
@@ -399,24 +420,42 @@ public class MagicEnergyStockTest {
 		summonZone.addCard(summonToEvoke);
 		cut.blockEnergy(summonToEvoke.getStatus().getMagicPreservationValue());
 		controller.addExpectedPrompt("#7", ()->{
+			ReentrantLock stackLock = null;
 			try {
 				lockTest.lock();
 				System.out.println("Execute prompt answer (immobilize one summon)");
 				summonToEvoke.activateGameAction("SelectSummon", player);
-				game.getActivePhase().getActiveGameStack().run();
+				game.processGameStack(player2);
+				game.processGameStack(player);
+				Condition stackCondition = game.getActivePhase().getActiveGameStack().getCondition();
+				stackLock = game.getActivePhase().getActiveGameStack().getLock();
+				stackLock.lock();
+				stackCondition.await();
 				cond.signal();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}finally {
+				stackLock.unlock();
 				lockTest.unlock();
 			}
 		});
 		controller.addExpectedPrompt("#0", ()->{
+			ReentrantLock stackLock = null;
 			try {
 				lockTest.lock();
 				System.out.println("Execute action UnimmobilizeSummon");
 				summonToEvoke.activateGameAction("UnimmobilizeSummon", player);
-				game.getActivePhase().getActiveGameStack().run();
+				game.processGameStack(player2);
+				game.processGameStack(player);
+				Condition stackCondition = game.getActivePhase().getActiveGameStack().getCondition();
+				stackLock = game.getActivePhase().getActiveGameStack().getLock();
+				stackLock.lock();
+				stackCondition.await();
 				cond.signal();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}finally {
+				stackLock.unlock();
 				lockTest.unlock();
 			}
 		});

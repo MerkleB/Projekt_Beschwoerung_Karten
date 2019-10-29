@@ -58,6 +58,7 @@ public class EvokeSummon extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn && circleToSummon != null) {
+			super.execute();
 			Player ownerOfCard = owningCard.getOwningPlayer();
 			int remainingPoints = ownerOfCard.decreaseSummonigPoints(((Summon) owningCard).getStatus().getSummoningPoints());
 			if(remainingPoints != -1) {

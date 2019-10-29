@@ -30,10 +30,21 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 
 	@Override
 	public void restorePhaseStatus() {
+		inactivateAll();
 		activePlayer = game.getActivePlayer();
 		ArrayList<IsAreaInGame> zones = activePlayer.getGameZones();
 		for(IsAreaInGame zone : zones) {
 			zone.activate(activePlayer, this);
+		}
+	}
+	
+	private void inactivateAll() {
+		Player[] players = game.getPlayers();
+		for(Player player : players) {
+			ArrayList<IsAreaInGame> zones = player.getGameZones();
+			for(IsAreaInGame zone : zones) {
+				zone.deavtivateAll();
+			}
 		}
 	}
 
@@ -61,7 +72,7 @@ public class DrawPhase implements IsPhaseInGame, GameActionListener {
 	
 	@Override
 	public void actionActivated(GameAction action) {
-		if(action.getName().equals("Draw") && action.getCard().getOwningPlayer() == activePlayer) {
+		if(action.getCode().equals("Draw") && action.getCard().getOwningPlayer() == game.getActivePlayer()) {
 			deactivateDrawActions();
 		}
 	}

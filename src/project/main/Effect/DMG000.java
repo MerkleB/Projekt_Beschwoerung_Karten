@@ -51,6 +51,7 @@ public class DMG000 extends CardEffect implements PhaseListener{
 	@Override
 	public void execute() {
 		if(isActiv && !withdrawn) {
+			super.execute();
 			target.decreaseHealthPoints(value);
 			GameListener.getInstance().effectExecuted(this);
 		}
@@ -76,7 +77,7 @@ public class DMG000 extends CardEffect implements PhaseListener{
 
 	@Override
 	public void phaseStarted(IsPhaseInGame phase) {
-		if(phase.getName().equals("Main")) {
+		if(phase.getName().equals("Main") && game.getActivePlayer() == owningCard.getOwningPlayer()) {
 			setActiv(owningCard.getOwningPlayer());
 			mainPhaseEntered = true;
 		}

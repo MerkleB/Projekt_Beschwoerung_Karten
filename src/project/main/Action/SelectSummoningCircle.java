@@ -38,6 +38,7 @@ public class SelectSummoningCircle extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
 			GameListener.getInstance().actionExecuted(this);
 		}
 	}

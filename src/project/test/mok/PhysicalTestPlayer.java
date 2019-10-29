@@ -106,7 +106,17 @@ public class PhysicalTestPlayer implements Runnable{
 			@Override
 			public void perform() throws NotActivableException {
 				System.out.println("Controller: Start stack and wait for finish"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
-				game.getActivePhase().getActiveGameStack().run();
+				game.processGameStack(player);
+				ReentrantLock lock = game.getActivePhase().getActiveGameStack().getLock();
+				Condition cond = game.getActivePhase().getActiveGameStack().getCondition();
+				try {
+					lock.lock();
+					cond.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					lock.unlock();
+				}
 			}
 		});
 	}
@@ -148,7 +158,7 @@ public class PhysicalTestPlayer implements Runnable{
 	}
 
 	public void prompt(Player promptedPlayer, MessageInLanguage message) {
-		System.out.println("Controller-prompt: "+message.text);
+		System.out.println("Controller-prompt: "+message.text+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 		int currentIndex = getCurrentPrompKeyIndex(message.id);
 		if(currentIndex == -1) return;
 		PhysicalPlayerAction answer = expectedPrompts.get(message.id+"_"+currentIndex);

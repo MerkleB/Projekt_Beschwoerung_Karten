@@ -38,6 +38,7 @@ public class SetAsCollector extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			super.execute();
 			IsAreaInGame hand = owningCard.getOwningPlayer().getGameZone(HandZone);
 			IsAreaInGame collectorZone = owningCard.getOwningPlayer().getGameZone(CollectorZone);
 			hand.removeCard(owningCard);

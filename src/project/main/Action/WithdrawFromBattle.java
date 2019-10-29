@@ -40,6 +40,7 @@ public class WithdrawFromBattle extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
 			game.getActiveBattle().remove(owningCard.getID());
 			GameListener.getInstance().actionExecuted(this);
 		}

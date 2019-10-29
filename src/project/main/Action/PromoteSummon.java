@@ -43,6 +43,7 @@ public class PromoteSummon extends Action {
 	@Override
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
+			super.execute();
 			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			Summon currentLevelCard = (Summon)owningCard;
 			Summon nextLevelCard = hierarchy.getNextSummonInHierarchy(currentLevelCard);

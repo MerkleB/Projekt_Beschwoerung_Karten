@@ -25,7 +25,6 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	@Override
 	public void activate(Player activator) throws NotActivableException {
 		super.activate(activator);
-		actionToBlock.withdraw();
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
@@ -33,7 +32,6 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	@Override
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
-		actionToBlock.withdraw();
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
 	}
@@ -49,11 +47,15 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
+			actionToBlock.withdraw();
 			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
-			Summon attacker = (Summon) actionToBlock.getCard();
-			Summon defender = (Summon) owningCard;
+			Summon attacker = (Summon) owningCard;
+			Summon defender = (Summon) actionToBlock.getCard();
+			defender.setActivityStatus(ActivityStatus.USED, 0);
 			ProcessesBattle battle = Battle.getInstance();
 			battle.setCombatants(attacker, defender);
+			battle.setGame(game);
 			GameListener.getInstance().actionExecuted(this);
 			battle.start();
 		}
@@ -64,6 +66,7 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 		if(action.getCode().equals("AttackPlayer")) {
 			if(action.getCard().getOwningPlayer() != owningCard.getOwningPlayer()) {
 				actionToBlock = (AttackPlayer)action;
+				setActiv(owningCard.getOwningPlayer());
 			}
 		}
 

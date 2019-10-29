@@ -13,7 +13,7 @@ public interface Game extends Runnable{
 	public IsPhaseInGame getActivePhase();
 	public boolean hasEnded();
 	public boolean hasStarted();
-	public boolean processGameStack();
+	public boolean processGameStack(Player player);
 	public ProcessesBattle getActiveBattle();
 	public void setActiveBattle(ProcessesBattle battle);
 	public void prompt(Player promptedPlayer, MessageInLanguage message, AcceptPromptAnswers prompter);

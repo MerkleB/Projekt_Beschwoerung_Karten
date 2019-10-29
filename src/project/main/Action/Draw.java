@@ -52,6 +52,7 @@ public class Draw extends Action implements AcceptPromptAnswers {
 	@Override
 	public void execute() {
 		if(isActivated && !withdrawn) {
+			super.execute();
 			Player player = owningCard.getOwningPlayer();
 			DeckZone deck = (DeckZone)player.getGameZone("DeckZone");
 			HandZone hand = (HandZone)player.getGameZone("HandZone");

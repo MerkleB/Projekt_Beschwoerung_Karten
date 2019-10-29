@@ -55,6 +55,7 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 	@Override
 	public void execute() {
 		if(activ && !withdrawn) {
+			super.execute();
 			int currentLevel = ((Summon)owningCard).getLevel();
 			Summon successor = ((Summon)owningCard).getSummonHierarchy().getSummonOfLevel(currentLevel+1);
 			ArrayList<String> activActions = new ArrayList<String>();

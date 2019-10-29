@@ -22,7 +22,8 @@ public class PromoteSummon extends Action {
 		if(!super.activateable(activator)) return false;
 		if(((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.IMMOBILIZED)) return false;
 		hierarchy = ((Summon)owningCard).getSummonHierarchy();
-		if(!hierarchy.canAscend() || !owningCard.equals(hierarchy.getSummonOfLevel(2))) return false;
+		if(!hierarchy.canAscend()) return false;
+		if(owningCard.equals(hierarchy.getSummonOfLevel(2))) return false;
 		return true;
 	}
 

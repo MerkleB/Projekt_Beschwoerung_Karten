@@ -227,6 +227,12 @@ public class Summon implements Card{
 	
 	public void setSummonHierarchy(KnowsSummonAscentHierarchy hierarchy) {
 		summonHierarchy = hierarchy;
+		Summon level0 = summonHierarchy.getSummonOfLevel(0);
+		Summon level1 = summonHierarchy.getSummonOfLevel(1);
+		Summon level2 = summonHierarchy.getSummonOfLevel(2);
+		if(level0 != null) level0.id = this.id;
+		if(level1 != null) level1.id = this.id;
+		if(level2 != null) level2.id = this.id;
 	}
 	
 	public KnowsSummonAscentHierarchy getSummonHierarchy() {

@@ -12,6 +12,7 @@ import project.main.GameApplication.Player;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
 import project.main.exception.NoCollectorException;
+import project.main.exception.NotActivableException;
 
 public class MagicCollector implements Card, CollectsMagicEnergy{
 
@@ -43,6 +44,7 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 			this.actions = new TreeMap<String, GameAction>();
 		}
 		for(GameAction action : actions) {
+			action.setCard(this);
 			this.actions.put(action.getCode(), action);
 		}
 	}
@@ -351,32 +353,56 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 
 	@Override
 	public void setActiv(ArrayList<String> actions, Player activFor) {
-		
+		for(int i=0; i < actions.size(); i++) {
+			String actionName = actions.get(i);
+			if(this.actions.containsKey(actionName)) {
+				this.actions.get(actionName).setActiv(activFor);
+			}
+		}
 	}
 
 	@Override
 	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator) {
-	
+		for(int i=0; i < actions.size(); i++) {
+			String actionName = actions.get(i);
+			if(this.actions.containsKey(actionName)) {
+				this.actions.get(actions.get(i)).setActivBy(activator, activFor);
+			}
+		}
 	}
 
 	@Override
 	public void setInactive() {
+		actions.forEach((k,a) -> {
+			a.setInactiv();
+		});
 	}
 
 	@Override
 	public void setInactive(ArrayList<Stackable> exceptionList) {
+		actions.forEach((k,a) -> {
+			if(!exceptionList.contains(a)) {
+				a.setInactiv();
+			}
+		});
 	}
 
 	@Override
 	public void activateGameAction(String action, Player activatingPlayer) {
-		// TODO Auto-generated method stub
-		
+		try {
+			this.actions.get(action).activate(activatingPlayer);
+		} catch (NotActivableException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
 	public void activateGameAction(String action, Player activatingPlayer, Stackable activator) {
-		// TODO Auto-generated method stub
-		
+		try {
+			this.actions.get(action).activateBy(activator, activatingPlayer);
+		} catch (NotActivableException e) {
+			System.out.println(e.getMessage());
+		}	
 	}
 
 	@Override

@@ -129,9 +129,15 @@ public class TestActions {
 			card2.setOwningPlayer(player2);
 			for(int j=0; j<card1.getActions().size(); j++) {
 				card1.getActions().get(j).setGame(g);
+				for(GameAction action : card1.getCollector().getActions()) {
+					action.setGame(g);
+				}
 			}
 			for(int j=0; j<card2.getActions().size(); j++) {
 				card2.getActions().get(j).setGame(g);
+				for(GameAction action : card2.getCollector().getActions()) {
+					action.setGame(g);
+				}
 			}
 			for(Effect effect : card1.getEffects()) {
 				effect.setGame(g);
@@ -219,7 +225,7 @@ public class TestActions {
 			fail("Card1 is still in hand");
 		}
 		if(player1.getGameZone("SummonZone").findCard(card1.getID()) == null) {
-			fail("Card2 is not in SummonZone!");
+			fail("Card1 is not in SummonZone!");
 		}
 		
 	}
@@ -1320,6 +1326,142 @@ public class TestActions {
 		}
 		if(promotedCard.getStatus().getMagicWastageOnDefeat() != ((Summon)card1).getStatus().getMagicWastageOnDefeat()) {
 			fail("Magic wastage was not increased by two points during promotion");
+		}
+	}
+	
+	@Test
+	public void testSetAsCollector() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Set as Collector=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		setGameForZones(game);
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame hand = player1.getGameZone("HandZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck, 1);
+		Card card1 = summons[0];
+		deck.removeCard(card1);
+		hand.addCard(card1);
+		controller1.addAction("SetAsCollector", card1.getID(), "HandZone", null);
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");		
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			//ctrlThread2.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		/**
+		 * Check result
+		 */
+		if(hand.findCard(card1.getID()) != null) {
+			fail("Card1 is still in hand");
+		}
+		if(collectorZone.findCard(card1.getID()) == null) {
+			fail("Card1 is not in CollectorZone!");
+		}
+		if(player1.getMagicEnergyStock().getFreeEnergy() != 5) {
+			fail("With the new collector the Free Energy should be 5.");
+		}
+	}
+	
+	@Test
+	public void testWithdrawCollector() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test WithdrawCollector=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		setGameForZones(game);
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame hand = player1.getGameZone("HandZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
+		Card collector1 = deck.getCards().get(1);
+		Card collector2 = deck.getCards().get(2);
+		deck.removeCard(collector1);
+		deck.removeCard(collector2);
+		hand.addCard(collector1);
+		collectorZone.addCard(collector2);
+		controller1.addAction("SetAsCollector", collector1.getID(), "HandZone", null);
+		controller1.addStackStart();
+		controller1.addAction("WithdrawCollector", collector1.getID(), "CollectorZone", null);
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");		
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			//ctrlThread2.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		/**
+		 * Check result
+		 */
+		if(hand.findCard(collector1.getID()) == null) {
+			fail("Card1 is not in hand");
+		}
+		if(collectorZone.findCard(collector1.getID()) != null) {
+			fail("Card1 is still in CollectorZone!");
+		}
+		if(player1.getMagicEnergyStock().getFreeEnergy() != 5) {
+			fail("With only one Collector the free energy should be 5.");
 		}
 	}
 }

@@ -73,7 +73,7 @@ public abstract class Action implements GameAction {
 	@Override
 	public boolean activateable(Player activator) {
 		if(owningCard != null) {
-			if(owningCard.getType().equals(CardTypes.Summon)) {
+			if(owningCard.getType().equals(CardTypes.Summon) && !owningCard.getCollector().isCollector()) {
 				ActivityStatus status = ((Summon)owningCard).getActivityStatus();
 				if(status.getStatus().equals(ActivityStatus.NOT_IN_GAME)) return false;
 			}

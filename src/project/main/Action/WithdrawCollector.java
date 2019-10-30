@@ -38,7 +38,7 @@ public class WithdrawCollector extends Action {
 			System.out.println("The collector is not a collector");
 			return false;
 		}
-		if(owningCard.getOwningPlayer().getNumberOfRemainingCollectorActions() <= 0) return false;
+		if(owningCard.getOwningPlayer().getNumberOfRemainingCollectorActions() == 0) return false;
 		
 		return true;
 	}
@@ -49,6 +49,7 @@ public class WithdrawCollector extends Action {
 			super.execute();
 			IsAreaInGame collectorZone = owningCard.getOwningPlayer().getGameZone(CollectorZone);
 			IsAreaInGame hand = owningCard.getOwningPlayer().getGameZone(HandZone);
+			owningCard.getCollector().setIsCollector(false);
 			collectorZone.removeCard(owningCard);
 			hand.addCard(owningCard.getCollector().getRealCard());
 			GameListener.getInstance().actionExecuted(this);

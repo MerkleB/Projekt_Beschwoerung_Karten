@@ -31,7 +31,7 @@ public class SetAsCollector extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
-		if(owningCard.getOwningPlayer().getNumberOfRemainingCollectorActions() >= 0) return false;
+		if(owningCard.getOwningPlayer().getNumberOfRemainingCollectorActions() == 0) return false;
 		return true;
 	}
 
@@ -41,6 +41,7 @@ public class SetAsCollector extends Action {
 			super.execute();
 			IsAreaInGame hand = owningCard.getOwningPlayer().getGameZone(HandZone);
 			IsAreaInGame collectorZone = owningCard.getOwningPlayer().getGameZone(CollectorZone);
+			owningCard.getCollector().setIsCollector(true);
 			hand.removeCard(owningCard);
 			collectorZone.addCard(owningCard);
 			collectorZone.deavtivateAll();

@@ -20,9 +20,9 @@
 		},
 		{
 			"actionName" : "SetAsCollector",
-			"cardTypes" : ["MagicCollector"],
+			"cardTypes" : ["Summon","Spell"],
 			"phases" : ["Main"],
-			"zones" : ["CollectorZone"]
+			"zones" : ["HandZone"]
 		},
 		{
 			"actionName" : "Draw",

@@ -1245,4 +1245,81 @@ public class TestActions {
 			fail("Magic wastage was not increased by two points during promotion");
 		}
 	}
+	
+	@Test
+	public void testUnpromoteSummonInHand() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Unpromote Summon in Hand=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		setGameForZones(game);
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame hand = player1.getGameZone("HandZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		IsAreaInGame collectorZone = player1.getGameZone("CollectorZone");
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck, 1);
+		Card card1 = summons[0];
+		Card collector1 = deck.getCards().get(1);
+		Card collector2 = deck.getCards().get(2);
+		deck.removeCard(card1);
+		deck.removeCard(collector1);
+		deck.removeCard(collector2);
+		hand.addCard(card1);
+		collectorZone.addCard(collector1);
+		collectorZone.addCard(collector2);
+		controller1.addAction("PromoteSummonInHand", card1.getID(), "HandZone", null);
+		controller1.addStackWait();
+		controller1.addAction("UnpromoteSummonInHand", card1.getID(), "HandZone", null);
+		controller1.addStackWait();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");		
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		/**
+		 * Check result
+		 */
+		Summon promotedCard = (Summon)hand.findCard(card1.getID());
+		if(promotedCard == null) {
+			fail("Card1 was not unpromoted.");
+		}
+		if(!promotedCard.getCardID().equals("bsc-su-00-0")) {
+			fail("Card1 was not unpromoted to bsc-su-00-0");
+		}
+		if(promotedCard.getStatus().getSummoningPoints() != ((Summon)card1).getStatus().getSummoningPoints()) {
+			fail("Summoning points were not increased by one point during promotion.");
+		}
+		if(promotedCard.getStatus().getMagicWastageOnDefeat() != ((Summon)card1).getStatus().getMagicWastageOnDefeat()) {
+			fail("Magic wastage was not increased by two points during promotion");
+		}
+	}
 }

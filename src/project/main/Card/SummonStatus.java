@@ -68,7 +68,10 @@ public class SummonStatus {
 	}
 	
 	public void removeAll(String status) {
-		statusChangesByStatus.get(status).clear();
+		ArrayList<StatusChange> changes = statusChangesByStatus.get(status);
+		if(changes == null) return;
+		
+		changes.clear();
 		ArrayList<UUID> uuidsToRemove = new ArrayList<UUID>();
 		statusChanges.forEach((k,e)->{
 			if(e.getStatus().equals(status)) {

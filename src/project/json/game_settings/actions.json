@@ -63,7 +63,7 @@
 		{
 			"actionName" : "UnpromoteSummonInHand",
 			"cardTypes" : ["Summon"],
-			"phases" : [],
+			"phases" : ["Main"],
 			"zones" : ["HandZone"]
 		},
 		{

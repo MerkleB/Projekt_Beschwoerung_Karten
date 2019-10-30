@@ -13,4 +13,5 @@ public interface ListensToEverything extends EffectListener, GameActionListener,
 	public void removeSummonListener(SummonListener listener);
 	public void removeBattleListener(BattleListener listener);
 	public void removeZoneListener(ZoneListener listener);
+	public void removeAllListeners();
 }

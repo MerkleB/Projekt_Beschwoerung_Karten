@@ -14,6 +14,7 @@ import project.main.Card.Card;
 import project.main.GameApplication.AcceptPromptAnswers;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
+import project.main.GameApplication.OwnsGameStack;
 import project.main.GameApplication.Player;
 import project.main.GameApplication.SummonZone;
 import project.main.GameApplication.SummoningCircle;
@@ -109,6 +110,27 @@ public class PhysicalTestPlayer implements Runnable{
 				game.processGameStack(player);
 				ReentrantLock lock = game.getActivePhase().getActiveGameStack().getLock();
 				Condition cond = game.getActivePhase().getActiveGameStack().getCondition();
+				try {
+					lock.lock();
+					cond.await();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					lock.unlock();
+				}
+			}
+		});
+	}
+	
+	public void addStackWait() {
+		actionsToPerform.add(new PhysicalPlayerAction() {
+			
+			@Override
+			public void perform() throws NotActivableException {
+				System.out.println("Controller: Wait until stack finished."+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+				OwnsGameStack stack = game.getActivePhase().getActiveGameStack();
+				ReentrantLock lock = stack.getLock();
+				Condition cond = stack.getCondition();
 				try {
 					lock.lock();
 					cond.await();

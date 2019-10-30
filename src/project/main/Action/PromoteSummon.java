@@ -6,6 +6,7 @@ import project.main.GameApplication.Player;
 import project.main.GameApplication.SummonZone;
 import project.main.Listeners.GameListener;
 import project.main.build_cards.KnowsSummonAscentHierarchy;
+import project.main.exception.NoCardException;
 import project.main.exception.NotActivableException;
 
 public class PromoteSummon extends Action {
@@ -45,9 +46,15 @@ public class PromoteSummon extends Action {
 	public void execute() {
 		if(isActivated && !isWithdrawn()) {
 			super.execute();
-			((Summon)owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			Summon currentLevelCard = (Summon)owningCard;
 			Summon nextLevelCard = hierarchy.getNextSummonInHierarchy(currentLevelCard);
+			currentLevelCard.setActivityStatus(ActivityStatus.NOT_IN_GAME, -1);
+			nextLevelCard.setActivityStatus(ActivityStatus.USED, -1);
+			try {
+				nextLevelCard.setOwningPlayer(owningCard.getOwningPlayer());
+			} catch (NoCardException e) {
+				throw new RuntimeException("Magic collector shouldn't be in hand.");
+			}
 			SummonZone zone = (SummonZone)owningCard.getOwningPlayer().getGameZone("SummonZone");
 			zone.removeCard(currentLevelCard);
 			zone.addCard(nextLevelCard);

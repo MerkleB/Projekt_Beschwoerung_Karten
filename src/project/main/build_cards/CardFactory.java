@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import project.main.Action.GameAction;
+import project.main.Card.ActivityStatus;
 import project.main.Card.Card;
 import project.main.Card.MagicCollector;
 import project.main.Card.Spell;
@@ -94,6 +95,7 @@ public class CardFactory implements CreatesCards {
 				checkCardIdIsAllowed(entry.card_id);
 				CardDefinition successorCardDefinition = cardLibrary.getCardDefinition(entry.card_id);
 				Summon successorSummon = createSummon(successorCardDefinition);
+				successorSummon.setActivityStatus(ActivityStatus.NOT_IN_GAME, -1);
 				setCollectorActions(successorSummon.getCollector());
 				hierarchy.addSummonToHierarchy(successorSummon);
 			} catch (NotAllowedCardException e) {

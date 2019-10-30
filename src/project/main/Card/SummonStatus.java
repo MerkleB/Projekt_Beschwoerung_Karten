@@ -61,6 +61,30 @@ public class SummonStatus {
 		statusChangesByStatus.get(change.getStatus()).remove(index);
 	}
 	
+	public void removeAll() {
+		statusChangeIndex.clear();
+		statusChanges.clear();
+		statusChangesByStatus.clear();
+	}
+	
+	public void removeAll(String status) {
+		statusChangesByStatus.get(status).clear();
+		ArrayList<UUID> uuidsToRemove = new ArrayList<UUID>();
+		statusChanges.forEach((k,e)->{
+			if(e.getStatus().equals(status)) {
+				uuidsToRemove.add(k);
+			}
+		});
+		for(UUID id : uuidsToRemove) {
+			statusChanges.remove(id);
+			statusChangeIndex.remove(id);
+		}
+	}
+	
+	public ArrayList<StatusChange> getChanges(String status){
+		return statusChangesByStatus.get(status);
+	}
+	
 	public int getMagicPreservationValue(){
 		int scMagicPreservationValue = getChangedStatus(magicPreservationValue, StatusChange.MAGICPRESERVATION);
 		return scMagicPreservationValue;

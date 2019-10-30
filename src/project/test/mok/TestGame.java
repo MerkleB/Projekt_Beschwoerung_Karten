@@ -176,6 +176,7 @@ public class TestGame implements Game {
 
 	@Override
 	public boolean proceed(Player player) {
+		if(ended) return false;
 		boolean proceeded = false;
 		try {
 			lock.lock();
@@ -210,6 +211,7 @@ public class TestGame implements Game {
 
 	@Override
 	public boolean processGameStack(Player player) {
+		if(ended) return false;
 		Player otherPlayer = getOtherPlayer(player);
 		setStackProceed(player, true);
 		if(!playerIsRelevantForProceed(otherPlayer)) {

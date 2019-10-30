@@ -55,6 +55,18 @@
 			"zones" : ["SummonZone"]
 		},
 		{
+			"actionName" : "PromoteSummonInHand",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["HandZone"]
+		},
+		{
+			"actionName" : "UnpromoteSummonInHand",
+			"cardTypes" : ["Summon"],
+			"phases" : [],
+			"zones" : ["HandZone"]
+		},
+		{
 			"actionName" : "Heal",
 			"cardTypes" : ["Summon"],
 			"phases" : ["Main"],

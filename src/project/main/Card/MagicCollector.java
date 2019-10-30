@@ -364,6 +364,10 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	}
 
 	@Override
+	public void setInactive(ArrayList<Stackable> exceptionList) {
+	}
+
+	@Override
 	public void activateGameAction(String action, Player activatingPlayer) {
 		// TODO Auto-generated method stub
 		

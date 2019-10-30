@@ -2,11 +2,13 @@ package project.main.Action;
 
 import java.util.Hashtable;
 
+import project.main.Card.ActivityStatus;
 import project.main.Card.Card;
 import project.main.Card.Summon;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.Player;
+import project.main.build_cards.CardTypes;
 import project.main.exception.NotActivableException;
 import project.main.util.TextProvider;
 
@@ -70,6 +72,12 @@ public abstract class Action implements GameAction {
 
 	@Override
 	public boolean activateable(Player activator) {
+		if(owningCard != null) {
+			if(owningCard.getType().equals(CardTypes.Summon)) {
+				ActivityStatus status = ((Summon)owningCard).getActivityStatus();
+				if(status.getStatus().equals(ActivityStatus.NOT_IN_GAME)) return false;
+			}
+		}
 		if(!activ || actionIsActivFor != activator){
             return false;
         }else return true;
@@ -135,7 +143,7 @@ public abstract class Action implements GameAction {
 		boolean areEqual = false;
 		if(obj instanceof Action) {
 			Action action = (Action) obj;
-			if(getName().equals(action.getName())) areEqual = true;
+			if(getCode().equals(action.getCode())) areEqual = true;
 		}
 		return areEqual;
 	}

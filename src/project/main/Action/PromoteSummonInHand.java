@@ -1,12 +1,15 @@
 package project.main.Action;
 
+import project.main.Card.ActivityStatus;
 import project.main.Card.StatusChange;
 import project.main.Card.Summon;
 import project.main.Card.SummonStatus;
+import project.main.Effect.Effect;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.Player;
 import project.main.Listeners.GameActionListener;
 import project.main.Listeners.GameListener;
+import project.main.exception.NoCardException;
 import project.main.exception.NotActivableException;
 
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 		super.activate(activator);
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
+		game.processGameStack(activator);
 	}
 
 
@@ -39,6 +43,7 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 		super.activateBy(activator, activatingPlayer);
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
+		game.processGameStack(activatingPlayer);
 	}
 
 
@@ -58,16 +63,24 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 			super.execute();
 			int currentLevel = ((Summon)owningCard).getLevel();
 			Summon successor = ((Summon)owningCard).getSummonHierarchy().getSummonOfLevel(currentLevel+1);
-			ArrayList<String> activActions = new ArrayList<String>();
+			successor.setActivityStatus(ActivityStatus.READY, -1);
+			((Summon)owningCard).setActivityStatus(ActivityStatus.NOT_IN_GAME, -1);
+			addGameToSuccessor(successor);
+			try {
+				successor.setOwningPlayer(((Summon)owningCard).getOwningPlayer());
+			} catch (NoCardException e) {
+				throw new RuntimeException("Magic collector shouldn't be in hand.");
+			}
+			ArrayList<String> activeActions = new ArrayList<String>();
 			ArrayList<GameAction> owningCardActions = owningCard.getActions();
 			for(GameAction action : owningCardActions) {
 				if(action.activateable(owningCard.getOwningPlayer())) {
-					activActions.add(action.getCode());
+					activeActions.add(action.getCode());
 				}
 			}
-			activActions.add("UnpromoteSummonInHand");
-			successor.setActiv(activActions, owningCard.getOwningPlayer());
-			addSummonStatusChanges(successor);
+			activeActions.add("UnpromoteSummonInHand");
+			successor.setActiv(activeActions, owningCard.getOwningPlayer());
+			addSummonStatusChanges(successor, (Summon)owningCard);
 			IsAreaInGame hand = owningCard.getOwningPlayer().getGameZone(HandZone);
 			hand.removeCard(owningCard);
 			hand.addCard(successor);
@@ -75,7 +88,7 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 		}
 	}
 	
-	private void addSummonStatusChanges(Summon successor) {
+	private void addSummonStatusChanges(Summon successor, Summon predecessor) {
 		summoningPointsID = UUID.randomUUID();
 		summonPointsChange = new StatusChange(StatusChange.SUMMONINGPOINT, summoningPointsID, StatusChange.TYPE_ADDITION, 1);
 		wastageID = UUID.randomUUID();
@@ -83,6 +96,34 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 		changedStatus = successor.getStatus();
 		changedStatus.addStatusChange(summonPointsChange);
 		changedStatus.addStatusChange(wastageChange);
+		ArrayList<StatusChange> predecessorChanges = new ArrayList<StatusChange>();
+		ArrayList<StatusChange> summoningPointChanges = predecessor.getStatus().getChanges(StatusChange.SUMMONINGPOINT);
+		if(summoningPointChanges != null) {
+			predecessorChanges.addAll(summoningPointChanges);
+		}
+		ArrayList<StatusChange> wastageChanges = predecessor.getStatus().getChanges(StatusChange.MAGICWASTAGE);
+		if(summoningPointChanges != null) {
+			predecessorChanges.addAll(wastageChanges);
+		}
+		for(StatusChange change : predecessorChanges) {
+			changedStatus.addStatusChange(change);
+		}
+	}
+	
+	private void addGameToSuccessor(Summon successor) {
+		ArrayList<GameAction> actions = successor.getActions();
+		for(GameAction action : actions) {
+			action.setGame(game);
+		}
+		Effect[] effects;
+		try {
+			effects = successor.getEffects();
+			for(Effect effect : effects) {
+				effect.setGame(game);
+			}
+		} catch (NoCardException e) {
+			//Effects are ignored
+		}
 	}
 
 	@Override

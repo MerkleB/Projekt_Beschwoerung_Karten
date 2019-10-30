@@ -199,4 +199,14 @@ public class GameListener implements ListensToEverything {
 		zone_listeners.remove(listener);
 	}
 
+	@Override
+	public void removeAllListeners() {
+		action_listeners.clear();
+		battle_listeners.clear();
+		effect_listeners.clear();
+		phase_listeners.clear();
+		summon_listeners.clear();
+		zone_listeners.clear();
+	}
+
 }

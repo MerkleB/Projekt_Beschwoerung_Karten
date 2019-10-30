@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.UUID;
 
+import project.main.Action.Stackable;
 import project.main.Card.Card;
 import project.main.Listeners.GameListener;
 import project.main.exception.NoCardException;
@@ -86,6 +87,13 @@ public abstract class GameZone implements IsAreaInGame {
 	public void deavtivateAll() {
 		for(Card card : cardList) {
 			card.setInactive();
+		}
+	}
+
+	@Override
+	public void deavtivateAll(ArrayList<Stackable> exceptionList) {
+		for(Card card : cardList) {
+			card.setInactive(exceptionList);
 		}
 	}
 

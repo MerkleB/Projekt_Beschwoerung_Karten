@@ -64,7 +64,8 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	@Override
 	public void actionActivated(GameAction action) {
 		if(action.getCode().equals("AttackPlayer")) {
-			if(action.getCard().getOwningPlayer() != owningCard.getOwningPlayer()) {
+			if(action.getCard().getOwningPlayer() != owningCard.getOwningPlayer() && !((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.NOT_IN_GAME)) {
+				game.forbidGameStackProcessing(owningCard.getOwningPlayer());
 				actionToBlock = (AttackPlayer)action;
 				setActiv(owningCard.getOwningPlayer());
 			}

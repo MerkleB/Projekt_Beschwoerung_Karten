@@ -80,6 +80,20 @@ public class Spell implements Card {
 	}
 	
 	@Override
+	public void setInactive(ArrayList<Stackable> exceptionList) {
+		actions.forEach((k,a) -> {
+			if(!exceptionList.contains(a)) {
+				a.setInactiv();
+			}
+		});
+		for(Effect effect : effects) {
+			if(!exceptionList.contains(effect)) {
+				effect.setInactiv();
+			}
+		}
+	}
+
+	@Override
 	public void activateGameAction(String action, Player activatingPlayer) {
 		try {
 			this.actions.get(action).activate(activatingPlayer);

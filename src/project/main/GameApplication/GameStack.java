@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import project.main.Action.GameAction;
 import project.main.Action.Stackable;
+import project.main.Card.Card;
 
 public class GameStack implements OwnsGameStack {
 	
@@ -40,6 +42,7 @@ public class GameStack implements OwnsGameStack {
 	public void run() {
 		if(status == -1) return; //Already finished stacks can't be executed.
 		System.out.println("Stack start processing...");
+		deactivateAllOtherStackables();
 		status = 1;
 		for(int i=stack.size()-1; i>=0; i--) { 	
 			Stackable currentEntry = stack.get(i);
@@ -54,6 +57,18 @@ public class GameStack implements OwnsGameStack {
 		}finally {
 			lock.unlock();
 			status = -1;
+		}
+	}
+	
+	private void deactivateAllOtherStackables() {
+		System.out.println("Deactivate stackables which are not in stack.");
+		Game game = phase.getGame();
+		Player[] players = game.getPlayers();
+		for(Player player : players) {
+			ArrayList<IsAreaInGame> zones = player.getGameZones();
+			for(IsAreaInGame zone : zones) {
+				zone.deavtivateAll(stack);
+			}
 		}
 	}
 

@@ -29,6 +29,7 @@ public interface Card{
 	public void setActiv(ArrayList<String> actions, Player activFor);
 	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator);
 	public void setInactive();
+	public void setInactive(ArrayList<Stackable> exceptionList);
 	public void activateGameAction(String action, Player activatingPlayer);
 	public void activateGameAction(String action, Player activatingPlayer, Stackable activator);
 	public ArrayList<GameAction> getActions();

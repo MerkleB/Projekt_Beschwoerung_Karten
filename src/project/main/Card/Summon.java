@@ -72,7 +72,7 @@ public class Summon implements Card{
 	}
 
 	public void setActivityStatus(String activityStatus, int durability) {
-		if(!activityStatus.equals(ActivityStatus.IMMOBILIZED) && !activityStatus.equals(ActivityStatus.USED) && !activityStatus.equals(ActivityStatus.READY)) return;
+		if(!activityStatus.equals(ActivityStatus.IMMOBILIZED) && !activityStatus.equals(ActivityStatus.USED) && !activityStatus.equals(ActivityStatus.READY)&& !activityStatus.equals(ActivityStatus.NOT_IN_GAME)) return;
 		this.activityStatus.setStatus(activityStatus, durability);
 	}
 
@@ -103,6 +103,20 @@ public class Summon implements Card{
 		});
 		for(Effect effect : effects) {
 			effect.setInactiv();
+		}
+	}
+	
+	@Override
+	public void setInactive(ArrayList<Stackable> exceptionList) {
+		actions.forEach((k,a) -> {
+			if(!exceptionList.contains(a)) {
+				a.setInactiv();
+			}
+		});
+		for(Effect effect : effects) {
+			if(!exceptionList.contains(effect)) {
+				effect.setInactiv();
+			}
 		}
 	}
 	

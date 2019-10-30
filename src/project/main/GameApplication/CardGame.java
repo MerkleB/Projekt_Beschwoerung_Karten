@@ -85,7 +85,25 @@ public class CardGame implements Game {
 	}
 
 	@Override
+	public boolean proceed(Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public boolean processGameStack(Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void forbidGameStackProcessing(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean playerIsRelevantForProceed(Player player) {
 		// TODO Auto-generated method stub
 		return false;
 	}

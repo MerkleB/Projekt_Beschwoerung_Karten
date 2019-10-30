@@ -126,13 +126,8 @@ public class PhysicalTestPlayer implements Runnable{
 			
 			@Override
 			public void perform() throws NotActivableException {
-				lock.lock();
 				System.out.println("Controller: Execute end phase"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
-				try {
-					gameCondition.signal();
-				} finally {
-				    lock.unlock();
-				}				
+				game.proceed(player);				
 			}
 		};
 		actionsToPerform.add(action);

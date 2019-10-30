@@ -23,6 +23,7 @@ import project.main.util.MapsRankAndLevel;
 public class TestGame implements Game {
 	
 	private Player[] players;
+	private boolean[] proceed;
 	private boolean[] stackProceed;
 	private Player activPlayer;
 	private ArrayList<IsPhaseInGame> phases;
@@ -42,6 +43,9 @@ public class TestGame implements Game {
 		stackProceed = new boolean[2];
 		stackProceed[0] = false;
 		stackProceed[1] = false;
+		proceed = new boolean[2];
+		proceed[0] = false;
+		proceed[1] = false;
 		phases = p;
 		started = false;
 		ended = false;
@@ -171,12 +175,46 @@ public class TestGame implements Game {
 	}
 
 	@Override
+	public boolean proceed(Player player) {
+		boolean proceeded = false;
+		try {
+			lock.lock();
+			Player otherPlayer = getOtherPlayer(player);
+			setProceed(player);
+			if(!playerIsRelevantForProceed(otherPlayer)) {
+				System.out.println("Game: Game does not need to wait for player "+otherPlayer.getID()+" because non of his actions or effects are activatable.");
+				setProceed(otherPlayer);
+			}
+			
+			if(proceed[0] && proceed[1]) {
+				proceed[0] = false;
+				proceed[1] = false;
+				condition.signal();
+				proceeded = true;
+			}
+			
+		} finally {
+			lock.unlock();
+		}
+		return proceeded;
+	}
+	
+	private void setProceed(Player player) {
+		System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
+		if(player == players[0]) {
+			proceed[0] = true;
+		}else {
+			proceed[1] = true;
+		}
+	}
+
+	@Override
 	public boolean processGameStack(Player player) {
 		Player otherPlayer = getOtherPlayer(player);
-		setStackProceed(player);
+		setStackProceed(player, true);
 		if(!playerIsRelevantForProceed(otherPlayer)) {
 			System.out.println("Game: Game does not need to wait for player "+otherPlayer.getID()+" because non of his actions or effects are activatable.");
-			setStackProceed(otherPlayer);
+			setStackProceed(otherPlayer, true);
 		}
 		if(stackProceed[0] && stackProceed[1]) {
 			stackProceed[0] = false;
@@ -187,38 +225,50 @@ public class TestGame implements Game {
 		}else return false;
 	}
 	
-	private void setStackProceed(Player player) {
+	@Override
+	public void forbidGameStackProcessing(Player player) {
+		if(playerIsRelevantForProceed(player)) {
+			setStackProceed(player, false);
+		}
+	}
+
+	private void setStackProceed(Player player, boolean proceed) {
 		System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
 		if(player == players[0]) {
-			stackProceed[0] = true;
+			stackProceed[0] = proceed;
 		}else {
-			stackProceed[1] = true;
+			stackProceed[1] = proceed;
 		}
 	}
 	
-	private boolean playerIsRelevantForProceed(Player player) {
+	@Override
+	public boolean playerIsRelevantForProceed(Player player) {
 		boolean relevant = false;
-		ArrayList<IsAreaInGame> zones = player.getGameZones();
-		for(IsAreaInGame zone : zones) {
-			ArrayList<Card> cards = zone.getCards();
-			for(Card card : cards) {
-				ArrayList<GameAction> actions = card.getActions();
-				for(GameAction action : actions) {
-					if(action.activateable(player)) {
-						relevant = true;
-					}
-				}
-				try {
-					Effect[] effects = card.getEffects();
-					for(Effect effect : effects) {
-						if(effect.activateable(player)) {
+		if(player == activPlayer) {
+			relevant = true;
+		}else {
+			ArrayList<IsAreaInGame> zones = player.getGameZones();
+			for(IsAreaInGame zone : zones) {
+				ArrayList<Card> cards = zone.getCards();
+				for(Card card : cards) {
+					ArrayList<GameAction> actions = card.getActions();
+					for(GameAction action : actions) {
+						if(action.activateable(player)) {
 							relevant = true;
 						}
 					}
-				} catch (NoCardException e) {
-					//Effects of MagicCollectors are ignored here
+					try {
+						Effect[] effects = card.getEffects();
+						for(Effect effect : effects) {
+							if(effect.activateable(player)) {
+								relevant = true;
+							}
+						}
+					} catch (NoCardException e) {
+						//Effects of MagicCollectors are ignored here
+					}
+					
 				}
-				
 			}
 		}
 		return relevant;

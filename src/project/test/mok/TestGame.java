@@ -211,20 +211,29 @@ public class TestGame implements Game {
 
 	@Override
 	public boolean processGameStack(Player player) {
-		if(ended) return false;
-		Player otherPlayer = getOtherPlayer(player);
-		setStackProceed(player, true);
-		if(!playerIsRelevantForProceed(otherPlayer)) {
-			System.out.println("Game: Game does not need to wait for player "+otherPlayer.getID()+" because non of his actions or effects are activatable.");
-			setStackProceed(otherPlayer, true);
+		try {
+			lock.lock();
+			System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
+			if(ended) return false;
+			Player otherPlayer = getOtherPlayer(player);
+			setStackProceed(player, true);
+			if(!playerIsRelevantForProceed(otherPlayer)) {
+				System.out.println("Game: Game does not need to wait for player "+otherPlayer.getID()+" because non of his actions or effects are activatable.");
+				setStackProceed(otherPlayer, true);
+			}
+			if(stackProceed[0] && stackProceed[1]) {
+				System.out.println("Game: Both players agreed to start the stack.");
+				stackProceed[0] = false;
+				stackProceed[1] = false;
+				Thread stackThread = new Thread(activPhase.getActiveGameStack(), activPhase.getName()+"-Stack");
+				System.out.println("Game: Intiating Stack-Run.");
+				stackThread.start();
+				return true;
+			}else return false;
+		} finally {
+			lock.unlock();
 		}
-		if(stackProceed[0] && stackProceed[1]) {
-			stackProceed[0] = false;
-			stackProceed[1] = false;
-			Thread stackThread = new Thread(activPhase.getActiveGameStack(), activPhase.getName()+"-Stack");
-			stackThread.start();
-			return true;
-		}else return false;
+		
 	}
 	
 	@Override
@@ -235,7 +244,6 @@ public class TestGame implements Game {
 	}
 
 	private void setStackProceed(Player player, boolean proceed) {
-		System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
 		if(player == players[0]) {
 			stackProceed[0] = proceed;
 		}else {

@@ -33,7 +33,6 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 		super.activate(activator);
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
-		game.processGameStack(activator);
 	}
 
 

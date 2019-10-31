@@ -41,11 +41,13 @@ public class GameStack implements OwnsGameStack {
 		System.out.println("Stack start processing...");
 		deactivateAllOtherStackables();
 		status = 1;
-		for(int i=stack.size()-1; i>=0; i--) { 	
-			Stackable currentEntry = stack.get(i);
-			currentEntry.execute();
-			currentEntry.setInactiv();
-		}
+		if(stack.size() > 0) {
+			for(int i=stack.size()-1; i>=0; i--) { 	
+				Stackable currentEntry = stack.get(i);
+				currentEntry.execute();
+				currentEntry.setInactiv();
+			}
+		}else System.out.println("Stack is empty!");
 		System.out.println("Stack finished Processing.");
 		phase.restorePhaseStatus();
 		lock.lock();

@@ -17,6 +17,7 @@ import org.junit.Test;
 import project.main.Action.GameAction;
 import project.main.Card.ActivityStatus;
 import project.main.Card.Card;
+import project.main.Card.MagicCollector;
 import project.main.Card.Spell;
 import project.main.Card.StatusChange;
 import project.main.Card.Summon;
@@ -33,10 +34,12 @@ import project.main.Listeners.GameListener;
 import project.main.build_cards.CardFactory;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
+import project.main.exception.NoCollectorException;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 import project.main.jsonObjects.CardDefinitionLibrary;
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.GameMessageProvider;
+import project.test.mok.MokProvider;
 import project.test.mok.PhysicalTestPlayer;
 import project.test.mok.TestGame;
 import project.test.mok.TestPlayer;
@@ -356,6 +359,164 @@ public class TestActions {
 		if(((Summon)card2).getStatus().getMaxVitality() != ((Summon)card2).getStatus().getVitality()) {
 			fail("Card2 wan't healed to full health");
 		}
+		if(!((Summon)card1).getActivityStatus().getStatus().equals(ActivityStatus.USED)) {
+			fail("Card1's status was not set to used");
+		}
+		
+	}
+	
+	@Test
+	public void testHeal_Self() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Heal self=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame summonZone = player1.getGameZone("SummonZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck, 2);
+		Card card1 = summons[0];
+		((Summon)card1).getStatus().decreaseVitality(2);
+		Effect[] mokEffects = {MokProvider.getEffect()};
+		Field effectsField;
+		try {
+			effectsField = card1.getClass().getDeclaredField("effects");
+			effectsField.setAccessible(true);
+			effectsField.set(card1, mokEffects);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
+			fail("Error during preparation: Mok effects - "+e1.getMessage());
+		}
+		int card1Vitality = ((Summon)card1).getStatus().getVitality();
+		deck.removeCard(card1);
+		summonZone.addCard(card1);
+		controller1.addAction("Heal", card1.getID(), "SummonZone", null);
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");
+		
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		
+		/**
+		 * Check result
+		 */
+		if(((Summon)card1).getStatus().getVitality() == card1Vitality) {
+			fail("Card1 wasn't healed");
+		}
+		
+		if(((Summon)card1).getStatus().getMaxVitality() != ((Summon)card1).getStatus().getVitality()) {
+			fail("Card1 wan't healed to full health");
+		}
+		if(!((Summon)card1).getActivityStatus().getStatus().equals(ActivityStatus.USED)) {
+			fail("Card1's status was not set to used");
+		}
+		
+	}
+	
+	@Test
+	public void testHeal_Collector() {
+		/**
+		 * Preparation 
+		 */
+		System.out.println("-=Test Heal Collector=-");
+		ReentrantLock lockGame = new ReentrantLock();
+		ReentrantLock lockTest = new ReentrantLock();
+		Condition gameCond = lockGame.newCondition();
+		Condition testCond = lockTest.newCondition();
+		String[] phases = {"Main"};
+		TestGame game = new TestGame(player1, player2, getPhases(phases), gameCond, lockGame);
+		player2.decreaseHealthPoints(3); //Ensure game ends after first round
+		try {
+			setPlayerAndGameForCards(game);
+		} catch (NoCardException e1) {
+			fail("Fail during preparation: set player and game for cards");
+		}
+		app.setGame(game);
+		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
+		player1.setController(controller1);
+		player2.setController(controller2);
+		IsAreaInGame summonZone = player1.getGameZone("SummonZone");
+		IsAreaInGame deck = player1.getGameZone("DeckZone");
+		IsAreaInGame hand = player1.getGameZone("HandZone");
+		Summon[] summons = cardProvider.getFirstSummonFromZone(deck, 2);
+		Card card1 = summons[0];
+		Card card2 = summons[1];
+		try {
+			card2.getCollector().decreaseCurrentHealth(2);
+		} catch (NoCollectorException e1) {
+			fail("Card2 has no real collector.");
+		}
+		deck.removeCard(card1);
+		deck.removeCard(card2);
+		summonZone.addCard(card1);
+		hand.addCard(card2);
+		controller1.addAction("SetAsCollector", card2.getID(), "HandZone", null);
+		controller1.addStackStart();
+		controller1.addAction("Heal", card1.getID(), "SummonZone", null);
+		controller1.addAction("SelectMagicCollector", card2.getID(), "CollectorZone", null);
+		controller1.addStackStart();
+		controller1.addPhaseEndAction();
+		Thread gameThread = new Thread(game, "Game");
+		Thread ctrlThread1 = new Thread(controller1, "Control1");
+		
+		/**
+		 * Test
+		 */
+		try {
+			ctrlThread1.start();
+			gameThread.start();
+			System.out.println("Test: Waiting for end game");
+			lockTest.lock();
+			testCond.await();
+			System.out.println("Test: Got signal - Game ended");
+		}catch(Exception e) {
+			fail("An error happened - "+ e.getMessage());
+		}finally {
+			lockTest.unlock();
+		}
+		
+		/**
+		 * Check result
+		 */
+		try {
+			if(card2.getCollector().getCurrentHealth() != 8) {
+				fail("Card2 wasn't healed");
+			}
+		} catch (NoCollectorException e) {
+			fail("Card2 has no real collector after heal.");
+		}
+		
 		if(!((Summon)card1).getActivityStatus().getStatus().equals(ActivityStatus.USED)) {
 			fail("Card1's status was not set to used");
 		}
@@ -1137,7 +1298,7 @@ public class TestActions {
 		collectorZone.addCard(collector1);
 		collectorZone.addCard(collector2);
 		controller1.addAction("PromoteSummonInHand", card1.getID(), "HandZone", null);
-		controller1.addStackWait();
+		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
 		Thread ctrlThread1 = new Thread(controller1, "Control1");		
@@ -1213,9 +1374,9 @@ public class TestActions {
 		collectorZone.addCard(collector1);
 		collectorZone.addCard(collector2);
 		controller1.addAction("PromoteSummonInHand", card1.getID(), "HandZone", null);
-		controller1.addStackWait();
+		controller1.addStackStart();
 		controller1.addAction("PromoteSummonInHand", card1.getID(), "HandZone", null);
-		controller1.addStackWait();
+		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
 		Thread ctrlThread1 = new Thread(controller1, "Control1");		
@@ -1290,9 +1451,9 @@ public class TestActions {
 		collectorZone.addCard(collector1);
 		collectorZone.addCard(collector2);
 		controller1.addAction("PromoteSummonInHand", card1.getID(), "HandZone", null);
-		controller1.addStackWait();
+		controller1.addStackStart();
 		controller1.addAction("UnpromoteSummonInHand", card1.getID(), "HandZone", null);
-		controller1.addStackWait();
+		controller1.addStackStart();
 		controller1.addPhaseEndAction();
 		Thread gameThread = new Thread(game, "Game");
 		Thread ctrlThread1 = new Thread(controller1, "Control1");		

@@ -79,7 +79,6 @@ public class Heal extends Action{
 			}
 			GameListener.getInstance().removeGameActionListener(listener);
 			GameListener.getInstance().actionExecuted(this);
-			game.getActivePhase().restorePhaseStatus();
 		}
 	}
 	
@@ -89,6 +88,7 @@ public class Heal extends Action{
 			listenToSelectActions();
 			
 		}else {
+			summonHealed = true;
 			cardToHeal = owningCard;
 		}
 	}

@@ -112,7 +112,10 @@ public class PhysicalTestPlayer implements Runnable{
 				Condition cond = game.getActivePhase().getActiveGameStack().getCondition();
 				try {
 					lock.lock();
+					Thread.sleep(10);
+					System.out.println("Controller: Wait...");
 					cond.await();
+					System.out.println("Controller: Stack finished.");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} finally {

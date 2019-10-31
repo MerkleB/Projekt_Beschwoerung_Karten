@@ -84,7 +84,9 @@ public class MagicEnergyStockTest {
 		phases.add(new GamePhase("Main"));
 		player = new TestPlayer(3, 3, deck);
 		player2 = new TestPlayer(3, 3, deck);
-		game = new TestGame(player, player2, phases, null, null);
+		ReentrantLock gl = new ReentrantLock();
+		Condition gc = gl.newCondition();
+		game = new TestGame(player, player2, phases, gc, gl);
 		Field activePhaseField = game.getClass().getDeclaredField("activPhase");
 		activePhaseField.setAccessible(true);
 		activePhaseField.set(game, phases.get(0));

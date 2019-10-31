@@ -20,7 +20,6 @@ public class UnpromoteSummonInHand extends Action {
 		super.activate(activator);
 		game.getActivePhase().getActiveGameStack().addEntry(this);
 		GameListener.getInstance().actionActivated(this);
-		game.processGameStack(activator);
 	}
 
 	@Override

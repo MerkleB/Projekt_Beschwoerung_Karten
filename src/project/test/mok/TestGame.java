@@ -6,7 +6,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import project.main.Action.GameAction;
-import project.main.Action.Stackable;
 import project.main.Card.Card;
 import project.main.Effect.Effect;
 import project.main.GameApplication.AcceptPromptAnswers;
@@ -31,7 +30,7 @@ public class TestGame implements Game {
 	private int playerIndex;
 	private boolean started;
 	private boolean ended;
-	private boolean phaseEnd;
+	private int round;
 	private ProcessesBattle activeBattle;
 	private Condition condition;
 	private ReentrantLock lock;
@@ -49,7 +48,7 @@ public class TestGame implements Game {
 		phases = p;
 		started = false;
 		ended = false;
-		phaseEnd = false;
+		round = 0;
 		playerIndex = 0;
 		for(IsPhaseInGame phase : phases) {
 			phase.setGame(this);
@@ -63,16 +62,16 @@ public class TestGame implements Game {
 		started = true;
 		while(!ended) {
 			activPlayer = players[playerIndex];
+			System.out.println("Start round "+round+"-"+playerIndex);
 			System.out.println("Game: Set activ player: "+activPlayer.getID().toString());
 			for(int i=0; i<phases.size(); i++) {
 				activPhase = phases.get(i);
 				System.out.println("Game: Process phase "+activPhase.getName()+".");
-				phaseEnd = false;
 				activPhase.process();
 				System.out.println("Game: Wake-Up Controller");
 				lock.lock();
 				try {
-					condition.signal();
+					((TestPlayer)activPlayer).getController().giveControl();
 					System.out.println("Game: Await Controller signal");
 				} finally {
 				    lock.unlock();
@@ -99,7 +98,7 @@ public class TestGame implements Game {
 					}else System.out.println("Player "+players[i-1].getID().toString()+" won.");
 				}
 			}
-			
+			round++;
 			if(playerIndex == 1) {
 				playerIndex = 0;
 			}else {
@@ -140,6 +139,15 @@ public class TestGame implements Game {
 		}
 		return foundPlayer;
 	}
+	
+	@Override
+	public Player getOtherPlayer(Player player) {
+		if(player == players[0]) {
+			return players[1];
+		}else {
+			return players[0];
+		}
+	}
 
 	@Override
 	public IsPhaseInGame getActivePhase() {
@@ -169,10 +177,6 @@ public class TestGame implements Game {
 	public void end() {
 		ended = true;
 	}
-	
-	public void phaseEnd() {
-		phaseEnd = true;
-	}
 
 	@Override
 	public boolean proceed(Player player) {
@@ -181,6 +185,7 @@ public class TestGame implements Game {
 		try {
 			lock.lock();
 			Player otherPlayer = getOtherPlayer(player);
+			System.out.println("Game: Player "+player.getID()+" wants to proceed the game");
 			setProceed(player);
 			if(!playerIsRelevantForProceed(otherPlayer)) {
 				System.out.println("Game: Game does not need to wait for player "+otherPlayer.getID()+" because non of his actions or effects are activatable.");
@@ -188,6 +193,7 @@ public class TestGame implements Game {
 			}
 			
 			if(proceed[0] && proceed[1]) {
+				System.out.println("Game: Both players agreed to proceed.");
 				proceed[0] = false;
 				proceed[1] = false;
 				condition.signal();
@@ -201,7 +207,6 @@ public class TestGame implements Game {
 	}
 	
 	private void setProceed(Player player) {
-		System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
 		if(player == players[0]) {
 			proceed[0] = true;
 		}else {
@@ -282,14 +287,6 @@ public class TestGame implements Game {
 			}
 		}
 		return relevant;
-	}
-	
-	private Player getOtherPlayer(Player player) {
-		if(player == players[0]) {
-			return players[1];
-		}else {
-			return players[0];
-		}
 	}
 	
 	@Override

@@ -34,6 +34,12 @@ public interface Game extends Runnable{
 	 */
 	public Player getPlayer(UUID id);
 	/**
+	 * Retrieves the other player
+	 * @param Player player
+	 * @return Player which is the other player from players view
+	 */
+	public Player getOtherPlayer(Player player);
+	/**
 	 * Retrieves the currently active game phase
 	 * @return IsPhaseInGame activePhase
 	 */

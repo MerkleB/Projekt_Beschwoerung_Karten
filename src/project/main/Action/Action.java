@@ -29,6 +29,17 @@ public abstract class Action implements GameAction {
 	protected Stackable activator;
 	protected Game game;
     
+
+	@Override
+	public void initialize() {
+		activ = false;
+		withdrawn = false;
+		isActivated = false;
+		metadata = new Hashtable<String, String>();
+		actionIsActivFor = null;
+		activator = null;		
+	}
+
 	@Override
 	public String getName() {
 		return TextProvider.getInstance().getActionName(getCode(), Application.getInstance().getLanguage());

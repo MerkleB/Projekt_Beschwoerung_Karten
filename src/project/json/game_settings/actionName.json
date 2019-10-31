@@ -4,6 +4,7 @@
 		"language" : "EN", 
 		"actions" : [
 			{"code" : "AttackPlayer", "name" : "Attack Player"},
+			{"code" : "AttackCollector", "name" : "Attack Collector"},
 			{"code" : "DeclareBattle", "name" : "Declare Battle"},
 			{"code" : "Draw", "name" : "Draw"},
 			{"code" : "Heal", "name" : "Heal"},
@@ -25,7 +26,8 @@
 		"language" : "DE", 
 		"actions" : [
 			{"code" : "AttackPlayer", "name" : "Spieler angreifen"},
-			{"code" : "DeclareBattle", "name" : "Beschwörung angreigen"},
+			{"code" : "AttackCollector", "name" : "Attack Player"},
+			{"code" : "DeclareBattle", "name" : "Magiesammler angreigen"},
 			{"code" : "Draw", "name" : "Ziehen"},
 			{"code" : "Heal", "name" : "Heilen"},
 			{"code" : "EvokeSummon", "name" : "Beschwören"}, 

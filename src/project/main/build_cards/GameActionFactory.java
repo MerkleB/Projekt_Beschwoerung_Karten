@@ -15,6 +15,7 @@ public class GameActionFactory implements CreatesActions {
 		try {
 			Class<?> actionClass = Class.forName(className);
 			action = (GameAction)actionClass.newInstance();
+			action.initialize();
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException("GameActionFactory - Class "+className+" could no be found or instantiated!");
 		}

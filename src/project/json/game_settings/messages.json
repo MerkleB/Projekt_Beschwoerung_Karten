@@ -48,6 +48,20 @@
 				{"language" : "EN", "text" : "You've not enough energy to preserve your summons. \r\nPlease select some summons to immobilize.", "answers" : []},
 				{"language" : "DE", "text" : "Du hast nicht mehr genug magische Energie um deine Beschwörungen aufrecht zu erhalten.\r\nBitte wähle die Beschwörungen aus, welche du immobilisieren möchtest.", "answers" : []}
 			]
+		},
+		{ 
+			"id" : "#8",
+			"texts" : [
+				{"language" : "EN", "text" : "Please select the MagicCollector to attack.", "answers" : []},
+				{"language" : "DE", "text" : "Wähle den Magiesammler welchen du angreifen möchtest.", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#9",
+			"texts" : [
+				{"language" : "EN", "text" : "You're opponent wants to attack you. What do you want to do?'", "answers" : []},
+				{"language" : "DE", "text" : "Dein Gegner will dich angreifen. Was möchtest du tun?", "answers" : []}
+			]
 		}
 		
 	]

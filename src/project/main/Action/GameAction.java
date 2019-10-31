@@ -31,4 +31,8 @@ public interface GameAction extends Stackable {
 	 * @return Stackable activator
 	 */
 	public Stackable getActivatingStackable();
+	/**
+	 * Initializes the GameAction
+	 */
+	public void initialize();
 }

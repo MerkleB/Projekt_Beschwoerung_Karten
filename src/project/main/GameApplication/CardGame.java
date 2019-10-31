@@ -120,4 +120,10 @@ public class CardGame implements Game {
 		
 	}
 
+	@Override
+	public Player getOtherPlayer(Player player) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

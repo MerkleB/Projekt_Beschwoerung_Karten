@@ -56,6 +56,8 @@ public class DeclareBattle extends Action {
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
 		if(!((Summon) owningCard).getActivityStatus().getStatus().equals(ActivityStatus.READY)) return false;
+		Player otherPlayer = game.getOtherPlayer(activator);
+		if(otherPlayer.getGameZone(SummonZone).getCards().size() == 0) return false;
 		return true;
 	}
 	

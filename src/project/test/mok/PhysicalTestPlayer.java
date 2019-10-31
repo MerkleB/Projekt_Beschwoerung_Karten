@@ -30,14 +30,17 @@ public class PhysicalTestPlayer implements Runnable{
 	private Player player;
 	private Game game;
 	public boolean hasControl;
+	public boolean waitForPromptsFinished;
 	private ArrayList<PhysicalPlayerAction> actionsToPerform;
 	private Hashtable<String, PhysicalPlayerAction> expectedPrompts;
 	private Hashtable<String, Integer> keyIndexOfExpectedPrompt;
 	private Hashtable<String, Integer> currentKeyIndexOfExpectedPrompt;
 	private Condition gameCondition;
 	private Condition testCondition;
+	private Condition controllerCondition;
 	private ReentrantLock lock;
 	private ReentrantLock lockTest;
+	private ReentrantLock controllerLock; 
 	
 	public PhysicalTestPlayer(Player p, Game g, Condition cg, Condition ct, ReentrantLock lg, ReentrantLock lt) {
 		player = p;
@@ -50,6 +53,35 @@ public class PhysicalTestPlayer implements Runnable{
 		testCondition = ct;
 		lock = lg;
 		lockTest = lt;
+		controllerLock = new ReentrantLock();
+		controllerCondition = controllerLock.newCondition();
+		waitForPromptsFinished = false;
+	}
+	
+	public void giveControl() {
+		if(!waitForPromptsFinished) {
+			try {
+				controllerLock.lock();
+				System.out.println("Controller: Got control.");
+				hasControl = true;
+				controllerCondition.signal();
+			} finally {
+				controllerLock.unlock();
+			}
+		}
+	}
+	
+	private void allPromptsAreFinished() {
+		if(waitForPromptsFinished) {
+			try {
+				controllerLock.lock();
+				System.out.println("Controller: All expected prompts are answered.");
+				controllerCondition.signal();
+				waitForPromptsFinished = false;
+			} finally {
+				controllerLock.unlock();
+			}
+		}
 	}
 	
 	public void addAction(String actionName, UUID card_id, String zoneName, Player player) {
@@ -151,8 +183,72 @@ public class PhysicalTestPlayer implements Runnable{
 			
 			@Override
 			public void perform() throws NotActivableException {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				System.out.println("Controller: Execute end phase"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 				game.proceed(player);				
+			}
+		};
+		actionsToPerform.add(action);
+	}
+	
+	public void addSurrenderAction() {
+		PhysicalPlayerAction action = new PhysicalPlayerAction() {
+			
+			@Override
+			public void perform() throws NotActivableException {
+				System.out.println("Controller: Surrender"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+				player.decreaseHealthPoints(player.getHealthPoints());		
+			}
+		};
+		actionsToPerform.add(action);
+	}
+	
+	public void addGameFinishWait() {
+		PhysicalPlayerAction action = new PhysicalPlayerAction() {
+			
+			@Override
+			public void perform() throws NotActivableException {
+				lock.lock();
+				try {
+					System.out.println("Controller: Wait until game finished"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+					gameCondition.await(5, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}finally {
+					lock.unlock();
+				}
+				System.out.println("Controller: Wake-up test"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+				lockTest.lock();
+				try {
+					testCondition.signal();
+				} finally {
+				    lockTest.unlock();
+				}
+			}
+		};
+		actionsToPerform.add(action);
+	}
+	
+	public void addPromptWait() {
+		PhysicalPlayerAction action = new PhysicalPlayerAction() {
+			
+			@Override
+			public void perform() throws NotActivableException {
+				try {
+					controllerLock.lock();
+					System.out.println("Controller: Wait all expected prompts are handled."+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
+					waitForPromptsFinished = true;
+					controllerCondition.await();
+					waitForPromptsFinished = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					controllerLock.unlock();
+				}		
 			}
 		};
 		actionsToPerform.add(action);
@@ -196,6 +292,12 @@ public class PhysicalTestPlayer implements Runnable{
 				}
 			}, "ControllerThread_"+player.getID()).start(); 
 		}else game.getActiveBattle().proceed(promptedPlayer);
+		expectedPrompts.remove(message.id+"_"+currentIndex);
+		if(expectedPrompts.size() == 0) {
+			currentKeyIndexOfExpectedPrompt.clear();
+			keyIndexOfExpectedPrompt.clear();
+			allPromptsAreFinished();
+		}
 	}
 	
 	private int getCurrentPrompKeyIndex(String id) {
@@ -207,15 +309,16 @@ public class PhysicalTestPlayer implements Runnable{
 
 	@Override
 	public void run() {
-		lock.lock();
+		controllerLock.lock();
 		System.out.println("Controller started"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 		System.out.println("Controller: Wait until game gives control"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 		try {
-			gameCondition.await(10, TimeUnit.SECONDS);
+			//gameCondition.await(10, TimeUnit.SECONDS);
+			controllerCondition.await();
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}finally {
-			lock.unlock();
+			controllerLock.unlock();
 		}
 		System.out.println("Controller runs"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
 		if(game.getActivePlayer() == player) {
@@ -228,22 +331,6 @@ public class PhysicalTestPlayer implements Runnable{
 				}
 			}
 			actionsToPerform.clear();
-		}
-		lock.lock();
-		try {
-			System.out.println("Controller: Wait until game finished"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
-			gameCondition.await(5, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}finally {
-			lock.unlock();
-		}
-		System.out.println("Controller: Wake-up test"+" (Player-"+player.getID()+", Thread"+Thread.currentThread().getName()+")");
-		lockTest.lock();
-		try {
-			testCondition.signal();
-		} finally {
-		    lockTest.unlock();
 		}
 	}
 	

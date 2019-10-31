@@ -37,6 +37,12 @@
 			"zones" : ["SummonZone"]
 		},
 		{
+			"actionName" : "AttackCollector",
+			"cardTypes" : ["Summon"],
+			"phases" : ["Main"],
+			"zones" : ["SummonZone"]
+		},
+		{
 			"actionName" : "BlockPlayerAttack",
 			"cardTypes" : ["Summon"],
 			"phases" : [],

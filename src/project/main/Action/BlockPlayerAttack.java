@@ -1,22 +1,26 @@
 package project.main.Action;
 
 import project.main.Card.*;
+import project.main.GameApplication.Application;
 import project.main.GameApplication.Battle;
 import project.main.GameApplication.Player;
 import project.main.GameApplication.ProcessesBattle;
 import project.main.Listeners.GameActionListener;
 import project.main.Listeners.GameListener;
 import project.main.exception.NotActivableException;
+import project.main.util.GameMessageProvider;
 
 public class BlockPlayerAttack extends Action implements GameActionListener {
 	
 	public AttackPlayer actionToBlock;
 	
-	public BlockPlayerAttack() {
+	@Override
+	public void initialize() {
+		super.initialize();
 		actionToBlock = null;
 		GameListener.getInstance().addGameActionListener(this);
 	}
-	
+
 	@Override
 	public String getCode() {
 		return "BlockPlayerAttack";
@@ -65,9 +69,9 @@ public class BlockPlayerAttack extends Action implements GameActionListener {
 	public void actionActivated(GameAction action) {
 		if(action.getCode().equals("AttackPlayer")) {
 			if(action.getCard().getOwningPlayer() != owningCard.getOwningPlayer() && !((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.NOT_IN_GAME)) {
-				game.forbidGameStackProcessing(owningCard.getOwningPlayer());
 				actionToBlock = (AttackPlayer)action;
 				setActiv(owningCard.getOwningPlayer());
+				game.prompt(owningCard.getOwningPlayer(), GameMessageProvider.getInstance().getMessage("#9", Application.getInstance().getLanguage()));
 			}
 		}
 

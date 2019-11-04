@@ -10,6 +10,7 @@ import project.main.Action.Stackable;
 import project.main.Card.Card;
 import project.main.Card.CollectsMagicEnergy;
 import project.main.Effect.Effect;
+import project.main.GameApplication.ControlsStackables;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.IsPhaseInGame;
@@ -224,6 +225,12 @@ public class MokProvider {
 
 			@Override
 			public CollectsMagicEnergy getMagicEnergyStock() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public ControlsStackables getController() {
 				// TODO Auto-generated method stub
 				return null;
 			}

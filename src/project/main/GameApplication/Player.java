@@ -87,4 +87,9 @@ public interface Player{
 	 * @return CollectsMagicEnergy 
 	 */
 	public CollectsMagicEnergy getMagicEnergyStock();
+	/**
+	 * Returns the controller associated with the player
+	 * @return ControlsStackables controller
+	 */
+	public ControlsStackables getController();
 }

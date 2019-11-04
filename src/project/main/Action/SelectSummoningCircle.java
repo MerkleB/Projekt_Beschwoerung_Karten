@@ -53,4 +53,22 @@ public class SelectSummoningCircle extends Action {
 		return circle.getGame();
 	}
 
+	@Override
+	public void setActiv(Player player) {
+		activ = true;
+		actionIsActivFor = player;
+	}
+
+	@Override
+	public void setActivBy(Stackable stackable, Player player) {
+		setActiv(player);
+		activator = stackable;
+	}
+
+	@Override
+	public void setInactiv() {
+		activ = false;
+		actionIsActivFor = null;
+	}
+
 }

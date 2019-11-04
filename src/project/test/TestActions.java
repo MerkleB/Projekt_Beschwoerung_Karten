@@ -255,7 +255,9 @@ public class TestActions {
 		}
 		app.setGame(game);
 		PhysicalTestPlayer controller1 = new PhysicalTestPlayer(player1, game, gameCond, testCond, lockGame, lockTest);
+		PhysicalTestPlayer controller2 = new PhysicalTestPlayer(player2, game, gameCond, testCond, lockGame, lockTest);
 		player1.setController(controller1);
+		player2.setController(controller2);
 		IsAreaInGame hand = player1.getGameZone("HandZone");
 		IsAreaInGame deck = player1.getGameZone("DeckZone");
 		Card card1 = deck.getCards().get(3);
@@ -1790,7 +1792,7 @@ public class TestActions {
 			Condition cond = game.getActivePhase().getActiveGameStack().getCondition();
 			try {
 				lock.lock();
-				System.out.println("Controller Player 1 wants to process the stack.");
+				System.out.println("Controller Player 1 wants to block the attack.");
 				game.processGameStack(player1);
 				cond.await();
 			} catch (InterruptedException e) {
@@ -1799,25 +1801,6 @@ public class TestActions {
 				lock.unlock();
 			}
 		});
-//		GameListener.getInstance().addGameActionListener(new GameActionListener() {
-//			
-//			@Override
-//			public void actionExecuted(GameAction action) {
-//			}
-//			
-//			@Override
-//			public void actionActivated(GameAction action) {
-//				if(action.getCode().equals("AttackCollector")) {
-//					if(action.getActivator() == player2) {
-//						MessageInLanguage message = new MessageInLanguage();
-//						message.id = "#0";
-//						message.text = "Test case prompts player to activate an action.";
-//						message.language = "EN";
-//						controller1.prompt(player1, message);
-//					}
-//				}
-//			}
-//		});
 		//Ensure that blocker is faster than card 2
 		((Summon)blocker).getStatus().addStatusChange(new StatusChange(StatusChange.INITIATIVE, UUID.randomUUID(), StatusChange.TYPE_ADDITION, 2));
 		controller2.addAction("AttackCollector", card2.getID(), "SummonZone", null);

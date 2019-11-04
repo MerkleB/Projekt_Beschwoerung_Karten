@@ -13,6 +13,7 @@ import project.main.util.GameMessageProvider;
 public class BlockCollectorAttack extends Action implements GameActionListener {
 	
 	public AttackCollector actionToBlock;
+	public MagicCollector savedCollector;
 	
 	@Override
 	public void initialize() {
@@ -76,9 +77,8 @@ public class BlockCollectorAttack extends Action implements GameActionListener {
 			actionToBlock = (AttackCollector)action;
 		}
 		if(action.getCode().equals("SelectMagicCollector") && actionToBlock != null && action.getCard().getOwningPlayer() == owningCard.getOwningPlayer()) {
+			savedCollector = action.getCard().getCollector();
 			setActiv(owningCard.getOwningPlayer());
-			String[] parameters = {action.getCard().getCollector().getRealCard().getName(), action.getCard().getCollector().getFreeEnergy()+"", action.getCard().getCollector().getBlockedEnergy()+"", action.getCard().getCollector().getUsedEnergy()+"", action.getCard().getCollector().getDepletedEnergy()+""};
-			game.prompt(owningCard.getOwningPlayer(), GameMessageProvider.getInstance().getMessage("#10", Application.getInstance().getLanguage(), parameters));
 		}
 
 	}

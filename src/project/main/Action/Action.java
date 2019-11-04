@@ -108,12 +108,12 @@ public abstract class Action implements GameAction {
 	public void setActiv(Player player) {
 		activ = true;
 		actionIsActivFor = player;
+		owningCard.getOwningPlayer().getController().stackableWasSetActive(this);
 	}
 
 	@Override
 	public void setActivBy(Stackable stackable, Player player) {
-		activ = true;
-		actionIsActivFor = player;
+		setActiv(player);
 		activator = stackable;
 	}
 
@@ -121,6 +121,7 @@ public abstract class Action implements GameAction {
 	public void setInactiv() {
 		activ = false;
 		actionIsActivFor = null;
+		owningCard.getOwningPlayer().getController().stackableWasSetInactive(this);
 	}
 
 	@Override

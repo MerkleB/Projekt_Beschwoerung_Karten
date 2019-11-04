@@ -9,9 +9,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.plaf.SliderUI;
 
+import project.main.Action.BlockCollectorAttack;
 import project.main.Action.GameAction;
+import project.main.Action.Stackable;
 import project.main.Card.Card;
 import project.main.GameApplication.AcceptPromptAnswers;
+import project.main.GameApplication.Application;
+import project.main.GameApplication.ControlsStackables;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.OwnsGameStack;
@@ -20,13 +24,14 @@ import project.main.GameApplication.SummonZone;
 import project.main.GameApplication.SummoningCircle;
 import project.main.exception.NotActivableException;
 import project.main.jsonObjects.MessageInLanguage;
+import project.main.util.GameMessageProvider;
 
 /**
  * Moks the actions of a physical existing player for testing purposes
  * @author D054525
  *
  */
-public class PhysicalTestPlayer implements Runnable{
+public class PhysicalTestPlayer implements Runnable, ControlsStackables{
 	private Player player;
 	private Game game;
 	public boolean hasControl;
@@ -291,7 +296,11 @@ public class PhysicalTestPlayer implements Runnable{
 					e.printStackTrace();
 				}
 			}, "ControllerThread_"+player.getID()).start(); 
-		}else game.getActiveBattle().proceed(promptedPlayer);
+		}else {
+			if(game.getActiveBattle() != null) {
+				game.getActiveBattle().proceed(promptedPlayer);
+			}
+		}
 		expectedPrompts.remove(message.id+"_"+currentIndex);
 		if(expectedPrompts.size() == 0) {
 			currentKeyIndexOfExpectedPrompt.clear();
@@ -337,5 +346,25 @@ public class PhysicalTestPlayer implements Runnable{
 	@FunctionalInterface
 	public interface PhysicalPlayerAction{
 		public void perform() throws NotActivableException;
+	}
+
+	@Override
+	public void stackableWasSetActive(Stackable stackable) {
+		String messageID = "";
+		
+		switch(stackable.getCode()) {
+		case "BlockCollectorAttack":
+			messageID = "#10";
+			BlockCollectorAttack action = (BlockCollectorAttack)stackable;
+			String[] parameters = {action.savedCollector.getRealCard().getName(), action.savedCollector.getFreeEnergy()+"", action.savedCollector.getBlockedEnergy()+"", action.savedCollector.getUsedEnergy()+"", action.savedCollector.getDepletedEnergy()+""};
+			prompt(player, GameMessageProvider.getInstance().getMessage("#10", Application.getInstance().getLanguage(), parameters));
+			break;
+		}
+	}
+
+	@Override
+	public void stackableWasSetInactive(Stackable stackable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

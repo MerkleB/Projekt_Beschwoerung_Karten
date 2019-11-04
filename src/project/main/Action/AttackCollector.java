@@ -19,7 +19,7 @@ public class AttackCollector extends Action {
 	
 	public MagicCollector attackedCollector;
 	private GameActionListener listener;
-	private SelectMagicCollector selectAction;
+	public SelectMagicCollector selectAction;
 	
 	@Override
 	public String getCode() {
@@ -31,14 +31,14 @@ public class AttackCollector extends Action {
 		super.activate(activator);
 		selectAttackedCollector();
 		game.getActivePhase().getActiveGameStack().addEntry(this);
-		GameListener.getInstance().actionActivated(this);
+		raiseActionActivated();
 	}
 
 	@Override
 	public void activateBy(Stackable activator, Player activatingPlayer) throws NotActivableException {
 		super.activateBy(activator, activatingPlayer);
 		selectAttackedCollector();
-		GameListener.getInstance().actionActivated(this);
+		raiseActionActivated();
 	}
 
 	@Override
@@ -130,5 +130,8 @@ public class AttackCollector extends Action {
 		};
 		GameListener.getInstance().addGameActionListener(listener);
 	}
-
+	
+	private void raiseActionActivated() {
+		GameListener.getInstance().actionActivated(this);
+	}
 }

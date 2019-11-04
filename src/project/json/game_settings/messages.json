@@ -59,8 +59,15 @@
 		{ 
 			"id" : "#9",
 			"texts" : [
-				{"language" : "EN", "text" : "You're opponent wants to attack you. What do you want to do?'", "answers" : []},
+				{"language" : "EN", "text" : "Your opponent wants to attack you. What do you want to do?'", "answers" : []},
 				{"language" : "DE", "text" : "Dein Gegner will dich angreifen. Was möchtest du tun?", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#10",
+			"texts" : [
+				{"language" : "EN", "text" : "Your opponent wants to attack your magic collector &0 (Free Energy: &1, Blocked Energy: &2, Used Energy: &3, Depleted Energy: &4). What do you want to do?'", "answers" : []},
+				{"language" : "DE", "text" : "Dein Gegner will deinen Magiesammler &0 (Freie Energie: &1, Blokierte Energie: &2, Genutzte Energie: &3, Erschöpfte Energie: &4) angreifen. Was möchtest du tun?", "answers" : []}
 			]
 		}
 		

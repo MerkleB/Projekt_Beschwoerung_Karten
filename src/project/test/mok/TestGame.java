@@ -98,9 +98,9 @@ public class TestGame implements Game {
 					}else System.out.println("Player "+players[i-1].getID().toString()+" won.");
 				}
 			}
-			round++;
 			if(playerIndex == 1) {
 				playerIndex = 0;
+				round++;
 			}else {
 				playerIndex = 1;
 			}

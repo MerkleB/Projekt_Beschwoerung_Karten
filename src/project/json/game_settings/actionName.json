@@ -19,7 +19,8 @@
 			{"code" : "SelectSummoningCircle", "name" : "Select summoning circle"},
 			{"code" : "WithdrawFromBattle", "name" : "Withdraw from battle"},
 			{"code" : "UnimmobilizeSummon", "name" : "Unimmobilize summon"},
-			{"code" : "BlockPlayerAttack", "name" : "Block attack"}
+			{"code" : "BlockPlayerAttack", "name" : "Block attack"},
+			{"code" : "BlockCollectorAttack", "name" : "Block collector attack"}
 		] 
 		},
 		{
@@ -41,7 +42,8 @@
 			{"code" : "SelectSummoningCircle", "name" : "Beschwörungskreis auswählen"},
 			{"code" : "WithdrawFromBattle", "name" : "Beschwörung zurück ziehen"},
 			{"code" : "UnimmobilizeSummon", "name" : "Beschwöhrung remobilisieren"},
-			{"code" : "BlockPlayerAttack", "name" : "Angriff abwehren"}   
+			{"code" : "BlockPlayerAttack", "name" : "Angriff abwehren"}  ,
+			{"code" : "BlockCollectorAttack", "name" : "Angriff auf Magiesammler abwehren"} 
 		] 
 		}
 	]

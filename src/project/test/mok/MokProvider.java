@@ -234,6 +234,18 @@ public class MokProvider {
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			@Override
+			public void setGame(Game game) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public Game getGame() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
 	}
 

@@ -88,6 +88,16 @@ public interface Player{
 	 */
 	public CollectsMagicEnergy getMagicEnergyStock();
 	/**
+	 * Sets the game
+	 * @param game
+	 */
+	public void setGame(Game game);
+	/**
+	 * Retrieves the game
+	 * @return game
+	 */
+	public Game getGame();
+	/**
 	 * Returns the controller associated with the player
 	 * @return ControlsStackables controller
 	 */

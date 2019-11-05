@@ -367,4 +367,10 @@ public class PhysicalTestPlayer implements Runnable, ControlsStackables{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void executeCommand(String command) {
+		// TODO Auto-generated method stub
+		
+	}
 }

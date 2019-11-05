@@ -5,17 +5,26 @@ import java.util.UUID;
 
 import project.main.Action.GameAction;
 import project.main.Action.SelectSummoningCircle;
+import project.main.Action.Stackable;
+import project.main.Card.ActionOwner;
 import project.main.Card.Card;
 import project.main.Card.Summon;
+import project.main.exception.NotActivableException;
 
-public class SummoningCircle implements HoldingCards {
+public class SummoningCircle implements HoldingCards, ActionOwner {
 	
 	private Summon placedSummon;
 	private Game game;
 	private GameAction selectAction;
+	private UUID id;
 	
 	public SummoningCircle() {
 		selectAction = new SelectSummoningCircle(this);
+		id = UUID.randomUUID();
+	}
+	
+	public UUID getID() {
+		return id;
 	}
 	
 	public boolean isFree() {
@@ -28,12 +37,71 @@ public class SummoningCircle implements HoldingCards {
 		return selectAction;
 	}
 	
-	public void setActivBy(Player activFor, GameAction activatedBy) {
-		selectAction.setActivBy(activatedBy, activFor);
+	@Override
+	public void setActiv(ArrayList<String> actions, Player activFor) {
+		for(String action : actions) {
+			if(action.equals(selectAction.getCode())) {
+				selectAction.setActiv(activFor);
+				break;
+			}
+		}
 	}
-	
-	public void setInactiv() {
+
+	@Override
+	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator) {
+		for(String action : actions) {
+			if(action.equals(selectAction.getCode())) {
+				selectAction.setActivBy(activator, activFor);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void setInactive() {
 		selectAction.setInactiv();
+	}
+
+	@Override
+	public void setInactive(ArrayList<Stackable> exceptionList) {
+		boolean exceptionFound = false;
+		for(Stackable action : exceptionList) {
+			if(action != selectAction) {
+				exceptionFound = true;
+			}
+		}
+		if(!exceptionFound) {
+			selectAction.setInactiv();
+		}
+	}
+
+	@Override
+	public void activateGameAction(String action, Player activatingPlayer) {
+		if(action.equals(selectAction.getCode())) {
+			try {
+				selectAction.activate(activatingPlayer);
+			} catch (NotActivableException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
+	@Override
+	public void activateGameAction(String action, Player activatingPlayer, Stackable activator) {
+		if(action.equals(selectAction.getCode())) {
+			try {
+				selectAction.activateBy(activator, activatingPlayer);
+			} catch (NotActivableException e) {
+				System.out.println(e.getMessage());
+			}
+		}		
+	}
+
+	@Override
+	public ArrayList<GameAction> getActions() {
+		ArrayList<GameAction> actions = new ArrayList<GameAction>();
+		actions.add(selectAction);
+		return actions;
 	}
 	
 	@Override

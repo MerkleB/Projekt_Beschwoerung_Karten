@@ -13,4 +13,13 @@ public interface ControlsStackables {
 	 * @param stackable
 	 */
 	public void stackableWasSetInactive(Stackable stackable);
+	/**
+	 * Executes the given command.
+	 * Format: [Stackable-Type]:[Stackable-Code]@[PathPart1-PathPart2]
+	 * E.g. Action:EvokeSummon@Player=APlayerIdHandZone-Card=ASummonID123
+	 * or Action:Draw@DeckZone
+	 * or Action:Surrender@Player=APlayerID
+	 * @param command
+	 */
+	public void executeCommand(String command);
 }

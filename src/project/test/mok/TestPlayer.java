@@ -11,6 +11,7 @@ import project.main.Card.Summon;
 import project.main.GameApplication.CollectorZone;
 import project.main.GameApplication.DeckZone;
 import project.main.GameApplication.DiscardPile;
+import project.main.GameApplication.Game;
 import project.main.GameApplication.HandZone;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.MagicEnergyStock;
@@ -127,6 +128,18 @@ public class TestPlayer implements Player {
 	@Override
 	public CollectsMagicEnergy getMagicEnergyStock() {
 		return magicEnergyStock;
+	}
+
+	@Override
+	public void setGame(Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Game getGame() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

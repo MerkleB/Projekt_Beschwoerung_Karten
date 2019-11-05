@@ -82,9 +82,11 @@ public class EvokeSummon extends Action {
 	private void selectSummoningCircle() {
 		project.main.GameApplication.SummonZone zone = (project.main.GameApplication.SummonZone)owningCard.getOwningPlayer().getGameZone(SummonZone);
 		ArrayList<SummoningCircle> circles = zone.getCircles();
+		ArrayList<String> actions = new ArrayList<String>();
+		actions.add("SelectSummoningCircle");
 		for(SummoningCircle circle : circles) {
 			if(circle.isFree()) {
-				circle.setActivBy(actionIsActivFor, this);
+				circle.setActivBy(actions, actionIsActivFor, this);
 			}
 		}
 		listener = new GameActionListener() {

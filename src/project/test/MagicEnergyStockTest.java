@@ -52,6 +52,7 @@ public class MagicEnergyStockTest {
 	CollectorZone collectorZone;
 	SummonZone summonZone;
 	PhysicalTestPlayer controller;
+	PhysicalTestPlayer controller2;
 	ZoneCardProvider cardProvider;
 	
 	@BeforeClass
@@ -108,7 +109,9 @@ public class MagicEnergyStockTest {
 		summonZone = (SummonZone)player.getGameZone("SummonZone");
 		summonZone.setGame(game);
 		controller = new PhysicalTestPlayer(player, game, null, null, null, null);
+		controller2 = new PhysicalTestPlayer(player2, game, null, null, null, null);
 		((TestPlayer)player).setController(controller);
+		((TestPlayer)player2).setController(controller2);
 		cardProvider = new ZoneCardProvider();
 		cut = player.getMagicEnergyStock();
 	}

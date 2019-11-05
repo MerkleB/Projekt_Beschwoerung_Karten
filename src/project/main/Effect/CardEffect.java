@@ -4,6 +4,7 @@ import java.util.Hashtable;
 
 import project.main.Card.Card;
 import project.main.GameApplication.Application;
+import project.main.GameApplication.ControlsStackables;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.Player;
 import project.main.exception.NotActivableException;
@@ -64,13 +65,16 @@ public abstract class CardEffect implements Effect {
 	public void setActiv(Player activFor) {
 		isActiv = true;
 		isActivFor = activFor;
+		activFor.getController().stackableWasSetActive(this);
 	}
 
 	@Override
 	public void setInactiv() {
+		ControlsStackables controller = owningCard.getOwningPlayer().getController();
 		isActiv = false;
 		isActivFor = null;
 		isActivated = false;
+		controller.stackableWasSetInactive(this);
 	}
 
 	@Override

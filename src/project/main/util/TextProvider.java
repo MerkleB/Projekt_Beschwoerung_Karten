@@ -19,16 +19,21 @@ import project.main.jsonObjects.EffectDefinitionList;
 import project.main.jsonObjects.EffectDescription;
 import project.main.jsonObjects.LanguageName;
 import project.main.jsonObjects.LanguageTrivia;
+import project.main.jsonObjects.Term;
+import project.main.jsonObjects.TermInLanguage;
+import project.main.jsonObjects.TermList;
 
 public class TextProvider implements ManagesTextLanguages {
 	
 	private String resourcePathCards;
 	private String resourcePathActions;
 	private String resourcePathEffects;
+	private String resourcePathTerms;
 	private Hashtable<String, Hashtable<String, String>> triviasByLanguageAndCardID;
 	private Hashtable<String, Hashtable<String, String>> namesByLanguageAndCardID;
 	private Hashtable<String, Hashtable<String, String>> actionsByLanguageAndCode;
 	private Hashtable<String, Hashtable<String, EffectDescription>> effectsByClassAndLanguage;
+	private Hashtable<String, Hashtable<String, TermInLanguage>> termsByIdAndLanguage;
 	
 	public static ManagesTextLanguages getInstance() {
 		return new TextProvider();
@@ -38,10 +43,12 @@ public class TextProvider implements ManagesTextLanguages {
 		resourcePathCards = "project/json/card_lists/";
 		resourcePathActions = "project/json/game_settings/actionName.json";
 		resourcePathEffects = "project/json/game_settings/effects.json";
+		resourcePathTerms = "project/json/game_settings/terms.json";
 		triviasByLanguageAndCardID = new Hashtable<String, Hashtable<String, String>>();
 		namesByLanguageAndCardID = new Hashtable<String, Hashtable<String, String>>();
 		actionsByLanguageAndCode = new Hashtable<String, Hashtable<String, String>>();
 		effectsByClassAndLanguage = new Hashtable<String, Hashtable<String, EffectDescription>>();
+		termsByIdAndLanguage = new Hashtable<String, Hashtable<String, TermInLanguage>>();
 	}
 	
 	@Override
@@ -83,6 +90,15 @@ public class TextProvider implements ManagesTextLanguages {
 		JsonReader reader = new JsonReader(new InputStreamReader(jsonStream));
 		EffectDefinitionList effects = gson.fromJson(reader, EffectDefinitionList.class);
 		convertToHashtable(effects);
+	}
+	
+	private void loadTerms() {
+		FileLoader loader = new FileLoader();
+		InputStream jsonStream = loader.getFileAsStream(resourcePathTerms);
+		Gson gson = new Gson();
+		JsonReader reader = new JsonReader(new InputStreamReader(jsonStream));
+		TermList termList = gson.fromJson(reader, TermList.class);
+		convertToHashtable(termList);
 	}
 	
 	private void convertToHashtable(CardTexts texts) {
@@ -134,6 +150,19 @@ public class TextProvider implements ManagesTextLanguages {
 			}
 		}
 	}
+	
+	private void convertToHashtable(TermList termList) {
+		for(Term term : termList.terms) {
+			Hashtable<String, TermInLanguage> termLanguages = termsByIdAndLanguage.get(term.id);
+			if(termLanguages == null) {
+				termLanguages = new Hashtable<String, TermInLanguage>();
+				termsByIdAndLanguage.put(term.id, termLanguages);
+			}
+			for(TermInLanguage text : term.texts) {
+				termLanguages.put(text.language, text);
+			}
+		}
+	}
 
 	@Override
 	public String getCardTrivia(String cardID, String language) {
@@ -166,6 +195,16 @@ public class TextProvider implements ManagesTextLanguages {
 			definitions = effectsByClassAndLanguage.get(effectClass);
 		}
 		return definitions.get(language);
+	}
+
+	@Override
+	public TermInLanguage getTerm(String termId, String language) {
+		Hashtable<String, TermInLanguage> termTexts = termsByIdAndLanguage.get(termId);
+		if(termTexts == null) {
+			loadTerms();
+			termTexts = termsByIdAndLanguage.get(termId);
+		}
+		return termTexts.get(language);
 	}
 
 }

@@ -63,6 +63,16 @@ public class TextProviderTest {
 		}
 	}
 	
+	@Test
+	public void testGetTerm() {
+		if(!"Summon".equals(cut.getTerm("Summon", "EN").text)) {
+			fail("Expected name of term Summon is Summon in language EN.");
+		}
+		if(!"Beschwörung".equals(cut.getTerm("Summon", "DE").text)) {
+			fail("Expected name of tern Summon is Beschwörung in language DE.");
+		}
+	}
+	
 	public void setPathToTestResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		String testPath = "project/test/testJSON/";
 		Field pathField;
@@ -74,6 +84,11 @@ public class TextProviderTest {
 		pathFieldAction = cut.getClass().getDeclaredField("resourcePathActions");
 		pathFieldAction.setAccessible(true);
 		pathFieldAction.set(cut, testPathAction);
+		String testPathTerm = "project/test/testJSON/terms.json";
+		Field pathFieldTerm;
+		pathFieldTerm = cut.getClass().getDeclaredField("resourcePathTerms");
+		pathFieldTerm.setAccessible(true);
+		pathFieldTerm.set(cut, testPathTerm);
 	}
 	
 	@AfterClass

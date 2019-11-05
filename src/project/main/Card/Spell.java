@@ -1,6 +1,5 @@
 package project.main.Card;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
@@ -9,10 +8,13 @@ import java.util.UUID;
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
 import project.main.Effect.Effect;
+import project.main.GameApplication.Application;
 import project.main.GameApplication.Player;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
 import project.main.exception.NotActivableException;
+import project.main.util.ManagesTextLanguages;
+import project.main.util.TextProvider;
 
 public class Spell implements Card {
 
@@ -171,21 +173,17 @@ public class Spell implements Card {
 	}
 
 	@Override
-	public void show() {
-		System.out.println("<<<"+getType().toString()+"-Card>>>");
-		System.out.println("Name: "+getName());
-		System.out.println("MagicEnergy: "+getNeededMagicEnergy());
+	public String toString() {
+		ManagesTextLanguages text = TextProvider.getInstance();
+		String language = Application.getInstance().getLanguage();
+		String string =  text.getTerm("Type", language)+": "+getType().toString()+";"
+				+text.getTerm("Name", language)+": "+getName()+";"
+				+text.getTerm("NeededMagicEnergy", language)+": "+getNeededMagicEnergy()+";";
 		for(int i=0; i<effects.length; i++) {
-			System.out.println("Effect"+i+": "+effects[i].getDescription());
+			string = string+text.getTerm("Effect", language)+"-"+i+": "+effects[i].getDescription()+";";
 		}
-		System.out.println("<<<Trivia>>>");
-		System.out.println(getTrivia());
-		System.out.println("<<<End-Card>>>");
-	}
-
-	@Override
-	public void show(Graphics2D graphics) {
-		// TODO Auto-generated method stub
+		string = string+text.getTerm("Trivia", language)+": "+getTrivia();
+		return string;
 	}
 
 	@Override

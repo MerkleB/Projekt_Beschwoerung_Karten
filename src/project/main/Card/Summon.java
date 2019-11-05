@@ -1,6 +1,5 @@
 package project.main.Card;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
@@ -9,12 +8,15 @@ import java.util.UUID;
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
 import project.main.Effect.Effect;
+import project.main.GameApplication.Application;
 import project.main.GameApplication.Player;
 import project.main.build_cards.CardTypes;
 import project.main.build_cards.KnowsSummonAscentHierarchy;
 import project.main.exception.NoCardException;
 import project.main.exception.NotActivableException;
+import project.main.util.ManagesTextLanguages;
 import project.main.util.RankLevelMapper;
+import project.main.util.TextProvider;
 
 /**
  * Represents a Summon Card in Game
@@ -190,24 +192,24 @@ public class Summon implements Card{
 	}
 
 	@Override
-	public void show() {
-		System.out.println("<<<"+getType().toString()+"-Card>>>");
-		System.out.println("Name: "+getName());
-		System.out.println("Class: "+status.getSummonClass()+" Rank: "+getRank());
-		System.out.println("Element: "+status.getElement());
-		System.out.println("SummingPoints: "+status.getSummoningPoints() + " Preservation: "+status.getMagicPreservationValue());
-		System.out.println("Attack: "+status.getAttack()+" Heal: "+status.getHeal()+" Vitality: "+status.getVitality());
+	public String toString() {
+		ManagesTextLanguages text = TextProvider.getInstance();
+		String language = Application.getInstance().getLanguage();
+		String string = text.getTerm("Type", language)+": "+text.getTerm(getType().toString(), language)+";"
+				+text.getTerm("Name", language)+": "+getName()+";"
+				+text.getTerm("SummonClass", language)+": "+status.getSummonClass()+";"
+				+text.getTerm("Rank", language)+": "+getRank()+";"
+				+text.getTerm("Element", language)+": "+status.getElement()+";"
+				+text.getTerm("SummingPoints", language)+": "+status.getSummoningPoints() + ";"
+				+text.getTerm("SummingPoints", language)+" Preservation: "+status.getMagicPreservationValue()+";"
+				+text.getTerm("Attack", language)+": "+status.getAttack()+";"
+				+text.getTerm("Heal", language)+" : "+status.getHeal()+";"
+				+text.getTerm("Vitality", language)+": "+status.getVitality()+";";
 		for(int i=0; i<effects.length; i++) {
-			System.out.println("Effect"+i+": "+effects[i].getDescription());
+			string = string+text.getTerm("Effect", language)+"-"+i+": "+effects[i].getDescription()+";";
 		}
-		System.out.println("<<<Trivia>>>");
-		System.out.println(getTrivia());
-		System.out.println("<<<End-Card>>>");
-	}
-	
-	@Override
-	public void show(Graphics2D graphics) {
-		// TODO Auto-generated method stub
+		string = string+text.getTerm("Trivia", language)+": "+getTrivia();
+		return string;
 	}
 
 	@Override

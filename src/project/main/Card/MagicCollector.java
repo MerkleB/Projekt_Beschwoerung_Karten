@@ -1,5 +1,4 @@
 package project.main.Card;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
@@ -8,11 +7,14 @@ import java.util.UUID;
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
 import project.main.Effect.Effect;
+import project.main.GameApplication.Application;
 import project.main.GameApplication.Player;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
 import project.main.exception.NoCollectorException;
 import project.main.exception.NotActivableException;
+import project.main.util.ManagesTextLanguages;
+import project.main.util.TextProvider;
 
 public class MagicCollector implements Card, CollectsMagicEnergy{
 
@@ -288,11 +290,17 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 		}else return false;
 	}
 	
-	protected void showCollector() {
-		System.out.println("<<<Collector>>>");
-		System.out.println("Free: "+freeEnergy+" Used: "+usedEnergy+" Depleted: "+depletedEnergy);
-		System.out.println("Health: "+currentHealth);
-		System.out.println("<<<End-Collector>>>");
+	@Override
+	public String toString() {
+		ManagesTextLanguages text = TextProvider.getInstance();
+		String language = Application.getInstance().getLanguage();
+		String string =  text.getTerm("Type", language)+": "+getType().toString()+";"
+				+text.getTerm("FreeEnergy", language)+": "+freeEnergy+";"
+				+text.getTerm("BlockedEnergy", language)+": "+blockedEnergy+";"
+				+text.getTerm("UsedEnergy", language)+": "+usedEnergy+";"
+				+text.getTerm("DepletedEnergy", language)+":"+depletedEnergy+";"
+				+text.getTerm("Name", language)+"Health:"+currentHealth;
+		return string;
 	}
 
 	@Override
@@ -338,17 +346,6 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	@Override
 	public void setID(UUID uuid) throws NoCardException {
 		throw new NoCardException(realCard.getName()+" is currently used as collector!");	
-	}
-
-	@Override
-	public void show() {
-		showCollector();
-	}
-
-	@Override
-	public void show(Graphics2D graphics) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

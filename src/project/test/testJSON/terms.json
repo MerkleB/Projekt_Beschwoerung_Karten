@@ -1,0 +1,12 @@
+{
+	"terms" : [
+                {
+                    "id" : "Summon",
+                    "texts":
+                    [
+                        {"language" : "EN", "text" : "Summon"},
+                        {"language" : "DE", "text" : "Beschwörung"}
+                    ]
+                } 
+	]
+}

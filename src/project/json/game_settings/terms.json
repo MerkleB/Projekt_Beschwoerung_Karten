@@ -1,0 +1,333 @@
+{
+	"terms" : [
+                {
+                    "id" : "Action", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Action"},
+						                        {"language" : "DE", "text" : "Aktion"}
+						                    ]
+                },
+                {
+                    "id" : "ActivityStatus", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Activity Status"},
+						                        {"language" : "DE", "text" : "Aktivitätsstatus"}
+						                    ]
+                },
+                {
+                    "id" : "Attack", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Attack"},
+						                        {"language" : "DE", "text" : "Angriff"}
+						                    ]
+                },
+                {
+                    "id" : "Main", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Main"},
+						                        {"language" : "DE", "text" : "Hauptphase"}
+						                    ]
+                },
+                {
+                    "id" : "Battle", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Battle"},
+						                        {"language" : "DE", "text" : "Kampf"}
+						                    ]
+                },
+                {
+                    "id" : "BlockedEnergy", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Blocked Energy"},
+						                        {"language" : "DE", "text" : "Blokierte Energie"}
+						                    ]
+                },
+                {
+                    "id" : "Card", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Card"},
+						                        {"language" : "DE", "text" : "Karte"}
+						                    ]
+                },
+                {
+                    "id" : "ClashBegin", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Clash Begin"},
+						                        {"language" : "DE", "text" : "Vor dem Schlagbtausch"}
+						                    ]
+                },
+                {
+                    "id" : "ClashEnd", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Clash End"},
+						                        {"language" : "DE", "text" : "Nach dem Schlagabtausch"}
+						                    ]
+                },
+                {
+                    "id" : "CollectorActions", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Collector Actions"},
+						                        {"language" : "DE", "text" : "Sammleraktionen"}
+						                    ]
+                },
+                {
+                    "id" : "DeckZone", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Deck"},
+						                        {"language" : "DE", "text" : "Deck"}
+						                    ]
+                },
+                {
+                    "id" : "DepletedEnergy", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Depleted Energy"},
+						                        {"language" : "DE", "text" : "Erschöpfte Energie"}
+						                    ]
+                },
+                {
+                    "id" : "DiscardPile", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Discard Pile"},
+						                        {"language" : "DE", "text" : "Ablagestapel"}
+						                    ]
+                },
+                {
+                    "id" : "DrawPhase", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Draw Phase"},
+						                        {"language" : "DE", "text" : "Verstärkungsphase"}
+						                    ]
+                },
+                {
+                    "id" : "Durability", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Durability"},
+						                        {"language" : "DE", "text" : "Dauer"}
+						                    ]
+                },
+                {
+                    "id" : "Effect", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Effect"},
+						                        {"language" : "DE", "text" : "Effekt"}
+						                    ]
+                },
+                {
+                    "id" : "Element", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Element"},
+						                        {"language" : "DE", "text" : "Element"}
+						                    ]
+                },
+                {
+                    "id" : "Endphase", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "End Phase"},
+						                        {"language" : "DE", "text" : "Endphase"}
+						                    ]
+                },
+                {
+                    "id" : "FreeEnergy", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Free Energy"},
+						                        {"language" : "DE", "text" : "Freie Energy"}
+						                    ]
+                },
+                {
+                    "id" : "HandZone", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Hand"},
+						                        {"language" : "DE", "text" : "Hand"}
+						                    ]
+                },
+                {
+                    "id" : "Heal", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Heal"},
+						                        {"language" : "DE", "text" : "Heilkraft"}
+						                    ]
+                },
+                {
+                    "id" : "Health", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Health"},
+						                        {"language" : "DE", "text" : "Sammlerenergie"}
+						                    ]
+                },
+                {
+                    "id" : "Immobilized", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Immobilized"},
+						                        {"language" : "DE", "text" : "Immobilisiert"}
+						                    ]
+                },
+                {
+                    "id" : "Initiative", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Initiative"},
+						                        {"language" : "DE", "text" : "Geschwindigkeit"}
+						                    ]
+                },
+                {
+                    "id" : "Level", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Level"},
+						                        {"language" : "DE", "text" : "Level"}
+						                    ]
+                },
+                {
+                    "id" : "MagicCollector", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Magic Collector"},
+						                        {"language" : "DE", "text" : "Magiesammler"}
+						                    ]
+                },
+                {
+                    "id" : "Name", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Name"},
+						                        {"language" : "DE", "text" : "Name"}
+						                    ]
+                },
+                {
+                    "id" : "NeededMagicEnergy", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Needed Magic Energy"},
+						                        {"language" : "DE", "text" : "Benötigte Energie"}
+						                    ]
+                },
+                {
+                    "id" : "Not_In_Game", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Not In Game"},
+						                        {"language" : "DE", "text" : "Nicht im Spiel"}
+						                    ]
+                },
+                {
+                    "id" : "MagicWastage", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Magic Wastage"},
+						                        {"language" : "DE", "text" : "Magische Erschöpfung"}
+						                    ]
+                },
+                {
+                    "id" : "PreservationValue", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Preservation Value"},
+						                        {"language" : "DE", "text" : "Geschwindigkeit"}
+						                    ]
+                },
+                {
+                    "id" : "Rank", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Rank"},
+						                        {"language" : "DE", "text" : "Rang"}
+						                    ]
+                },
+                {
+                    "id" : "Ready", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Ready"},
+						                        {"language" : "DE", "text" : "Bereit"}
+						                    ]
+                },
+                {
+                    "id" : "Trivia", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Trivia"},
+						                        {"language" : "DE", "text" : "Trivia"}
+						                    ]
+                },
+                {
+                    "id" : "Type", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Type"},
+						                        {"language" : "DE", "text" : "Typ"}
+						                    ]
+                },
+                {
+                    "id" : "Shield", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Magical Shield"},
+						                        {"language" : "DE", "text" : "Magischer Schild"}
+						                    ]
+                },
+                {
+                    "id" : "Spell", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Spell"},
+						                        {"language" : "DE", "text" : "Spruch"}
+						                    ]
+                },
+                {
+                    "id" : "StatusChange", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Status Change"},
+						                        {"language" : "DE", "text" : "Statusveränderung"}
+						                    ]
+                },
+                {
+                    "id" : "Summon", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Summon"},
+						                        {"language" : "DE", "text" : "Beschwörung"}
+						                    ]
+                },
+                {
+                    "id" : "SummonClass", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Summon Class"},
+						                        {"language" : "DE", "text" : "Beschwörungsklasse"}
+						                    ]
+                },
+                {
+                    "id" : "SummoningCircle", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Summoning Circle"},
+						                        {"language" : "DE", "text" : "Beschwörungskreis"}
+						                    ]
+                },
+                {
+                    "id" : "SummoningPoints", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Summoning Points"},
+						                        {"language" : "DE", "text" : "Beschwörungspunkte"}
+						                    ]
+                },
+                {
+                    "id" : "SummonZone", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Summon Zone"},
+						                        {"language" : "DE", "text" : "Beschwörungszone"}
+						                    ]
+                },
+                {
+                    "id" : "Used", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Used"},
+						                        {"language" : "DE", "text" : "Verwendet"}
+						                    ]
+                },
+                {
+                    "id" : "UsedEnergy", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Used Energy"},
+						                        {"language" : "DE", "text" : "Genutzte Energie"}
+						                    ]
+                },
+                {
+                    "id" : "Vitality", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Vitality"},
+						                        {"language" : "DE", "text" : "Gesundheit"}
+						                    ]
+                },
+                {
+                    "id" : "RefreshmentPhase", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Refreshment Phase"},
+						                        {"language" : "DE", "text" : "Auffrischungsphase"}
+						                    ]
+                }  
+	]
+}

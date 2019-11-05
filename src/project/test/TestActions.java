@@ -423,6 +423,7 @@ public class TestActions {
 		 */
 		try {
 			ctrlThread1.start();
+			Thread.sleep(10);
 			gameThread.start();
 			System.out.println("Test: Waiting for end game");
 			lockTest.lock();

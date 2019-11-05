@@ -1,6 +1,5 @@
 package project.main.Card;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -24,8 +23,6 @@ public interface Card{
 	public String getCardID();
 	public UUID getID();
 	public void setID(UUID uuid) throws NoCardException;
-	public void show();
-	public void show(Graphics2D graphics);
 	public void setActiv(ArrayList<String> actions, Player activFor);
 	public void setActivBy(ArrayList<String> actions, Player activFor, Stackable activator);
 	public void setInactive();

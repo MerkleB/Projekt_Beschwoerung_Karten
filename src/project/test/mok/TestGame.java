@@ -299,4 +299,16 @@ public class TestGame implements Game {
 		this.activeBattle = battle;		
 	}
 
+	@Override
+	public ReentrantLock getLock() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Condition getCondition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

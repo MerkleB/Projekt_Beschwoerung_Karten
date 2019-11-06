@@ -1,6 +1,8 @@
 package project.main.GameApplication;
 
 import java.util.UUID;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.MapsRankAndLevel;
@@ -105,4 +107,14 @@ public interface Game extends Runnable{
 	 * @param message : Prompt-Message ({@link MessageInLanguage}) 
 	 */
 	public void prompt(Player promptedPlayer, MessageInLanguage message);
+	/**
+	 * Retrieves the lock object
+	 * @return ReentrantLock lock
+	 */
+	public ReentrantLock getLock();
+	/**
+	 * Retrieves the condition object
+	 * @return Condition condition
+	 */
+	public Condition getCondition();
 }

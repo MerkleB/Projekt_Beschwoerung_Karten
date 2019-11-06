@@ -22,13 +22,6 @@
 						                    ]
                 },
                 {
-                    "id" : "Main", "texts":
-						                    [
-						                        {"language" : "EN", "text" : "Main"},
-						                        {"language" : "DE", "text" : "Hauptphase"}
-						                    ]
-                },
-                {
                     "id" : "Battle", "texts":
 						                    [
 						                        {"language" : "EN", "text" : "Battle"},
@@ -183,6 +176,13 @@
 						                    ]
                 },
                 {
+                    "id" : "Main", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Main"},
+						                        {"language" : "DE", "text" : "Hauptphase"}
+						                    ]
+                },
+                {
                     "id" : "Name", "texts":
 						                    [
 						                        {"language" : "EN", "text" : "Name"},
@@ -229,6 +229,13 @@
 						                    [
 						                        {"language" : "EN", "text" : "Ready"},
 						                        {"language" : "DE", "text" : "Bereit"}
+						                    ]
+                },
+                {
+                    "id" : "RefreshmentPhase", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Refreshment Phase"},
+						                        {"language" : "DE", "text" : "Auffrischungsphase"}
 						                    ]
                 },
                 {
@@ -320,13 +327,6 @@
 						                    [
 						                        {"language" : "EN", "text" : "Vitality"},
 						                        {"language" : "DE", "text" : "Gesundheit"}
-						                    ]
-                },
-                {
-                    "id" : "RefreshmentPhase", "texts":
-						                    [
-						                        {"language" : "EN", "text" : "Refreshment Phase"},
-						                        {"language" : "DE", "text" : "Auffrischungsphase"}
 						                    ]
                 }  
 	]

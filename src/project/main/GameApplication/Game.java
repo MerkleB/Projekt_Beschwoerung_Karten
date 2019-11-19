@@ -15,6 +15,11 @@ public interface Game extends Runnable{
 	 */
 	public void run();
 	/**
+	 * Put a player to the game
+	 * @param player
+	 */
+	public void setPlayer(Player player);
+	/**
 	 * Retrieves the mapper of Ranks and level
 	 * @return MapsRankAndLevel mapper
 	 */
@@ -34,7 +39,7 @@ public interface Game extends Runnable{
 	 * @param id : Id of the player
 	 * @return Player : Player of given id
 	 */
-	public Player getPlayer(UUID id);
+	public Player getPlayer(String id);
 	/**
 	 * Retrieves the other player
 	 * @param Player player
@@ -93,6 +98,11 @@ public interface Game extends Runnable{
 	 */
 	public void setActiveBattle(ProcessesBattle battle);
 	/**
+	 * Retrieves the code for the current round.
+	 * @return String of format {RoundNumber}-{PlayerNumber}
+	 */
+	public String getRound();
+	/**
 	 * Prompts the player to give an answer.
 	 * Gives the answer directly to the prompter
 	 * @param promptedPlayer : {@link Player} who was prompted
@@ -117,4 +127,15 @@ public interface Game extends Runnable{
 	 * @return Condition condition
 	 */
 	public Condition getCondition();
+	/**
+	 * Starts a timer which will proceed the game after it ran out 
+	 * @param player
+	 */
+	public void startTimer(Player player);
+	/**
+	 * Stops the current timer
+	 * Can only be done by player who started the player or action of other player
+	 * @param player
+	 */
+	public void stopTimer(Player player);
 }

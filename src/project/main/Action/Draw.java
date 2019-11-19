@@ -7,9 +7,11 @@ import project.main.Card.Card;
 import project.main.GameApplication.AcceptPromptAnswers;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.DeckZone;
+import project.main.GameApplication.DrawPhase;
 import project.main.GameApplication.GameStack;
 import project.main.GameApplication.HandZone;
 import project.main.GameApplication.IsAreaInGame;
+import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
 import project.main.Listeners.GameListener;
 import project.main.exception.NotActivableException;
@@ -58,6 +60,10 @@ public class Draw extends Action implements AcceptPromptAnswers {
 			HandZone hand = (HandZone)player.getGameZone("HandZone");
 			deck.removeCard(owningCard);
 			hand.addCard(owningCard);
+			IsPhaseInGame currentPhase = game.getActivePhase();
+			if(currentPhase.getName().equals("DrawPhase")) {
+				((DrawPhase)currentPhase).setAlreadyDrawn(true);
+			}
 			GameListener.getInstance().actionExecuted(this);
 		}
 	}

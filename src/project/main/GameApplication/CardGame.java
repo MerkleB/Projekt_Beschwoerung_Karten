@@ -1,7 +1,6 @@
 package project.main.GameApplication;
 
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -11,16 +10,18 @@ import project.main.Effect.Effect;
 import project.main.exception.NoCardException;
 import project.main.jsonObjects.MessageInLanguage;
 import project.main.util.RankLevelMapper;
-import project.test.mok.TestPlayer;
+import project.main.util.GameMessageProvider;
 import project.main.util.MapsRankAndLevel;
 
-public class CardGame implements Game {
+public class CardGame implements Game, TimerListener {
 	
 	private static String[] PHASE_NAMES = {"RefreshmentPhase", "DrawPhase", "Main", "Endphase"};
 	private MapsRankAndLevel rankAndLevelMapper; 
 	private boolean[] stackProceed;
 	private Player[] players;
 	private boolean[] proceed;
+	private boolean waitingForStackProceed;
+	//private boolean waitingForProceed;
 	private Player activPlayer;
 	private ArrayList<IsPhaseInGame> phases;
 	private IsPhaseInGame activPhase;
@@ -28,14 +29,20 @@ public class CardGame implements Game {
 	private boolean started;
 	private boolean ended;
 	private int round;
+	private String roundCode;
 	private ProcessesBattle activeBattle;
 	private Condition condition;
 	private ReentrantLock lock;
+	private Thread timerThread;
+	private CountsTimeUntilProceed timer;
+	private Player timerRequestor;
 	
 	public CardGame(Player player1, Player player2) {
 		players = new Player[2];
 		players[0] = player1;
+		player1.setGame(this);
 		players[1] = player2;
+		player2.setGame(this);
 		stackProceed = new boolean[2];
 		stackProceed[0] = false;
 		stackProceed[1] = false;
@@ -48,9 +55,13 @@ public class CardGame implements Game {
 		playerIndex = 0;
 		rankAndLevelMapper = RankLevelMapper.getInstance();
 		phases = getPhases(PHASE_NAMES);
+		for(IsPhaseInGame phase : phases) {
+			phase.setGame(this);
+		}
 		lock = new ReentrantLock();
 		condition = lock.newCondition(); 
-		
+//		waitingForProceed = false;
+		waitingForStackProceed = false;
 	}
 	
 	private ArrayList<IsPhaseInGame> getPhases(String[] phaseNames){
@@ -64,7 +75,7 @@ public class CardGame implements Game {
 				phases.add(new RefreshmentPhase());
 				break;
 			default:
-				phases.add(new GamePhase(name));
+				phases.add(new SimplePhase(name));
 				break;
 			}
 		}
@@ -76,7 +87,8 @@ public class CardGame implements Game {
 		started = true;
 		while(!ended) {
 			activPlayer = players[playerIndex];
-			System.out.println("Start round "+round+"-"+playerIndex);
+			roundCode = round+"-"+playerIndex;
+			System.out.println("Game: Start round "+roundCode);
 			System.out.println("Game: Set activ player: "+activPlayer.getID().toString());
 			PhaseProcessing:
 			for(int i=0; i<phases.size(); i++) {
@@ -84,6 +96,13 @@ public class CardGame implements Game {
 				System.out.println("Game: Process phase "+activPhase.getName()+".");
 				activPhase.process();
 				System.out.println("Game: Await Player signal to proceed");
+				if(i+1 == phases.size()) {
+					String[] parameters = {"30"};
+					timer = new DelayableProceedTimer(30, 0);
+					//waitingForProceed = true;
+					timerThread = new Thread(timer, "Timer-End-Turn");
+					activPlayer.getController().prompt(activPlayer, GameMessageProvider.getInstance().getMessage("#15", Application.getInstance().getLanguage(), parameters));
+				}
 				lock.lock();
 				try {
 					condition.await();
@@ -96,10 +115,10 @@ public class CardGame implements Game {
 				activPhase.leave();
 				System.out.println("Game: phase "+activPhase.getName()+" ended.");
 				for(int j=0; j<2; j++) {
-					if(players[i].getHealthPoints()<=0) {
+					if(players[j].getHealthPoints()<=0) {
 						ended = true;
 						System.out.println("Player "+players[i].getID().toString()+" lost.");
-						if(i==0) {
+						if(j==0) {
 							System.out.println("Player "+players[i+1].getID().toString()+" won.");
 						}else System.out.println("Player "+players[i-1].getID().toString()+" won.");
 						break PhaseProcessing;
@@ -114,6 +133,19 @@ public class CardGame implements Game {
 			}
 		}
 		System.out.println("Game ended");
+	}
+
+	@Override
+	public void setPlayer(Player player) {
+		if(players[0] == null) {
+			players[0] = player;
+			player.setGame(this);
+		}else {
+			if(players[1] == null) {
+				players[1] = player;
+				player.setGame(this);
+			}
+		}
 	}
 
 	@Override
@@ -132,7 +164,7 @@ public class CardGame implements Game {
 	}
 
 	@Override
-	public Player getPlayer(UUID id) {
+	public Player getPlayer(String id) {
 		Player foundPlayer = null;
 		for(Player p : players) {
 			if(p.getID().equals(id)) {
@@ -153,6 +185,11 @@ public class CardGame implements Game {
 
 	@Override
 	public IsPhaseInGame getActivePhase() {
+		if(activeBattle != null) {
+			if(activeBattle.getStatus().equals(Battle.RUNNING)) {
+				return activeBattle.getActivePhase();
+			}
+		}
 		return activPhase;
 	}
 
@@ -173,7 +210,7 @@ public class CardGame implements Game {
 
 	@Override
 	public void prompt(Player promptedPlayer, MessageInLanguage message) {
-		((TestPlayer)promptedPlayer).getController().prompt(promptedPlayer, message);
+		promptedPlayer.getController().prompt(promptedPlayer, message);
 	}
 	
 	public void end() {
@@ -184,7 +221,14 @@ public class CardGame implements Game {
 	public boolean proceed(Player player) {
 		if(ended) return false;
 		boolean proceeded = false;
+		if(activeBattle != null) {
+			if(activeBattle.getStatus().equals(Battle.RUNNING)) {
+				activeBattle.proceed(player);
+				return true;
+			}
+		}
 		try {
+			ReentrantLock lock = new ReentrantLock();
 			lock.lock();
 			Player otherPlayer = getOtherPlayer(player);
 			System.out.println("Game: Player "+player.getID()+" wants to proceed the game");
@@ -198,9 +242,15 @@ public class CardGame implements Game {
 				System.out.println("Game: Both players agreed to proceed.");
 				proceed[0] = false;
 				proceed[1] = false;
-				condition.signal();
+				condition.signalAll();
 				proceeded = true;
-			}
+				//waitingForProceed = false;
+				if(timer != null) {
+					if(timer.getStatus() != CountsTimeUntilProceed.ENDED) {
+						timerThread.interrupt();
+					}
+				}
+			}//else waitingForProceed = true;
 			
 		} finally {
 			lock.unlock();
@@ -208,6 +258,42 @@ public class CardGame implements Game {
 		return proceeded;
 	}
 	
+	@Override
+	public void startTimer(Player player) {
+		ReentrantLock lock = new ReentrantLock();
+		lock.lock();
+		try {
+			if(timer.getStatus() != DelayableProceedTimer.STARTED) {
+				timerRequestor = player;
+				timer = new DelayableProceedTimer(30, 60);
+				timer.addTimerListener(this);
+				String[] parameters = {"60", "30"};
+				Player otherPlayer = getOtherPlayer(player);
+				otherPlayer.getController().prompt(otherPlayer, GameMessageProvider.getInstance().getMessage("#13", Application.getInstance().getLanguage(), parameters));
+				player.getController().prompt(timerRequestor, GameMessageProvider.getInstance().getMessage("#14", Application.getInstance().getLanguage(), parameters));
+				timerThread = new Thread(timer, "Timer");
+				timerThread.start(); 
+			}
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	@Override
+	public void stopTimer(Player player) {
+		ReentrantLock lock = new ReentrantLock();
+		lock.lock();
+		try {
+			if(player == timerRequestor) {
+				if(timer.getStatus() != CountsTimeUntilProceed.ENDED) {
+					timerThread.interrupt();
+				}
+			}
+		}finally {
+			lock.unlock();
+		}
+	}
+
 	private void setProceed(Player player) {
 		if(player == players[0]) {
 			proceed[0] = true;
@@ -219,6 +305,7 @@ public class CardGame implements Game {
 	@Override
 	public boolean processGameStack(Player player) {
 		try {
+			ReentrantLock lock = new ReentrantLock();
 			lock.lock();
 			System.out.println("Game: Player "+player.getID()+" wants to process the current stack.");
 			if(ended) return false;
@@ -233,14 +320,21 @@ public class CardGame implements Game {
 				stackProceed[0] = false;
 				stackProceed[1] = false;
 				Thread stackThread = new Thread(activPhase.getActiveGameStack(), activPhase.getName()+"-Stack");
-				System.out.println("Game: Intiating Stack-Run.");
+				System.out.println("Game: Initiating Stack-Run.");
 				stackThread.start();
+				if(timer != null) {
+					if(timer.getStatus() != CountsTimeUntilProceed.ENDED) {
+						timerThread.interrupt();
+					}
+				}
 				return true;
-			}else return false;
+			}else {
+				waitingForStackProceed = true;
+				return false;
+			}
 		} finally {
 			lock.unlock();
 		}
-		
 	}
 	
 	@Override
@@ -309,6 +403,37 @@ public class CardGame implements Game {
 	@Override
 	public Condition getCondition() {
 		return condition;
+	}
+
+	@Override
+	public String getRound() {
+		return roundCode;
+	}
+
+	@Override
+	public void timerStarted(CountsTimeUntilProceed timer) {
+		players[0].getController().timerStarted(timer);
+		players[1].getController().timerStarted(timer);
+	}
+
+	@Override
+	public void timerCountedDown(CountsTimeUntilProceed timer) {
+		players[0].getController().timerCountedDown(timer);
+		players[1].getController().timerCountedDown(timer);
+	}
+
+	@Override
+	public void timerEnded(CountsTimeUntilProceed timer) {
+		if(waitingForStackProceed) {
+			processGameStack(getOtherPlayer(timerRequestor));
+			waitingForStackProceed = false;
+		}else {
+			proceed(getOtherPlayer(timerRequestor));
+		}
+		players[0].getController().timerCountedDown(timer);
+		players[1].getController().timerCountedDown(timer);
+		
+		
 	}
 
 }

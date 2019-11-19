@@ -3,7 +3,7 @@ package project.main.GameApplication;
 import project.main.Action.Stackable;
 import project.main.jsonObjects.MessageInLanguage;
 
-public interface ControlsStackables {
+public interface ControlsStackables extends TimerListener{
 	/**
 	 * Informs the controller that the given stackable was set activ
 	 * @param stackable

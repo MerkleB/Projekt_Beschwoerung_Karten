@@ -100,7 +100,7 @@ public class DeclareBattle extends Action {
 				public void actionExecuted(GameAction action) {
 					if(action.getCode().equals(SummonSelect)) {
 						String id = action.getMetaData().get("Summon-ID");
-						attackedSummon = (Summon)zone.findCard(UUID.fromString(id));
+						attackedSummon = (Summon)zone.findCard(id);
 					}
 				}
 				

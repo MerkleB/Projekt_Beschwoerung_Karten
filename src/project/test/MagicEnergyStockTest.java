@@ -21,11 +21,11 @@ import project.main.GameApplication.Application;
 import project.main.GameApplication.CollectorZone;
 import project.main.GameApplication.DeckZone;
 import project.main.GameApplication.Game;
-import project.main.GameApplication.GamePhase;
 import project.main.GameApplication.HandZone;
 import project.main.GameApplication.HostsGame;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
+import project.main.GameApplication.SimplePhase;
 import project.main.GameApplication.SummonZone;
 import project.main.build_cards.CardFactory;
 import project.main.jsonObjects.ActionDefinitionLibrary;
@@ -82,7 +82,7 @@ public class MagicEnergyStockTest {
 	public void setUp() throws Exception {
 		deck = new ArrayList<Card>();
 		ArrayList<IsPhaseInGame> phases = new ArrayList<IsPhaseInGame>();
-		phases.add(new GamePhase("Main"));
+		phases.add(new SimplePhase("Main"));
 		player = new TestPlayer(3, 3, deck);
 		player2 = new TestPlayer(3, 3, deck);
 		ReentrantLock gl = new ReentrantLock();

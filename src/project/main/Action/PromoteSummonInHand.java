@@ -62,6 +62,7 @@ public class PromoteSummonInHand extends Action implements GameActionListener {
 			super.execute();
 			int currentLevel = ((Summon)owningCard).getLevel();
 			Summon successor = ((Summon)owningCard).getSummonHierarchy().getSummonOfLevel(currentLevel+1);
+			successor.setID(((Summon)owningCard).getID());
 			successor.setActivityStatus(ActivityStatus.READY, -1);
 			((Summon)owningCard).setActivityStatus(ActivityStatus.NOT_IN_GAME, -1);
 			addGameToSuccessor(successor);

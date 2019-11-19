@@ -1,5 +1,6 @@
 package project.main.jsonObjects;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.TreeMap;
 
@@ -52,6 +53,36 @@ public class CardDefinitionLibrary implements HoldsCardDefinitions {
 		return card_sets.get(token).name;
 	}
 	
+	@Override
+	public ArrayList<String> getCardIdsInSet(String cardSetName) {
+		if(cardDefinitions == null) {
+			cardDefinitions = new Hashtable<String, TreeMap<String, CardDefinition>>();
+		}
+		TreeMap<String, CardDefinition> definitions = cardDefinitions.get(cardSetName);
+		if(definitions == null) {
+			loadCardSet(cardSetName);
+			definitions = cardDefinitions.get(cardSetName);
+		}
+		ArrayList<String> cardIds = new ArrayList<String>();
+		definitions.forEach((k,v)->{
+			cardIds.add(k);
+		});
+		return cardIds;
+	}
+
+	@Override
+	public ArrayList<String> getCardSetNames() {
+		if(card_sets == null) {
+			card_sets = new Hashtable<String, SetToken>();
+			loadListOfCardSets();
+		}
+		ArrayList<String> cardSetNames = new ArrayList<String>();
+		card_sets.forEach((k,v)->{
+			cardSetNames.add(v.name);
+		});
+		return cardSetNames;
+	}
+
 	private void loadCardSet(String cardSetName) {
 		CardDefinitionList definitionList = getDefinitions(cardSetName);
 		TreeMap<String, CardDefinition> definitionMap = new TreeMap<String, CardDefinition>();

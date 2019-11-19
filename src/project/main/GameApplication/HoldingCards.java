@@ -11,7 +11,7 @@ public interface HoldingCards extends GameObject {
 	 * @param UUID id
 	 * @return Card
 	 */
-	public Card findCard(UUID id);
+	public Card findCard(String id);
 	
 	/**
 	 * Retrieves all Cards.
@@ -35,5 +35,5 @@ public interface HoldingCards extends GameObject {
 	 * Removes the card with the given id
 	 * @param id
 	 */
-	public void removeCard(UUID id);
+	public void removeCard(String id);
 }

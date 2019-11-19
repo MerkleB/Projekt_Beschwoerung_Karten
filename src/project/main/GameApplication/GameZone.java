@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.UUID;
 
+import project.main.Action.GameAction;
 import project.main.Action.Stackable;
 import project.main.Card.Card;
+import project.main.Effect.Effect;
 import project.main.Listeners.GameListener;
 import project.main.exception.NoCardException;
 import project.main.jsonObjects.ActionDefinitionLibrary;
@@ -15,18 +17,18 @@ import project.main.util.ActionMatchFinder;
 public abstract class GameZone implements IsAreaInGame {
 	
 	protected ArrayList<Card> cardList;
-	protected Hashtable<UUID, Card> cardHash;
+	protected Hashtable<String, Card> cardHash;
 	protected Player owner;
 	protected Game game;
 	
 	public GameZone(Player owner) {
 		cardList = new ArrayList<Card>();
-		cardHash = new Hashtable<UUID, Card>();
+		cardHash = new Hashtable<String, Card>();
 		this.owner = owner;
 	}
 	
 	@Override
-	public Card findCard(UUID id) {
+	public Card findCard(String id) {
 		return cardHash.get(id);
 	}
 
@@ -65,7 +67,7 @@ public abstract class GameZone implements IsAreaInGame {
 	}
 
 	@Override
-	public void removeCard(UUID id) {
+	public void removeCard(String id) {
 		Card cardToRemove = cardHash.get(id);
 		if(cardToRemove != null) {
 			removeCard(cardToRemove);
@@ -110,6 +112,20 @@ public abstract class GameZone implements IsAreaInGame {
 	@Override
 	public void setGame(Game game) {
 		this.game = game;
+		for(Card card : cardList) {
+			ArrayList<GameAction> actions = card.getActions();
+			for(GameAction action : actions) {
+				action.setGame(game);
+			}
+			try {
+				Effect[] effects = card.getEffects();
+				for(Effect effect : effects) {
+					effect.setGame(game);
+				}
+			} catch (NoCardException e) {
+				//Ignore for collectors
+			}
+		}
 	}
 
 }

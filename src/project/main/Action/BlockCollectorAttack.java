@@ -1,14 +1,12 @@
 package project.main.Action;
 
 import project.main.Card.*;
-import project.main.GameApplication.Application;
 import project.main.GameApplication.Battle;
 import project.main.GameApplication.Player;
 import project.main.GameApplication.ProcessesBattle;
 import project.main.Listeners.GameActionListener;
 import project.main.Listeners.GameListener;
 import project.main.exception.NotActivableException;
-import project.main.util.GameMessageProvider;
 
 public class BlockCollectorAttack extends Action implements GameActionListener {
 	

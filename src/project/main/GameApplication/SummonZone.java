@@ -1,7 +1,6 @@
 package project.main.GameApplication;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import project.main.Card.Card;
 import project.main.Card.Summon;
@@ -17,7 +16,7 @@ public class SummonZone extends GameZone {
 			ArrayList<SummoningCircle> greatCircle = new ArrayList<SummoningCircle>();
 			greatCircles.add(greatCircle);
 			for(int j=0; j<3; j++) {
-				SummoningCircle circle = new SummoningCircle();
+				SummoningCircle circle = new SummoningCircle(owner,i,j);
 				greatCircle.add(circle);
 			}
 		}
@@ -45,12 +44,12 @@ public class SummonZone extends GameZone {
 	}
 
 	@Override
-	public void removeCard(UUID id) {
+	public void removeCard(String id) {
 		super.removeCard(id);
 		removeCardFromCircle(id);
 	}
 	
-	private void removeCardFromCircle(UUID id) {
+	private void removeCardFromCircle(String id) {
 		for(int i=0; i<greatCircles.size(); i++) {
 			for(int j=0; j<greatCircles.get(i).size(); j++) {
 				if(greatCircles.get(i).get(j).findCard(id) != null) {

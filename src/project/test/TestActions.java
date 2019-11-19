@@ -7,36 +7,31 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import project.main.Action.GameAction;
 import project.main.Card.ActivityStatus;
 import project.main.Card.Card;
-import project.main.Card.MagicCollector;
 import project.main.Card.Spell;
 import project.main.Card.StatusChange;
 import project.main.Card.Summon;
 import project.main.Effect.Effect;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.DrawPhase;
-import project.main.GameApplication.GamePhase;
 import project.main.GameApplication.HostsGame;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.RefreshmentPhase;
+import project.main.GameApplication.SimplePhase;
 import project.main.Listeners.GameActionListener;
 import project.main.Listeners.GameListener;
-import project.main.Listeners.PhaseListener;
 import project.main.build_cards.CardFactory;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
 import project.main.exception.NoCollectorException;
-import project.main.exception.NotActivableException;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 import project.main.jsonObjects.CardDefinitionLibrary;
 import project.main.jsonObjects.MessageInLanguage;
@@ -119,7 +114,7 @@ public class TestActions {
 				phases.add(new RefreshmentPhase());
 				break;
 			default:
-				phases.add(new GamePhase(name));
+				phases.add(new SimplePhase(name));
 				break;
 			}
 		}
@@ -272,6 +267,7 @@ public class TestActions {
 		 */
 		try {
 			ctrlThread1.start();
+			Thread.sleep(20);
 			gameThread.start();
 			System.out.println("Test: Waiting for end game");
 			lockTest.lock();
@@ -703,6 +699,7 @@ public class TestActions {
 		 */
 		try {
 			ctrlThread1.start();
+			Thread.sleep(20);
 			gameThread.start();
 			System.out.println("Test: Waiting for end game");
 			lockTest.lock();
@@ -1493,6 +1490,7 @@ public class TestActions {
 		 */
 		try {
 			ctrlThread1.start();
+			Thread.sleep(10);
 			gameThread.start();
 			System.out.println("Test: Waiting for end game");
 			lockTest.lock();
@@ -1716,6 +1714,7 @@ public class TestActions {
 		try {
 			ctrlThread1.start();
 			ctrlThread2.start();
+			Thread.sleep(20);
 			gameThread.start();
 			System.out.println("Test: Waiting for end game");
 			lockTest.lock();

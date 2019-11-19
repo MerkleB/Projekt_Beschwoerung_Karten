@@ -1,17 +1,18 @@
 package project.main.GameApplication;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 import project.main.Listeners.GameListener;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 
-public class GamePhase implements IsPhaseInGame {
+public abstract class GamePhase implements IsPhaseInGame {
 
-	private String name;
-	private ArrayList<String> actionsToActivate;
-	private Game game;
-	private OwnsGameStack activeGameStack;
-	private ArrayList<OwnsGameStack> finishedStacks;
+	protected String name;
+	protected ArrayList<String> actionsToActivate;
+	protected Game game;
+	protected OwnsGameStack activeGameStack;
+	protected ArrayList<OwnsGameStack> finishedStacks;
 	
 	public GamePhase(String phaseName) {
 		name = phaseName;
@@ -23,18 +24,8 @@ public class GamePhase implements IsPhaseInGame {
 	public String getName() {
 		return name;
 	}
-
-	@Override
-	public void restorePhaseStatus() {
-		inactivateAll();
-		Player player = game.getActivePlayer();
-		ArrayList<IsAreaInGame> zones = player.getGameZones();
-		for(IsAreaInGame zone : zones) {
-			zone.activate(player, this);
-		}
-	}
 	
-	private void inactivateAll() {
+	protected void inactivateAll() {
 		Player[] players = game.getPlayers();
 		for(Player player : players) {
 			ArrayList<IsAreaInGame> zones = player.getGameZones();
@@ -59,18 +50,6 @@ public class GamePhase implements IsPhaseInGame {
 	}
 
 	@Override
-	public void leave() {
-		finishedStacks.add(activeGameStack);
-		activeGameStack = null;
-		Player activPlayer = game.getActivePlayer();
-		ArrayList<IsAreaInGame> zones = activPlayer.getGameZones();
-		for(IsAreaInGame zone : zones) {
-			zone.deavtivateAll();
-		}
-		GameListener.getInstance().phaseEnded(this);
-	}
-
-	@Override
 	public Game getGame() {
 		return game;
 	}
@@ -84,14 +63,20 @@ public class GamePhase implements IsPhaseInGame {
 
 	@Override
 	public OwnsGameStack getActiveGameStack() {
-		if(activeGameStack == null) {
-			activeGameStack = GameStack.getInstance(this);
+		ReentrantLock lock = new ReentrantLock();
+		try {
+			lock.lock();
+			if(activeGameStack == null) {
+				activeGameStack = GameStack.getInstance(this);
+			}
+			if(activeGameStack.hasFinished() || activeGameStack.hasStarted()) {
+				finishedStacks.add(activeGameStack);
+				activeGameStack = GameStack.getInstance(this);
+			}
+			return activeGameStack;
+		} finally {
+			lock.unlock();
 		}
-		if(activeGameStack.hasFinished()) {
-			finishedStacks.add(activeGameStack);
-			activeGameStack = GameStack.getInstance(this);
-		}
-		return activeGameStack;
 	}
 
 	@Override

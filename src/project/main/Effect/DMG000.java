@@ -11,6 +11,7 @@ import project.main.util.TextProvider;
 public class DMG000 extends CardEffect implements PhaseListener{
 
 	private boolean mainPhaseEntered;
+	private boolean mainPhaseLeft;
 	private Player target;
 	private int value;
 	
@@ -76,6 +77,15 @@ public class DMG000 extends CardEffect implements PhaseListener{
 	}
 
 	@Override
+	public void setInactiv() {
+		if(mainPhaseLeft) {
+			super.setInactiv();
+			mainPhaseEntered = false;
+			mainPhaseLeft = false;
+		}
+	}
+
+	@Override
 	public void phaseStarted(IsPhaseInGame phase) {
 		if(phase.getName().equals("Main") && game.getActivePlayer() == owningCard.getOwningPlayer()) {
 			setActiv(owningCard.getOwningPlayer());
@@ -86,7 +96,9 @@ public class DMG000 extends CardEffect implements PhaseListener{
 	@Override
 	public void phaseEnded(IsPhaseInGame phase) {
 		if(phase.getName().equals("Main")) {
-			mainPhaseEntered = false;
+			if(mainPhaseEntered) {
+				mainPhaseLeft = true;
+			}
 			setInactiv();
 		}
 	}

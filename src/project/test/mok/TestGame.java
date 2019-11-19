@@ -130,7 +130,7 @@ public class TestGame implements Game {
 	}
 
 	@Override
-	public Player getPlayer(UUID id) {
+	public Player getPlayer(String id) {
 		Player foundPlayer = null;
 		for(Player p : players) {
 			if(p.getID().equals(id)) {
@@ -309,6 +309,35 @@ public class TestGame implements Game {
 	public Condition getCondition() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setPlayer(Player player) {
+		if(players[0] == null) {
+			players[0] = player;
+		}else {
+			if(players[1] == null) {
+				players[1] = player;
+			}
+		}
+	}
+
+	@Override
+	public String getRound() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void startTimer(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stopTimer(Player player) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

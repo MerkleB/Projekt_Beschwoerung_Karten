@@ -8,21 +8,15 @@ import project.main.Card.Summon;
 import project.main.Listeners.GameListener;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 
-public class RefreshmentPhase implements IsPhaseInGame {
-	
-	private ArrayList<String> actionsToActivate;
-	private Game game;
-	private OwnsGameStack activeGameStack;
-	private ArrayList<OwnsGameStack> finishedStacks;
+public class RefreshmentPhase extends GamePhase {
 	
 	public RefreshmentPhase() {
-		activeGameStack = GameStack.getInstance(this);
-		finishedStacks = new ArrayList<OwnsGameStack>();
+		super("RefreshmentPhase");
 	}
 	
 	@Override
 	public String getName() {
-		return "RefreshmentPhase";
+		return name;
 	}
 
 	@Override
@@ -52,30 +46,6 @@ public class RefreshmentPhase implements IsPhaseInGame {
 			zone.activate(activPlayer, this);
 		}
 	}
-	
-	private void inactivateAll() {
-		Player[] players = game.getPlayers();
-		for(Player player : players) {
-			ArrayList<IsAreaInGame> zones = player.getGameZones();
-			for(IsAreaInGame zone : zones) {
-				zone.deavtivateAll();
-			}
-		}
-	}
-
-	@Override
-	public ArrayList<String> getActionsToActivate() {
-		if(actionsToActivate == null) {
-			actionsToActivate = ActionDefinitionLibrary.getInstance().getPhaseActions(getName());
-		}
-		return actionsToActivate;
-	}
-
-	@Override
-	public void process() {
-		restorePhaseStatus();
-		GameListener.getInstance().phaseStarted(this);
-	}
 
 	@Override
 	public void leave() {
@@ -88,34 +58,4 @@ public class RefreshmentPhase implements IsPhaseInGame {
 		}
 		GameListener.getInstance().phaseEnded(this);
 	}
-
-	@Override
-	public Game getGame() {
-		return game;
-	}
-
-	@Override
-	public void setGame(Game game) {
-		if(game != null) {
-			this.game = game;
-		}
-	}
-
-	@Override
-	public OwnsGameStack getActiveGameStack() {
-		if(activeGameStack == null) {
-			activeGameStack = GameStack.getInstance(this);
-		}
-		if(activeGameStack.hasFinished()) {
-			finishedStacks.add(activeGameStack);
-			activeGameStack = GameStack.getInstance(this);
-		}
-		return null;
-	}
-
-	@Override
-	public ArrayList<OwnsGameStack> getFinisheGameStacks() {
-		return finishedStacks;
-	}
-
 }

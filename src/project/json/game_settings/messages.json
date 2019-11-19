@@ -69,6 +69,41 @@
 				{"language" : "EN", "text" : "Your opponent wants to attack your magic collector &0 (Free Energy: &1, Blocked Energy: &2, Used Energy: &3, Depleted Energy: &4). What do you want to do?", "answers" : []},
 				{"language" : "DE", "text" : "Dein Gegner will deinen Magiesammler &0 (Freie Energie: &1, Blokierte Energie: &2, Genutzte Energie: &3, Erschöpfte Energie: &4) angreifen. Was möchtest du tun?", "answers" : []}
 			]
+		},
+		{ 
+			"id" : "#11",
+			"texts" : [
+				{"language" : "EN", "text" : "You're opponent want to process the stack. Timer starts after &0 seconds. After is started you'll have &1 seconds until automatic proceed.", "answers" : []},
+				{"language" : "DE", "text" : "Dein Gegner will den Stapel ausführen lassen. Der Zähler startet nach &0 Sekunden. Anschließend hast Du &1 Sekunden Zeit bis automatisch fortgefahren wird.", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#12",
+			"texts" : [
+				{"language" : "EN", "text" : "You want to process the stack. Timer starts after &0 seconds. After is started you're opponent have &1 seconds until automatic proceed.", "answers" : []},
+				{"language" : "DE", "text" : "Du willst den Stapel ausführen lassen. Der Zähler started nach &0 Sekunden. Anschließend hat dein Gegner &1 Sekunden Zeit bis automatisch fortgefahren wird.", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#13",
+			"texts" : [
+				{"language" : "EN", "text" : "You're opponent want to proceed. Timer starts after &0 seconds. After is started you'll have &1 seconds until automatic proceed.", "answers" : []},
+				{"language" : "DE", "text" : "Dein Gegner will fortfahren. Der Zähler startet nach &0 Sekunden. Anschließend hast Du &1 Sekunden Zeit bis automatisch fortgefahren wird.", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#14",
+			"texts" : [
+				{"language" : "EN", "text" : "You want to proceed. Timer starts after &0 seconds. After is started you're opponent have &1 seconds until automatic proceed.", "answers" : []},
+				{"language" : "DE", "text" : "Du willst fortfahren. Der Zähler started nach &0 Sekunden. Anschließend hat dein Gegner &1 Sekunden Zeit bis automatisch fortgefahren wird.", "answers" : []}
+			]
+		},
+		{ 
+			"id" : "#15",
+			"texts" : [
+				{"language" : "EN", "text" : "End Phase - Game want to end you turn in &0 seconds automatically.", "answers" : []},
+				{"language" : "DE", "text" : "End Phase - Dein Zug wird in &0 Sekunden automatisch beendet.", "answers" : []}
+			]
 		}
 		
 	]

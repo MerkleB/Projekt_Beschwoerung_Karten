@@ -23,7 +23,7 @@ public class Spell implements Card {
 	private Effect[] effects;
 	private String name;
 	private int neededMagicEnergy;
-	private UUID id;
+	private String id;
 	private MagicCollector collector;
 	private Player owner;
 	private TreeMap<String, GameAction> actions;
@@ -36,7 +36,7 @@ public class Spell implements Card {
 		if(owner != null) {
 			this.owner = owner;
 		}
-		id = UUID.randomUUID();
+		id = UUID.randomUUID().toString();
 		this.effects = effects;
 		this.neededMagicEnergy = neededMagicEnergy;
 		this.actions = new TreeMap<String, GameAction>();
@@ -176,24 +176,24 @@ public class Spell implements Card {
 	public String toString() {
 		ManagesTextLanguages text = TextProvider.getInstance();
 		String language = Application.getInstance().getLanguage();
-		String string =  text.getTerm("Type", language)+": "+getType().toString()+";"
-				+text.getTerm("Name", language)+": "+getName()+";"
-				+text.getTerm("NeededMagicEnergy", language)+": "+getNeededMagicEnergy()+";";
+		String string =  text.getTerm("Type", language).text+": "+text.getTerm(getType().toString(), language).text+";"
+				+text.getTerm("Name", language).text+": "+text.getCardName(cardID, language)+" ("+getName()+");"
+				+text.getTerm("NeededMagicEnergy", language).text+": "+getNeededMagicEnergy()+";";
 		for(int i=0; i<effects.length; i++) {
-			string = string+text.getTerm("Effect", language)+"-"+i+": "+effects[i].getDescription()+";";
+			string = string+text.getTerm("Effect", language).text+"-"+i+": "+effects[i].getDescription()+";";
 		}
-		string = string+text.getTerm("Trivia", language)+": "+getTrivia();
+		string = string+text.getTerm("Trivia", language).text+": "+getTrivia();
 		return string;
 	}
 
 	@Override
-	public UUID getID() {
+	public String getID() {
 		return id;
 	}
 
 	@Override
-	public void setID(UUID uuid) {
-		id = uuid;
+	public void setID(String id) {
+		this.id = id;
 	}
 
 	@Override

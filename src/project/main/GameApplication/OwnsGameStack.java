@@ -49,7 +49,7 @@ public interface OwnsGameStack extends Runnable{
 	public Stackable getEntry(int i);
 	/**
 	 * Retrieves the status of the stack.
-	 * @return 0=initial; 1=started; -1=finished
+	 * @return 0=initial; 1=started; 2=wait until start; -1=finished
 	 */
 	public int getStatus();
 	/**

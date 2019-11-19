@@ -12,10 +12,12 @@ public class ActionMatchFinder implements FindsActionMatches {
 	@Override
 	public ArrayList<String> getMatchedActions(ArrayList<String> actions, ArrayList<String> referenceActions) {
 		ArrayList<String> matchedActions = new ArrayList<String>();
-		for(String action : actions) {
-			for(String refAction : referenceActions) {
-				if(action.equals(refAction)) {
-					matchedActions.add(action);
+		if(actions != null && referenceActions != null) {
+			for(String action : actions) {
+				for(String refAction : referenceActions) {
+					if(action.equals(refAction)) {
+						matchedActions.add(action);
+					}
 				}
 			}
 		}

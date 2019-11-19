@@ -2,7 +2,6 @@ package project.main.Card;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.UUID;
 
 import project.main.Action.GameAction;
 import project.main.Action.Stackable;
@@ -294,12 +293,12 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	public String toString() {
 		ManagesTextLanguages text = TextProvider.getInstance();
 		String language = Application.getInstance().getLanguage();
-		String string =  text.getTerm("Type", language)+": "+getType().toString()+";"
-				+text.getTerm("FreeEnergy", language)+": "+freeEnergy+";"
-				+text.getTerm("BlockedEnergy", language)+": "+blockedEnergy+";"
-				+text.getTerm("UsedEnergy", language)+": "+usedEnergy+";"
-				+text.getTerm("DepletedEnergy", language)+":"+depletedEnergy+";"
-				+text.getTerm("Name", language)+"Health:"+currentHealth;
+		String string =  text.getTerm("Type", language).text+": "+text.getTerm(getType().toString(), language).text+";"
+				+text.getTerm("FreeEnergy", language).text+": "+freeEnergy+";"
+				+text.getTerm("BlockedEnergy", language).text+": "+blockedEnergy+";"
+				+text.getTerm("UsedEnergy", language).text+": "+usedEnergy+";"
+				+text.getTerm("DepletedEnergy", language).text+":"+depletedEnergy+";"
+				+text.getTerm("Health", language).text+":"+currentHealth;
 		return string;
 	}
 
@@ -339,12 +338,12 @@ public class MagicCollector implements Card, CollectsMagicEnergy{
 	}
 
 	@Override
-	public UUID getID() {
+	public String getID() {
 		return realCard.getID();
 	}
 
 	@Override
-	public void setID(UUID uuid) throws NoCardException {
+	public void setID(String id) throws NoCardException {
 		throw new NoCardException(realCard.getName()+" is currently used as collector!");	
 	}
 

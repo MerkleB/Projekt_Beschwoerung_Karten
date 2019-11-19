@@ -2,10 +2,9 @@ package project.main.GameApplication;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-
 import project.main.Card.ActivityStatus;
 import project.main.Card.Summon;
 import project.main.Card.SummonStatus;
@@ -122,19 +121,19 @@ public class Battle implements ProcessesBattle {
 			while(!finished) {
 				round++;
 				System.out.println("-==Start round "+round+"==-");
-				waitForBoth = true;
+				waitForBoth = false;
 				activateBattlePhase("ClashBegin", attackingPlayer);
 				promptPlayer("#5", attackingPlayer);
-				cond.await(); //Wait until proceed
+				cond.await(90, TimeUnit.SECONDS); //Wait until proceed
 				deactivate(attackingPlayer);
 				activateBattlePhase("ClashBegin", defendingPlayer);
 				promptPlayer("#5", defendingPlayer);
-				cond.await(); //Wait until proceed
+				cond.await(90, TimeUnit.SECONDS); //Wait until proceed
 				deactivate(defendingPlayer);
 				if(fastSummon != null && slowSummon != null) {
 					int fastSummonAttack = calculateAttack(fastSummon, slowSummon);
 					int slowSummonVitality = slowSummon.getStatus().decreaseVitality(fastSummonAttack);
-					System.out.println("Slower Summon "+slowSummon.getName()+" gets "+fastSummonAttack+" damage. Current vitality: "+slowSummonVitality);
+					System.out.println("Slower Summon "+slowSummon.getName()+" ("+slowSummon.getID()+") "+" gets "+fastSummonAttack+" damage. Current vitality: "+slowSummonVitality);
 					GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, fastSummon, slowSummon, fastSummonAttack));
 					if(slowSummonVitality == 0) {
 						setBattleResult(fastSummon, slowSummon);
@@ -143,7 +142,7 @@ public class Battle implements ProcessesBattle {
 					
 					int slowSummonAttack = calculateAttack(slowSummon, fastSummon);
 					int fastSummonVitality = fastSummon.getStatus().decreaseVitality(slowSummonAttack);
-					System.out.println("Faster Summon "+fastSummon.getName()+" gets "+slowSummonAttack+" damage. Current vitality: "+fastSummonVitality);
+					System.out.println("Faster Summon "+fastSummon.getName()+" ("+fastSummon.getID()+") "+" gets "+slowSummonAttack+" damage. Current vitality: "+fastSummonVitality);
 					GameListener.getInstance().attackHappened(new BattleEventObject(BattleEventObject.ATTACK, slowSummon, fastSummon, slowSummonAttack));
 					if(fastSummonVitality == 0) {
 						setBattleResult(slowSummon, fastSummon);
@@ -152,12 +151,12 @@ public class Battle implements ProcessesBattle {
 					
 					activateBattlePhase("ClashEnd", fastSummon.getOwningPlayer());
 					promptPlayer("#6", fastSummon.getOwningPlayer());
-					cond.await(); // Wait until "fast" player proceeds
+					cond.await(90, TimeUnit.SECONDS); // Wait until "fast" player proceeds
 					deactivate(attackingPlayer);
 					if(fastSummon == null) end();
 					activateBattlePhase("ClashEnd", slowSummon.getOwningPlayer());
 					promptPlayer("#6", slowSummon.getOwningPlayer());
-					cond.await(); // Wait until "slow" player proceeds
+					cond.await(90, TimeUnit.SECONDS); // Wait until "slow" player proceeds
 					deactivate(defendingPlayer);
 					if(slowSummon == null) end();
 				}else{
@@ -186,9 +185,9 @@ public class Battle implements ProcessesBattle {
 	}
 
 	@Override
-	public void remove(UUID summonID) {
+	public void remove(String summonID) {
 		if(!status.equals(ProcessesBattle.RUNNING))return;
-		if(fastSummon.getID() == summonID) {
+		if(fastSummon.getID().equals(summonID)) {
 			if(fastSummon == attackingSummon) {
 				fastSummon.setActivityStatus(ActivityStatus.IMMOBILIZED, 1);
 			}

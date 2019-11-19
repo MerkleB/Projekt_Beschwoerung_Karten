@@ -21,13 +21,17 @@
 		{
 			"language" : "DE",
 			"names" : [
-				{"card_id" : "bsc-su-00-0", "name" : "Aries"}
+				{"card_id" : "bsc-su-00-0", "name" : "Aries"},
+				{"card_id" : "bsc-su-00-1", "name" : "Aries"},
+				{"card_id" : "bsc-su-00-2", "name" : "Aries - Der goldene"}
 			]
 		},
 		{
 			"language" : "EN",
 			"names" : [
-				{"card_id" : "bsc-su-00-0", "name" : "Aries"}
+				{"card_id" : "bsc-su-00-0", "name" : "Aries"},
+				{"card_id" : "bsc-su-00-1", "name" : "Aries"},
+				{"card_id" : "bsc-su-00-2", "name" : "Aries - The golden"}
 			]
 		}
 	]

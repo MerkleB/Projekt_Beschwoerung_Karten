@@ -1,4 +1,4 @@
-package project.test.mok;
+package project.main.GameApplication;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -6,20 +6,9 @@ import java.util.UUID;
 
 import project.main.Card.Card;
 import project.main.Card.CollectsMagicEnergy;
-import project.main.Card.MagicCollector;
-import project.main.Card.Summon;
-import project.main.GameApplication.CollectorZone;
-import project.main.GameApplication.ControlsStackables;
-import project.main.GameApplication.DeckZone;
-import project.main.GameApplication.DiscardPile;
-import project.main.GameApplication.Game;
-import project.main.GameApplication.HandZone;
-import project.main.GameApplication.IsAreaInGame;
-import project.main.GameApplication.MagicEnergyStock;
-import project.main.GameApplication.Player;
-import project.main.GameApplication.SummonZone;
+import project.main.exception.NoCardException;
 
-public class TestPlayer implements Player {
+public class CardPlayer implements Player {
 	
 	private String id;
 	private ArrayList<IsAreaInGame> zones;
@@ -27,12 +16,12 @@ public class TestPlayer implements Player {
 	private int summoningPoints;
 	private int healthPoints;
 	private int collectorActions;
-	private TestGame game;
-	private PhysicalTestPlayer realPlayer;
+	private Game game;
+	private ControlsStackables controller;
 	private CollectsMagicEnergy magicEnergyStock;
 	
-	public TestPlayer(int sp, int hp, ArrayList<Card> deck) {
-		id = UUID.randomUUID().toString();
+	public CardPlayer(String name, ArrayList<Card> deck) {
+		id = name;
 		zones = new ArrayList<IsAreaInGame>();
 		zonesTable = new Hashtable<String, IsAreaInGame>();
 		zones.add(new HandZone(this));
@@ -45,8 +34,15 @@ public class TestPlayer implements Player {
 		for(IsAreaInGame zone : zones) {
 			zonesTable.put(zone.getName(), zone);
 		}
-		summoningPoints = sp;
-		healthPoints = hp;
+		for(Card card : deck) {
+			try {
+				card.setOwningPlayer(this);
+			} catch (NoCardException e) {
+				throw new RuntimeException("Non-Real-Card in deck: "+e.getMessage());
+			}
+		}
+		summoningPoints = 2;
+		healthPoints = 40;
 		collectorActions = 2;
 		magicEnergyStock = new MagicEnergyStock(collectorZone, summonZone);
 	}
@@ -119,12 +115,12 @@ public class TestPlayer implements Player {
 	}
 	
 	@Override
-	public void setController(ControlsStackables p) {
-		realPlayer = (PhysicalTestPlayer) p;
+	public void setController(ControlsStackables c) {
+		controller = c;
 	}
 	
-	public PhysicalTestPlayer getController() {
-		return realPlayer;
+	public ControlsStackables getController() {
+		return controller;
 	}
 
 	@Override
@@ -134,14 +130,15 @@ public class TestPlayer implements Player {
 
 	@Override
 	public void setGame(Game game) {
-		// TODO Auto-generated method stub
-		
+		this.game = game;
+		for(IsAreaInGame zone : zones) {
+			zone.setGame(game);
+		}
 	}
 
 	@Override
 	public Game getGame() {
-		// TODO Auto-generated method stub
-		return null;
+		return game;
 	}
 
 }

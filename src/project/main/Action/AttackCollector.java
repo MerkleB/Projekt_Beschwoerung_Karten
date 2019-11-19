@@ -60,6 +60,7 @@ public class AttackCollector extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
+		if("0-0".equals(game.getRound())) return false; //Not possible in first round of first player
 		if(!((Summon) owningCard).getActivityStatus().getStatus().equals(ActivityStatus.READY)) return false;
 		Player otherPlayer = game.getOtherPlayer(activator);
 		if(otherPlayer.getGameZone(CollectorZone).getCards().size() == 0) return false;

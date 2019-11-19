@@ -16,14 +16,14 @@ public class SummoningCircle implements HoldingCards, ActionOwner {
 	private Summon placedSummon;
 	private Game game;
 	private GameAction selectAction;
-	private UUID id;
+	private String id;
 	
-	public SummoningCircle() {
+	public SummoningCircle(Player owner, int indexGreat, int index) {
 		selectAction = new SelectSummoningCircle(this);
-		id = UUID.randomUUID();
+		id = owner.getID()+"_"+indexGreat+"_"+index;
 	}
 	
-	public UUID getID() {
+	public String getID() {
 		return id;
 	}
 	
@@ -115,7 +115,7 @@ public class SummoningCircle implements HoldingCards, ActionOwner {
 	}
 
 	@Override
-	public Card findCard(UUID id) {
+	public Card findCard(String id) {
 		if(placedSummon == null) return null;
 		if(placedSummon.getID().equals(id)) {
 			return placedSummon;
@@ -145,7 +145,7 @@ public class SummoningCircle implements HoldingCards, ActionOwner {
 	}
 
 	@Override
-	public void removeCard(UUID id) {
+	public void removeCard(String id) {
 		if(placedSummon.getID().equals(id)) {
 			placedSummon = null;
 		}

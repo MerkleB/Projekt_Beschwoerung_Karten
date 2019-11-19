@@ -1,7 +1,5 @@
 package project.main.GameApplication;
 
-import java.util.UUID;
-
 import project.main.Card.Summon;
 /**
  * Processes a battle between summons
@@ -48,7 +46,7 @@ public interface ProcessesBattle{
 	 * This status is set until end phase of owners next move 
 	 * @param UUID summonID
 	 */
-	public void remove(UUID summonID);
+	public void remove(String summonID);
 	/**
 	 * Retrieves the winning summon
 	 * @return Summon winner

@@ -43,6 +43,13 @@
 						                    ]
                 },
                 {
+                    "id" : "Cast", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Cast"},
+						                        {"language" : "DE", "text" : "Spruch wirken"}
+						                    ]
+                },
+                {
                     "id" : "ClashBegin", "texts":
 						                    [
 						                        {"language" : "EN", "text" : "Clash Begin"},
@@ -61,6 +68,13 @@
 						                    [
 						                        {"language" : "EN", "text" : "Collector Actions"},
 						                        {"language" : "DE", "text" : "Sammleraktionen"}
+						                    ]
+                },
+                {
+                    "id" : "CollectorZone", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Collector Zone"},
+						                        {"language" : "DE", "text" : "Sammlerzone"}
 						                    ]
                 },
                 {
@@ -232,27 +246,6 @@
 						                    ]
                 },
                 {
-                    "id" : "RefreshmentPhase", "texts":
-						                    [
-						                        {"language" : "EN", "text" : "Refreshment Phase"},
-						                        {"language" : "DE", "text" : "Auffrischungsphase"}
-						                    ]
-                },
-                {
-                    "id" : "Trivia", "texts":
-						                    [
-						                        {"language" : "EN", "text" : "Trivia"},
-						                        {"language" : "DE", "text" : "Trivia"}
-						                    ]
-                },
-                {
-                    "id" : "Type", "texts":
-						                    [
-						                        {"language" : "EN", "text" : "Type"},
-						                        {"language" : "DE", "text" : "Typ"}
-						                    ]
-                },
-                {
                     "id" : "Shield", "texts":
 						                    [
 						                        {"language" : "EN", "text" : "Magical Shield"},
@@ -306,6 +299,27 @@
 						                    [
 						                        {"language" : "EN", "text" : "Summon Zone"},
 						                        {"language" : "DE", "text" : "Beschwörungszone"}
+						                    ]
+                },
+                {
+                    "id" : "RefreshmentPhase", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Refreshment Phase"},
+						                        {"language" : "DE", "text" : "Auffrischungsphase"}
+						                    ]
+                },
+                {
+                    "id" : "Trivia", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Trivia"},
+						                        {"language" : "DE", "text" : "Trivia"}
+						                    ]
+                },
+                {
+                    "id" : "Type", "texts":
+						                    [
+						                        {"language" : "EN", "text" : "Type"},
+						                        {"language" : "DE", "text" : "Typ"}
 						                    ]
                 },
                 {

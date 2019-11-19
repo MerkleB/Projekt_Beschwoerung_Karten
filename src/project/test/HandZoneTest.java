@@ -4,12 +4,9 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.UUID;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-
 import project.main.Action.GameAction;
 import project.main.Card.Card;
 import project.main.Card.Spell;
@@ -29,8 +26,8 @@ public class HandZoneTest {
 	private Summon summon;
 	private Spell spell;
 	private Player owner;
-	private UUID spellID;
-	private UUID summonID;
+	private String spellID;
+	private String summonID;
 	private static boolean libraryAlreadyMokked;
 	private static HoldsActionDefinitions realLibrary;
 	
@@ -42,10 +39,10 @@ public class HandZoneTest {
 		spell = (Spell)TestData.getCard("bsc-su-01");
 		try {
 			spell.setOwningPlayer(owner);
-			spellID = UUID.randomUUID();
+			spellID = "Spell-01";
 			spell.setID(spellID);
 			summon.setOwningPlayer(owner);
-			summonID = UUID.randomUUID();
+			summonID = "Summon-01";
 			summon.setID(summonID);
 			cut.addCard(spell);
 			cut.addCard(summon);
@@ -106,7 +103,7 @@ public class HandZoneTest {
 		} catch (NoCardException e) {
 			fail("Unexpected NoCardException");
 		}
-		UUID id = UUID.randomUUID();
+		String id = "Summon-02";
 		newSummon.setID(id);
 		cut.addCard(newSummon);
 		if(cut.getCards().get(2) != newSummon) {
@@ -125,11 +122,9 @@ public class HandZoneTest {
 		} catch (NoCardException e) {
 			fail("Unexpected NoCardException");
 		}
-		UUID id = UUID.randomUUID();
+		String id = "Summon-01";
 		newSummon.setID(id);
-		if(cut.findCard(id) != null) {
-			fail("Error: Same id should not be in hashtable");
-		}
+		cut.addCard(newSummon);
 		if(cut.getCards().size() == 3) {
 			fail("newSummon should not be added to cardList because of already existing id");
 		}
@@ -137,7 +132,7 @@ public class HandZoneTest {
 
 	@Test
 	public void testRemoveCardCard() {
-		UUID id = spell.getID();
+		String id = spell.getID();
 		cut.removeCard(spell);
 		if(cut.findCard(id) != null) {
 			fail("Removed spell could still be found");
@@ -149,7 +144,7 @@ public class HandZoneTest {
 
 	@Test
 	public void testRemoveCardUUID() {
-		UUID id = spell.getID();
+		String id = spell.getID();
 		cut.removeCard(id);
 		if(cut.findCard(id) != null) {
 			fail("Removed spell could still be found");

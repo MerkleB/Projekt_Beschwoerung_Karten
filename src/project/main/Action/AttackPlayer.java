@@ -33,6 +33,7 @@ public class AttackPlayer extends Action {
 	@Override
 	public boolean activateable(Player activator) {
 		if(!super.activateable(activator)) return false;
+		if("0-0".equals(game.getRound())) return false; //Not possible in first round of first player
 		if(((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.USED) || ((Summon)owningCard).getActivityStatus().getStatus().equals(ActivityStatus.IMMOBILIZED)) {
 			return false;
 		}
@@ -59,7 +60,7 @@ public class AttackPlayer extends Action {
 				attackedPlayer.decreaseHealthPoints(damage);
 				((Summon) owningCard).setActivityStatus(ActivityStatus.USED, 0);
 			}
+			GameListener.getInstance().actionExecuted(this);
 		}
-		GameListener.getInstance().actionExecuted(this);
 	}
 }

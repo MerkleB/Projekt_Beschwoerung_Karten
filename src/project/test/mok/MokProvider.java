@@ -142,7 +142,7 @@ public class MokProvider {
 		return new Player() {
 			
 			private ArrayList<IsAreaInGame> zones;
-			private UUID id = UUID.randomUUID();
+			private String id = "MokPlayer";
 			
 			@Override
 			public IsAreaInGame getGameZone(String zoneName) {
@@ -166,7 +166,7 @@ public class MokProvider {
 			}
 
 			@Override
-			public UUID getID() {
+			public String getID() {
 				return id;
 			}
 
@@ -245,6 +245,12 @@ public class MokProvider {
 			public Game getGame() {
 				// TODO Auto-generated method stub
 				return null;
+			}
+
+			@Override
+			public void setController(ControlsStackables controller) {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 	}
@@ -613,6 +619,18 @@ public class MokProvider {
 			@Override
 			public String getCardSetName(String card_id) {
 				return "basic_set";
+			}
+
+			@Override
+			public ArrayList<String> getCardIdsInSet(String cardSetName) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public ArrayList<String> getCardSetNames() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 	}

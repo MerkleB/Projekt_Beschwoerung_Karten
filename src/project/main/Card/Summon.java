@@ -33,7 +33,7 @@ public class Summon implements Card{
 	private KnowsSummonAscentHierarchy summonHierarchy;
 	private SummonStatus status;
 	private ActivityStatus activityStatus;
-	private UUID id;
+	private String id;
 	private MagicCollector collector;
 	private Player owner;
 	private TreeMap<String, GameAction> actions;
@@ -51,7 +51,7 @@ public class Summon implements Card{
 		if(owner != null) {
 			this.owner = owner;
 		}
-		id = UUID.randomUUID();
+		id = UUID.randomUUID().toString();
 		this.actions = new TreeMap<String, GameAction>();
 		for(GameAction action : actions) {
 			this.actions.put(action.getCode(), action);
@@ -66,7 +66,14 @@ public class Summon implements Card{
 
 	@Override
 	public void setOwningPlayer(Player owner) throws NoCardException {
-		this.owner = owner;
+		if(summonHierarchy == null) {
+			this.owner = owner;
+		}else {
+			for(int i=0; i<3; i++) {
+				Summon summon = summonHierarchy.getSummonOfLevel(i);
+				summon.owner = owner;
+			}
+		}
 	}
 	
 	public ActivityStatus getActivityStatus() {
@@ -195,20 +202,20 @@ public class Summon implements Card{
 	public String toString() {
 		ManagesTextLanguages text = TextProvider.getInstance();
 		String language = Application.getInstance().getLanguage();
-		String string = text.getTerm("Type", language)+": "+text.getTerm(getType().toString(), language)+";"
-				+text.getTerm("Name", language)+": "+getName()+";"
-				+text.getTerm("SummonClass", language)+": "+status.getSummonClass()+";"
-				+text.getTerm("Rank", language)+": "+getRank()+";"
-				+text.getTerm("Element", language)+": "+status.getElement()+";"
-				+text.getTerm("SummingPoints", language)+": "+status.getSummoningPoints() + ";"
-				+text.getTerm("SummingPoints", language)+" Preservation: "+status.getMagicPreservationValue()+";"
-				+text.getTerm("Attack", language)+": "+status.getAttack()+";"
-				+text.getTerm("Heal", language)+" : "+status.getHeal()+";"
-				+text.getTerm("Vitality", language)+": "+status.getVitality()+";";
+		String string = text.getTerm("Type", language).text+":"+text.getTerm(getType().toString(), language).text+";"
+				+text.getTerm("Name", language).text+":"+text.getCardName(cardID, language)+" ("+getName()+");"
+				+text.getTerm("SummonClass", language).text+":"+status.getSummonClass()+";"
+				+text.getTerm("Rank", language).text+":"+getRank()+";"
+				+text.getTerm("Element", language).text+":"+status.getElement()+";"
+				+text.getTerm("SummoningPoints", language).text+":"+status.getSummoningPoints() + ";"
+				+text.getTerm("PreservationValue", language).text+":"+status.getMagicPreservationValue()+";"
+				+text.getTerm("Attack", language).text+":"+status.getAttack()+";"
+				+text.getTerm("Heal", language).text+":"+status.getHeal()+";"
+				+text.getTerm("Vitality", language).text+":"+status.getVitality()+";";
 		for(int i=0; i<effects.length; i++) {
-			string = string+text.getTerm("Effect", language)+"-"+i+": "+effects[i].getDescription()+";";
+			string = string+text.getTerm("Effect", language).text+"-"+i+":"+effects[i].getDescription()+";";
 		}
-		string = string+text.getTerm("Trivia", language)+": "+getTrivia();
+		string = string+text.getTerm("Trivia", language).text+":"+getTrivia();
 		return string;
 	}
 
@@ -256,13 +263,13 @@ public class Summon implements Card{
 	}
 
 	@Override
-	public UUID getID() {
+	public String getID() {
 		return id;
 	}
 
 	@Override
-	public void setID(UUID uuid) {
-		id = uuid;
+	public void setID(String id) {
+		this.id = id;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package project.main.Card;
 
-import java.util.UUID;
 import project.main.GameApplication.Player;
 import project.main.build_cards.CardTypes;
 import project.main.exception.NoCardException;
@@ -14,6 +13,6 @@ public interface Card extends ActionOwner, EffectOwner{
 	public void setTrivia(String trivia);
 	public String getName();
 	public String getCardID();
-	public UUID getID();
-	public void setID(UUID uuid) throws NoCardException;
+	public String getID();
+	public void setID(String id) throws NoCardException;
 }

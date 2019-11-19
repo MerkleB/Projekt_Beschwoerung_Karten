@@ -46,6 +46,7 @@ public class UnpromoteSummonInHand extends Action {
 				throw new RuntimeException("Fatal error: Level 0 Summon can't be unpromoted. Card-ID: "+owningCard.getCardID());
 			}
 			Summon predecessor = ((Summon)owningCard).getSummonHierarchy().getSummonOfLevel(currentLevel-1);
+			predecessor.setID(((Summon)owningCard).getID());
 			hand.addCard(predecessor);
 			predecessor.setActivityStatus(ActivityStatus.READY, -1);
 			((Summon)owningCard).setActivityStatus(ActivityStatus.NOT_IN_GAME, -1);

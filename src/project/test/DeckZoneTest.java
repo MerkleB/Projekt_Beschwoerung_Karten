@@ -3,18 +3,14 @@ package project.test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.lang.reflect.Field;
-import java.util.UUID;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-
 import project.main.Action.GameAction;
 import project.main.Card.Card;
 import project.main.Card.Spell;
 import project.main.Card.Summon;
 import project.main.GameApplication.DeckZone;
-import project.main.GameApplication.HandZone;
 import project.main.GameApplication.IsPhaseInGame;
 import project.main.GameApplication.Player;
 import project.main.exception.NoCardException;
@@ -40,8 +36,8 @@ public class DeckZoneTest {
 	private Spell spell2;
 	private Spell spell3;
 	private Player owner;
-	private UUID spellID;
-	private UUID summonID;
+	private String spellID;
+	private String summonID;
 	private static boolean libraryAlreadyMokked;
 	private static HoldsActionDefinitions realLibrary;
 
@@ -70,28 +66,28 @@ public class DeckZoneTest {
 		try {
 			ArrayList<Card> deck = new ArrayList<Card>();
 			spell.setOwningPlayer(owner);
-			spellID = UUID.randomUUID();
+			spellID = "Spell-01";
 			spell.setID(spellID);
 			spell1.setOwningPlayer(owner);
-			spellID = UUID.randomUUID();
+			spellID = "Spell-02";
 			spell1.setID(spellID);
 			spell2.setOwningPlayer(owner);
-			spellID = UUID.randomUUID();
+			spellID = "Spell-03";
 			spell2.setID(spellID);
 			spell3.setOwningPlayer(owner);
-			spellID = UUID.randomUUID();
+			spellID = "Spell-04";
 			spell3.setID(spellID);
 			summon.setOwningPlayer(owner);
-			summonID = UUID.randomUUID();
+			summonID = "Summon-01";
 			summon.setID(summonID);
 			summon1.setOwningPlayer(owner);
-			summonID = UUID.randomUUID();
+			summonID = "Summon-02";
 			summon1.setID(summonID);
 			summon2.setOwningPlayer(owner);
-			summonID = UUID.randomUUID();
+			summonID = "Summon-03";
 			summon2.setID(summonID);
 			summon3.setOwningPlayer(owner);
-			summonID = UUID.randomUUID();
+			summonID = "Summon-04";
 			summon3.setID(summonID);
 			deck.add(spell);
 			deck.add(spell1);
@@ -162,7 +158,7 @@ public class DeckZoneTest {
 	@Test
 	public void testShuffleDeck() {
 		ArrayList<Card> deck = cut.getCards();
-		UUID[] ids = new UUID[deck.size()];
+		String[] ids = new String[deck.size()];
 		int i = 0;
 		for(Card card : deck) {
 			ids[i] = card.getID();

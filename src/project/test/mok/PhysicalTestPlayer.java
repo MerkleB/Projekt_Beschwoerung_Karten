@@ -16,6 +16,7 @@ import project.main.Card.Card;
 import project.main.GameApplication.AcceptPromptAnswers;
 import project.main.GameApplication.Application;
 import project.main.GameApplication.ControlsStackables;
+import project.main.GameApplication.CountsTimeUntilProceed;
 import project.main.GameApplication.Game;
 import project.main.GameApplication.IsAreaInGame;
 import project.main.GameApplication.OwnsGameStack;
@@ -89,7 +90,7 @@ public class PhysicalTestPlayer implements Runnable, ControlsStackables{
 		}
 	}
 	
-	public void addAction(String actionName, UUID card_id, String zoneName, Player player) {
+	public void addAction(String actionName, String card_id, String zoneName, Player player) {
 		Player affectedPlayer;
 		Player activatingPlayer = this.player;
 		if(this.player == player || player == null) {
@@ -307,6 +308,24 @@ public class PhysicalTestPlayer implements Runnable, ControlsStackables{
 			keyIndexOfExpectedPrompt.clear();
 			allPromptsAreFinished();
 		}
+	}
+
+	@Override
+	public void timerStarted(CountsTimeUntilProceed timer) {
+		int time = timer.getRemainingTime() / 1000;
+		System.out.println(time+"s");
+	}
+
+	@Override
+	public void timerCountedDown(CountsTimeUntilProceed timer) {
+		int time = timer.getRemainingTime() / 1000;
+		System.out.println(time+"s");
+	}
+
+	@Override
+	public void timerEnded(CountsTimeUntilProceed timer) {
+		int time = timer.getRemainingTime() / 1000;
+		System.out.println(time+"s");
 	}
 	
 	private int getCurrentPrompKeyIndex(String id) {

@@ -21,9 +21,9 @@ public interface Player{
 	
 	/**
 	 * Get Players ID
-	 * @return UUID
+	 * @return String id
 	 */
-	public UUID getID();
+	public String getID();
 	
 	/**
 	 * Current value of SummoningPoints
@@ -97,6 +97,11 @@ public interface Player{
 	 * @return game
 	 */
 	public Game getGame();
+	/**
+	 * Sets the controller of the player
+	 * @param controller
+	 */
+	public void setController(ControlsStackables controller);
 	/**
 	 * Returns the controller associated with the player
 	 * @return ControlsStackables controller

@@ -12,17 +12,10 @@ import project.main.Listeners.GameListener;
 import project.main.exception.NoCardException;
 import project.main.jsonObjects.ActionDefinitionLibrary;
 
-public class BattlePhase implements IsPhaseInGame, GameActionListener, EffectListener {
-	
-	private Game game;
-	private String name;
-	private ArrayList<String> actionsToActivate;
-	private ArrayList<OwnsGameStack> finishedStacks;
-	private OwnsGameStack activeGameStack;
+public class BattlePhase extends GamePhase implements GameActionListener, EffectListener {
 	
 	public BattlePhase(String name) {
-		this.name = name;
-		finishedStacks = new ArrayList<OwnsGameStack>();
+		super(name);
 		GameListener.getInstance().addGameActionListener(this);
 		GameListener.getInstance().addEffectListener(this);
 	}
@@ -53,30 +46,6 @@ public class BattlePhase implements IsPhaseInGame, GameActionListener, EffectLis
 			}
 		}
 	}
-	
-	private void inactivateAll() {
-		Player[] players = game.getPlayers();
-		for(Player player : players) {
-			ArrayList<IsAreaInGame> zones = player.getGameZones();
-			for(IsAreaInGame zone : zones) {
-				zone.deavtivateAll();
-			}
-		}
-	}
-
-	@Override
-	public ArrayList<String> getActionsToActivate() {
-		if(actionsToActivate == null) {
-			actionsToActivate = ActionDefinitionLibrary.getInstance().getPhaseActions(name);
-		}
-		return actionsToActivate;
-	}
-
-	@Override
-	public void process() {
-		restorePhaseStatus();
-		GameListener.getInstance().phaseStarted(this);
-	}
 
 	@Override
 	public void leave() {
@@ -88,23 +57,6 @@ public class BattlePhase implements IsPhaseInGame, GameActionListener, EffectLis
 			zone.deavtivateAll();
 		}
 		GameListener.getInstance().phaseEnded(this);
-	}
-
-	@Override
-	public OwnsGameStack getActiveGameStack() {
-		if(activeGameStack == null) {
-			activeGameStack = GameStack.getInstance(this);
-		}
-		if(activeGameStack.hasFinished()) {
-			finishedStacks.add(activeGameStack);
-			activeGameStack = GameStack.getInstance(this);
-		}
-		return activeGameStack;
-	}
-
-	@Override
-	public ArrayList<OwnsGameStack> getFinisheGameStacks() {
-		return finishedStacks;
 	}
 
 	@Override
